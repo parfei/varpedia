@@ -1,3 +1,3 @@
 # assignment-3
 
-Intellji + Scence Builder
+Scence Builder + Java OpenJDK 13, JavaFX 13
