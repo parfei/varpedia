@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Wiki.NumberOfLineController">
+   <children>
+      <Label fx:id="niceLabel" layoutX="17.0" layoutY="22.0" text="How many lines do you want?" />
+      <ListView fx:id="preView" layoutX="364.0" layoutY="60.0" prefHeight="280.0" prefWidth="200.0" />
+      <Button layoutX="74.0" layoutY="250.0" mnemonicParsing="false" onAction="#generate" text="enter" />
+      <TextField fx:id="userInput" layoutX="15.0" layoutY="187.0" promptText="number" />
+      <Label fx:id="restriction" layoutX="17.0" layoutY="78.0" text="Line" />
+      <Button layoutX="524.0" layoutY="360.0" mnemonicParsing="false" onAction="#backToMain" text="Going Back" />
+   </children>
+</AnchorPane>
