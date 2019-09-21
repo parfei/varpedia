@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="labelask" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Wiki.CreationController">
+<AnchorPane fx:id="labelask" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CreationController">
    <children>
       <Label fx:id="whatDoYouWant" layoutX="334.0" layoutY="98.0" prefHeight="16.0" prefWidth="594.0" text="Hi, What do you want to search" />
       <TextField fx:id="yourKeyWord" layoutX="152.0" layoutY="136.0" prefHeight="26.0" prefWidth="594.0" promptText="Your Keyword" />
