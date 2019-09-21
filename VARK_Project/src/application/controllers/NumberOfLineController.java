@@ -1,4 +1,4 @@
-package application;
+package application.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -69,7 +69,7 @@ public class NumberOfLineController {
 
         _originalText.clear();
 
-        Parent createViewParent = FXMLLoader.load(getClass().getResource("menu.fxml"));
+        Parent createViewParent = FXMLLoader.load(getClass().getResource("../resources/menu.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -124,7 +124,7 @@ public class NumberOfLineController {
                 // clear the array list
                 _originalText.clear();
 
-                Parent createViewParent = FXMLLoader.load(getClass().getResource("createNew.fxml"));
+                Parent createViewParent = FXMLLoader.load(getClass().getResource("../resources/createNew.fxml"));
                 Scene createViewScene = new Scene(createViewParent);
                 // gets the Stage information
                 Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();

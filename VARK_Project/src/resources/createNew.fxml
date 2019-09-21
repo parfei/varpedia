@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CreateNewController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreateNewController">
    <children>
       <Label fx:id="labelMessage" layoutX="287.0" prefHeight="38.0" prefWidth="174.0" text="Existing Creation" />
       <ListView fx:id="listViewExistCreation" layoutX="287.0" layoutY="41.0" prefHeight="318.0" prefWidth="268.0" />

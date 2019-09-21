@@ -1,4 +1,5 @@
-package application;
+package application.controllers;
+import application.TransportClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,7 +66,7 @@ public class CreateNewController {
 
             _CreationsExisted.clear();
 
-            Parent createView = FXMLLoader.load(getClass().getResource("menu.fxml"));
+            Parent createView = FXMLLoader.load(getClass().getResource("../resources/menu.fxml"));
             Scene createViewScene = new Scene(createView);
             // gets the Stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -142,7 +143,7 @@ public class CreateNewController {
 
                 _CreationsExisted.clear();
 
-                Parent menuParent = FXMLLoader.load(getClass().getResource("menu.fxml"));
+                Parent menuParent = FXMLLoader.load(getClass().getResource("../resources/menu.fxml"));
                 Scene createViewScene = new Scene(menuParent);
                 // gets the Stage information
                 Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();

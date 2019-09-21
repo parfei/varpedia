@@ -1,4 +1,4 @@
-package application;
+package application.controllers;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -1,4 +1,5 @@
-package application;
+package application.controllers;
+import application.TransportClass;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -50,7 +51,7 @@ public class CreationController {
 
     @FXML
     public void backToMain(ActionEvent event) throws IOException {
-        Parent createViewParent = FXMLLoader.load(getClass().getResource("menu.fxml"));
+        Parent createViewParent = FXMLLoader.load(getClass().getResource("../resources/menu.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -159,7 +160,7 @@ public class CreationController {
                 Platform.runLater(() -> {
                     try {
 
-                        Parent createViewParent = FXMLLoader.load(getClass().getResource("numberOfLine.fxml"));
+                        Parent createViewParent = FXMLLoader.load(getClass().getResource("../resources/numberOfLine.fxml"));
                         Scene createViewScene = new Scene(createViewParent);
                         // gets the Stage information
                         Stage window = (Stage) ((Node) _event.getSource()).getScene().getWindow();

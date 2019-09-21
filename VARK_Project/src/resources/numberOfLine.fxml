@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.NumberOfLineController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.NumberOfLineController">
    <children>
       <Label fx:id="niceLabel" layoutX="17.0" layoutY="22.0" text="How many lines do you want?" />
       <ListView fx:id="preView" layoutX="364.0" layoutY="60.0" prefHeight="280.0" prefWidth="200.0" />
