@@ -12,6 +12,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main extends Application {
 
@@ -22,6 +24,10 @@ public class Main extends Application {
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(new Scene(root, 450, 300));
         primaryStage.show();
+
+        //Testing FlickrWork class
+        ExecutorService team = Executors.newSingleThreadExecutor();
+        team.submit(new FlickrWork("apple", "2"));
     }
 
     /**
