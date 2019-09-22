@@ -1,4 +1,5 @@
 package application.controllers;
+import application.PathCD;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,7 +43,9 @@ public class ViewController {
      */
     public void initialize()
     {
-        String cmd = "ls"+ " mydir "+ "/ | grep avi | sort | cut -f1 -d'.'\n";
+        String path = PathCD.getPathInstance().getPath();
+
+        String cmd = "ls"+ " \""+ path + "/mydir/creations\""+ " | sort | cut -f1 -d'.'\n";
         ProcessBuilder initializing = new ProcessBuilder("bash","-c",cmd);
         try{
             Process process = initializing.start();
@@ -98,7 +101,7 @@ public class ViewController {
         if(_choice!=null) {
 
 
-            String cmd = "ffplay -autoexit"+" mydir/" +_choice+".avi";
+            String cmd = "ffplay -autoexit \""+ PathCD.getPathInstance().getPath() + "/mydir/creations/" +_choice+".mp4\"";
             System.out.println(cmd);
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
             try {
@@ -129,7 +132,7 @@ public class ViewController {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
 
-                String cmd= "rm" +" mydir/"+_choice+".avi";
+                String cmd= "rm \"" + PathCD.getPathInstance().getPath() + "mydir/creations/"+_choice+".mp4\"";
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
                     Process process = pb.start();

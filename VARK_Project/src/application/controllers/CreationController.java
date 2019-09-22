@@ -1,4 +1,6 @@
 package application.controllers;
+import application.Main;
+import application.PathCD;
 import application.TransportClass;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -14,18 +16,17 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class CreationController {
     public String _InputFromUser;
-    private List<String> _textGot = new ArrayList<String>();
-    private List<String> _textFormat = new ArrayList<String>();
+    //private List<String> _textGot = new ArrayList<String>();
+    //private List<String> _textFormat = new ArrayList<String>();
+    private String _line;
 
     @FXML
     private TextField yourKeyWord;
@@ -42,6 +43,7 @@ public class CreationController {
 
     @FXML
     public void initialize() {
+
         progress.setVisible(false);
         enterButton.setDisable(false);
         goingBack.setDisable(false);
@@ -51,7 +53,7 @@ public class CreationController {
 
     @FXML
     public void backToMain(ActionEvent event) throws IOException {
-        Parent createViewParent = FXMLLoader.load(getClass().getResource("../resources/menu.fxml"));
+        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -104,17 +106,19 @@ public class CreationController {
             });
 
 
-            String command = "wikit " + _InputFromUser + " | sed 's/\\([.]\\) \\([[:upper:]]\\)/\\1\\n\\2/g'";
+            //String command = "wikit " + _InputFromUser + " | sed 's/\\([.]\\) \\([[:upper:]]\\)/\\1\\n\\2/g'";
+            String command = "wikit " + _InputFromUser;
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
             try {
                 Process process = pb.start();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                String line;
+                _line = reader.readLine();
+                _line = _line.replace(". ", "\n");
 
-
-                while ((line = reader.readLine()) != null) {
+                /*while ((line = reader.readLine()) != null) {
                     _textGot.add(line);
                 }
+                System.out.println(_textGot);*/
 
 
             } catch (
@@ -132,35 +136,44 @@ public class CreationController {
             yourKeyWord.setDisable(false);
 
 
-            if (_textGot.get(0).equals(_InputFromUser + " not found :^(")) {
-                Platform.runLater(() -> whatDoYouWant.setText("Your input name is invalid, please enter again"));
-
-                //clear the searched text in the wikipedia
-                _textGot.clear();
+            if (_line.contains(_InputFromUser + " not found :^(")) {
+                Platform.runLater(() -> {
+                        whatDoYouWant.setText("Your input name is invalid, please enter again");
+                        //clear the searched text in the wikipedia
+                        //_textGot.clear();
+                });
             } else {
                 resultOut = true;
+
                 // get the format of the searchedText
+                String command = "echo -e \"" + _line + "\" > \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
+                ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
+                try {
+                    Process process = pb.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                /*
                 for (int i = 1; i < _textGot.size(); i++) {
                     _textFormat.add(_textGot.get(i - 1) + "\n");
 
                 }
-
-                //create a temp text file in the working directory
-
+                //create a temp text file in the mydir folder.
                 try {
-                    FileWriter writer = new FileWriter("temp.txt");
+                    FileWriter writer = new FileWriter("\"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"");
                     for (String str : _textFormat) {
                         writer.write(str);
                     }
                     writer.close();
                 } catch (IOException e) {
 
-                }
+                }*/
 
                 Platform.runLater(() -> {
                     try {
 
-                        Parent createViewParent = FXMLLoader.load(getClass().getResource("../resources/numberOfLine.fxml"));
+                        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/numberOfLine.fxml"));
                         Scene createViewScene = new Scene(createViewParent);
                         // gets the Stage information
                         Stage window = (Stage) ((Node) _event.getSource()).getScene().getWindow();
@@ -176,8 +189,8 @@ public class CreationController {
             }
 
 
-            _textFormat.clear();
-            _textGot.clear();
+            //_textFormat.clear();
+            //_textGot.clear();
         }
     }
 }

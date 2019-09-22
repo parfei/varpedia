@@ -1,6 +1,10 @@
 # Compiled class file
 *.class
 
+#Intellij production files
+/test_vids
+/out
+
 # Log file
 *.log
 

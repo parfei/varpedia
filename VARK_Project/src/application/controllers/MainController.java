@@ -1,5 +1,6 @@
 package application.controllers;
 
+import application.Main;
 import javafx.fxml.FXML;
 
 
@@ -26,8 +27,7 @@ public class MainController {
     @FXML
     public void create(ActionEvent event) throws IOException {
 
-
-        Parent createViewParent = FXMLLoader.load(getClass().getResource("../resources/Creation.fxml"));
+        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/Creation.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -43,7 +43,7 @@ public class MainController {
     }
     @FXML
     public void view(ActionEvent event)throws IOException{
-        Parent createViewParent = FXMLLoader.load(getClass().getResource("../resources/View.fxml"));
+        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/View.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();

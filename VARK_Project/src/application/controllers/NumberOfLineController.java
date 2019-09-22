@@ -1,4 +1,6 @@
 package application.controllers;
+import application.Main;
+import application.PathCD;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,8 +11,10 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +38,13 @@ public class NumberOfLineController {
     @FXML
     private ResourceBundle resources;
 
-
     /**
      * This method will add the existing creation to the ListView
      */
     public void initialize()
     {
 
-
-        String cmd = "cat -n temp.txt";
+        String cmd = "cat -n \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
         ProcessBuilder pb = new ProcessBuilder("bash","-c",cmd);
         try{
             Process process = pb.start();
@@ -59,7 +61,7 @@ public class NumberOfLineController {
             ex.printStackTrace();
         }
 
-        restriction.setText("Between 1 and "+_originalText.size() );
+        restriction.setText("Between 1 and "+ Integer.toString( _originalText.size()-1) );
 
 
     }
@@ -69,7 +71,7 @@ public class NumberOfLineController {
 
         _originalText.clear();
 
-        Parent createViewParent = FXMLLoader.load(getClass().getResource("../resources/menu.fxml"));
+        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -99,41 +101,16 @@ public class NumberOfLineController {
 
             }else{
                 niceLabel.setText("Success,Please wait for system");
-
-
-
-                String cmd = "head -"+userNumber+" temp.txt >final_vision.txt";
-                ProcessBuilder finalText = new ProcessBuilder("bash","-c",cmd);
-                try{
-                    Process textProcess = finalText.start();
-                    textProcess.waitFor();
-
-                }catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-
-                String audioCmd = "cat final_vision.txt | text2wave -o sound.wav";
-                ProcessBuilder audio = new ProcessBuilder("bash","-c",audioCmd);
-                try{
-                    Process audioProcess = audio.start();
-                    audioProcess.waitFor();
-
-                }catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                // clear the array list
+                this.snip();
                 _originalText.clear();
 
-                Parent createViewParent = FXMLLoader.load(getClass().getResource("../resources/createNew.fxml"));
+                Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/createNew.fxml"));
                 Scene createViewScene = new Scene(createViewParent);
                 // gets the Stage information
                 Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
                 window.setTitle("Create Menu");
                 window.setScene(createViewScene);
                 window.show();
-
-
-
 
             }
         }
@@ -146,12 +123,33 @@ public class NumberOfLineController {
             alert.setContentText("Ooops, Please go back and try again!");
 
             alert.showAndWait();
+        }
+    }
 
+    private void snip(){
+        String path = PathCD.getPathInstance().getPath();
+        String cmd = "head -"+userNumber+ " \"" + path +"/mydir/extra/temp.txt\" > \"" + path + "/mydir/extra/lines.txt\"";
+        ProcessBuilder finalText = new ProcessBuilder("bash","-c",cmd);
+        try{
+            Process textProcess = finalText.start();
+            textProcess.waitFor();
 
+        }catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
+                /*String audioCmd = "cat final_vision.txt | text2wave -o sound.wav";
+                ProcessBuilder audio = new ProcessBuilder("bash","-c",audioCmd);
+                try{
+                    Process audioProcess = audio.start();
+                    audioProcess.waitFor();
 
-
+                }catch (IOException ex) {
+                    ex.printStackTrace();
+                }*/
+        // clear the array list
     }
 
 }
