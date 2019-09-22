@@ -32,7 +32,7 @@
                </children>
             </VBox>
             <Button mnemonicParsing="false" onAction="#EnterCreation" text="Enter" />
-            <Label fx:id="errorName" prefHeight="16.0" prefWidth="185.0" />
+            <Label fx:id="errorName" prefHeight="16.0" prefWidth="185.0" textFill="RED" />
             <Label fx:id="errorImg" prefHeight="14.0" prefWidth="229.0" text="ERROR: not a valid num (1-10)" textFill="RED" />
          </children>
       </VBox>
