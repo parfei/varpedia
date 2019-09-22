@@ -95,6 +95,14 @@ public class CreateNewController {
         errorName.setVisible(false);
         errorImg.setVisible(false);
 
+        if (textFldImagesNum.getText().isEmpty() || textFldImagesNum.getText() == null || textFieldCreationName.getText().isEmpty() || textFieldCreationName.getText() == null){
+            errorImg.setVisible(true);
+            errorImg.setText("Complete the fields!");
+            return;
+        }
+
+        Integer num = Integer.parseInt(textFldImagesNum.getText());
+
         if (_CreationsExisted.contains(textFieldCreationName.getText())) {
             errorName.setText("Duplicated name.");
             Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
@@ -110,7 +118,6 @@ public class CreateNewController {
         } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
             errorName.setVisible(true);
             errorName.setText("Invalid naming. Please enter again.");
-
             return;
             /*Alert invalid = new Alert(Alert.AlertType.ERROR);
             invalid.setTitle("Error");
@@ -119,9 +126,13 @@ public class CreateNewController {
 
             invalid.showAndWait();*/
 
+        } else if ( (!textFldImagesNum.getText().matches("[a-zA-Z0-9_-]*")) || num <= 0 || num > 10 ){
+            errorImg.setVisible(true);
+            errorImg.setText("Invalid number. Please enter between 1-10");
+            return;
         }
 
-        FlickrWork getImg = new FlickrWork(TransportClass.getInstance().getter(), textFldImagesNum.getCharacters().toString()); //TODO implement creation name error like this
+        FlickrWork getImg = new FlickrWork(TransportClass.getInstance().getter(), textFldImagesNum.getCharacters().toString());
         team.submit(getImg);
 
         getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -188,14 +199,6 @@ public class CreateNewController {
                 });
             }
         }); //TODO implement overwriting
-
-        getImg.setOnCancelled(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent workerStateEvent) {
-                errorImg.setVisible(true);
-                errorImg.setText("Invalid number. Please enter between 1-10");
-            }
-        });
 
         Parent menuParent = null;
         try {

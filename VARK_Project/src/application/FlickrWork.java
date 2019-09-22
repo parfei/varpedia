@@ -13,10 +13,6 @@ public class FlickrWork extends Task<String> {
 
     @Override
     protected String call() throws Exception {
-        if (!Integer.toString(_num).matches("[a-zA-Z0-9_-]*")) {
-            cancel();
-        }
-
         return null;
     }
 }
