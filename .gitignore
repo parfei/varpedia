@@ -1,27 +1,117 @@
-# Compiled class file
-*.class
 
-#Intellij production files
-/test_vids
-/out
+# Created by https://www.gitignore.io/api/java,intellij+all
+# Edit at https://www.gitignore.io/?templates=java,intellij+all
+
+### Intellij+all ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+VARK_Project/.idea/**/workspace.xml
+VARK_Project/.idea/**/tasks.xml
+VARK_Project/.idea/**/usage.statistics.xml
+VARK_Project/.idea/**/dictionaries
+VARK_Project/.idea/**/shelf
+
+# Generated files
+VARK_Project/.idea/**/contentModel.xml
+
+# Sensitive or high-churn files
+VARK_Project/.idea/**/dataSources/
+VARK_Project/.idea/**/dataSources.ids
+VARK_Project/.idea/**/dataSources.local.xml
+VARK_Project/.idea/**/sqlDataSources.xml
+VARK_Project/.idea/**/dynamic.xml
+VARK_Project/.idea/**/uiDesigner.xml
+VARK_Project/.idea/**/dbnavigator.xml
+
+# Gradle
+VARK_Project/.idea/**/gradle.xml
+VARK_Project/.idea/**/libraries
+
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+# .idea/modules.xml
+# .idea/*.iml
+# .idea/modules
+# *.iml
+# *.ipr
+
+# CMake
+cmake-build-*/
+
+# Mongo Explorer plugin
+VARK_Project/.idea/**/mongoSettings.xml
+
+# File-based project format
+VARK_Project/*.iws
+
+# IntelliJ files to ignore
+VARK_Project/out/
+VARK_Project/src/META-INF
+
+# mpeltonen/sbt-idea plugin
+VARK_Project/.idea_modules/
+
+# JIRA plugin
+VARK_Project/atlassian-ide-plugin.xml
+
+# Cursive Clojure plugin
+VARK_Project/.idea/replstate.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+VARK_Project/com_crashlytics_export_strings.xml
+VARK_Project/crashlytics.properties
+VARK_Project/crashlytics-build.properties
+VARK_Project/fabric.properties
+
+# Editor-based Rest Client
+VARK_Project/.idea/httpRequests
+
+# Android studio 3.1+ serialized cache file
+VARK_Project/.idea/caches/build_file_checksums.ser
+
+### Intellij+all Patch ###
+# Ignores the whole .idea folder and all .iml files
+# See https://github.com/joeblau/gitignore.io/issues/186 and https://github.com/joeblau/gitignore.io/issues/360
+
+VARK_Project/.idea/
+
+# Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-249601023
+
+*.iml
+VARK_Project/modules.xml
+VARK_Project/.idea/misc.xml
+VARK_Project/*.ipr
+
+# Sonarlint plugin
+VARK_Project/.idea/sonarlint
+
+### Java ###
+# Compiled class file
+VARK_Project/*.class
 
 # Log file
-*.log
+VARK_Project/*.log
 
 # BlueJ files
-*.ctxt
+VARK_Project/*.ctxt
 
 # Mobile Tools for Java (J2ME)
-.mtj.tmp/
+VARK_Project/.mtj.tmp/
 
 # Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+VARK_Project/*.jar
+VARK_Project/*.war
+VARK_Project/*.nar
+VARK_Project/*.ear
+VARK_Project/*.zip
+VARK_Project/*.tar.gz
+VARK_Project/*.rar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+VARK_Project/hs_err_pid*
+
+# End of https://www.gitignore.io/api/java,intellij+all
