@@ -22,9 +22,6 @@ public class Main extends Application {
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(new Scene(root, 450, 300));
         primaryStage.show();
-
-
-
     }
 
     /**
@@ -56,12 +53,20 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
-
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void stop() throws Exception { //In case the deletion of such extra files were not successful.
+        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/* ; cd -"; //Clear files in extra folder.
+        ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
+        try {
+            Process end = pb.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
