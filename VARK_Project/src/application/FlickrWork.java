@@ -5,11 +5,12 @@ import javafx.concurrent.Task;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class FlickrWork extends Task<String> {
     private String _term;
     private int _num;
-    private String _html;
+    private ArrayList<String> _html = new ArrayList<String>();
 
     public FlickrWork(String term, String num){
         _term = term;
@@ -35,8 +36,14 @@ public class FlickrWork extends Task<String> {
             BufferedReader reader = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
 
             String line = null;
+            int counter = 0;
             while((line = reader.readLine()) != null){
-                _html += line + "\n";
+                if (counter == _num){
+                    break;
+                } else if (line.contains("url(//live.staticflickr.com")){
+                    _html.add(line);
+                    counter++;
+                }
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -46,6 +53,8 @@ public class FlickrWork extends Task<String> {
     }
 
     private void downloadImgs(){
-       System.out.println(_html);
+       for (String imgLine:_html){
+           System.out.println(imgLine);
+       }
     }
 }
