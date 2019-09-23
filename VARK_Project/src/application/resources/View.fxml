@@ -33,14 +33,14 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Pane fx:id="videoPlayer" layoutX="306.0" layoutY="64.0" prefHeight="195.0" prefWidth="354.0">
+      <Pane fx:id="videoPlayer" layoutX="306.0" layoutY="64.0" prefHeight="195.0" prefWidth="364.0">
          <children>
-            <MediaView fx:id="view" fitHeight="195.0" fitWidth="354.0" preserveRatio="false">
+            <MediaView fx:id="view" fitHeight="195.0" fitWidth="345.0" layoutX="10.0" preserveRatio="false">
                <viewport>
                   <Rectangle2D />
                </viewport></MediaView>
          </children></Pane>
-      <ButtonBar fx:id="playOptions" layoutX="284.0" layoutY="259.0" prefHeight="46.0" prefWidth="389.0">
+      <ButtonBar fx:id="playOptions" layoutX="284.0" layoutY="259.0" prefHeight="46.0" prefWidth="354.0">
         <buttons>
             <Button fx:id="timeBack" layoutX="189.0" layoutY="20.0" mnemonicParsing="false" onAction="#videoPlay" text="&lt;&lt; 10" />
           <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#videoPlay" text="Pause" />

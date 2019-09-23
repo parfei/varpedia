@@ -104,6 +104,7 @@ public class ViewController {
 
     @FXML
     public void playVideo(ActionEvent event)throws IOException{
+        view.setVisible(true);
 
         if(_choice!=null) {
 
@@ -147,6 +148,7 @@ public class ViewController {
                 _player.pause();
             } else if (btn.equals("Stop")){
                 _player.stop();
+                view.setVisible(false);
             } else if (btn.equals("<< 10")){
                 _player.seek(new Duration(_player.getCurrentTime().toMillis() + 10000));
             } else if (btn.equals("10 >>")){
