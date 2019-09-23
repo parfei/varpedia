@@ -130,7 +130,7 @@ public class CreateNewController {
         //    public void handle(WorkerStateEvent workerStateEvent) {
 
                 //TODO put in image implementation details.
-                CreationWork creationWork = new CreationWork(textFieldCreationName.getText());
+                CreationWork creationWork = new CreationWork(textFieldCreationName.getText(), false, false);
                 team.submit(creationWork);
 
                 creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {

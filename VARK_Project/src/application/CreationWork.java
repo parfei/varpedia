@@ -9,17 +9,25 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
     private String _name;
     private String _term;
     private String _path;
+    private Boolean _blueVid;
+    private Boolean _overwrite;
 
-    public CreationWork(String name){
+    public CreationWork(String name, Boolean overwrite, Boolean blueVideo){
         _name = name;
         _term = TransportClass.getInstance().getter();
         _path = PathCD.getPathInstance().getPath();
+        _overwrite = overwrite;
+        _blueVid = blueVideo;
     }
 
     @Override
     protected String call() throws Exception {
         generateAudio();
-        generateBlueVideo();
+        if (_blueVid){
+            generateBlueVideo();
+        } else {
+            generatePicVideo();
+        }
         combineForms();
 
         Platform.runLater(() -> {
@@ -34,6 +42,18 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
         });
 
         return null;
+    }
+
+    private void generateAudio(){
+        String soundCommand = "cat \"" + _path + "/mydir/extra/lines.txt\" | text2wave -o \"" + _path + "/mydir/extra/sound.wav\"";
+
+        ProcessBuilder sound = new ProcessBuilder("bash", "-c", soundCommand);
+        try {
+            Process sod = sound.start();
+            sod.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void generateBlueVideo(){
@@ -52,16 +72,8 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
 
     }
 
-    private void generateAudio(){
-        String soundCommand = "cat \"" + _path + "/mydir/extra/lines.txt\" | text2wave -o \"" + _path + "/mydir/extra/sound.wav\"";
-
-        ProcessBuilder sound = new ProcessBuilder("bash", "-c", soundCommand);
-        try {
-            Process sod = sound.start();
-            sod.waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+    private void generatePicVideo(){
+//TODO implement slideshow video
     }
 
     private void combineForms(){
