@@ -103,13 +103,14 @@ public class ViewController {
     }
 
     @FXML
-    public void playVideo(ActionEvent event)throws IOException{
+    public void playVideo(ActionEvent event)throws IOException{ //TODO fix mediaplayer
         view.setVisible(true);
 
         if(_choice!=null) {
 
             File file = new File(PathCD.getPathInstance().getPath() + "/mydir/creations/" + _choice + ".mp4");
             _player = new MediaPlayer(new Media(file.toURI().toString()));
+            _player.setAutoPlay(true);
 
             _player.setOnEndOfMedia(new Runnable() {
                 @Override

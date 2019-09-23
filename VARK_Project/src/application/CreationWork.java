@@ -3,7 +3,9 @@ package application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
 
 public class CreationWork extends Task<String> { //TODO check if actually concurrent.
@@ -22,7 +24,7 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
     }
 
     @Override
-    protected String call() throws Exception {
+    protected String call() throws Exception { //TODO check when you mke th video first time
         generateAudio();
         if (_picNum == 0){
             generateBlueVideo();
@@ -73,16 +75,20 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
     }
 
     private void generatePicVideo(){
-        String imgsListPath = _path + "/mydir/extra/imgs.txt";
 
         //video
-        String videoCommand = "duration=`soxi -D \"" + _path + "/mydir/extra/sound.wav\"` ; ffmpeg -r " + _picNum + "/\"$duration\" -f image2 -s 800x600 -i \"" + _path + "/mydir/extra/img%01d.jpg\" " +
-                "-vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='" + _term + "'\" \"" + _path + "/mydir/extra/video.mp4\"";
+        String audioLength = "echo `soxi -D \"" + _path + "/mydir/extra/sound.wav\"`";
+        ProcessBuilder length = new ProcessBuilder("bash", "-c", audioLength);
+        try{
+            BufferedReader reader = new BufferedReader(new InputStreamReader(length.start().getInputStream()));
+            String dura = reader.readLine();
+            double duration = Double.parseDouble(dura)/_picNum;
+            String videoCommand = "ffmpeg -r 1/" + duration + " -f image2 -s 800x600 -i \"" + _path + "/mydir/extra/img%01d.jpg\" " +
+                    "-vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='" + _term + "'\" \"" + _path + "/mydir/extra/video.mp4\"";
 
-        System.out.println(videoCommand);
-        ProcessBuilder video = new ProcessBuilder("bash", "-c", videoCommand);
-        Process vid = null;
-        try {
+            System.out.println(videoCommand);
+            ProcessBuilder video = new ProcessBuilder("bash", "-c", videoCommand);
+            Process vid = null;
             vid = video.start();
             vid.waitFor();
         } catch (IOException | InterruptedException e) {
