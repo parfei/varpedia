@@ -71,9 +71,10 @@ public class FlickrWork extends Task<String> {
                HttpURLConnection con = (HttpURLConnection) new URL(link).openConnection();
                con.setInstanceFollowRedirects(false);
                con.connect();
-               String link2 = con.getHeaderField("Location").toString();
+               String trueLink = con.getHeaderField("Location").toString();
 
-               InputStream in = new URL(link2).openConnection().getInputStream();
+               //Download the link using the true link.
+               InputStream in = new URL(trueLink).openConnection().getInputStream();
                Files.copy(in, Paths.get(PathCD.getPathInstance().getPath() + "/mydir/extra/picture_" + i + ".jpg"));
 
            } catch (IOException e) {
