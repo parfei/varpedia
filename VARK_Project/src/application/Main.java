@@ -61,7 +61,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    @Override
+    @Override //TODO check if it always works.
     public void stop() throws Exception { //In case the deletion of such extra files were not successful.
         String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/* ; cd -"; //Clear files in extra folder.
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
@@ -71,4 +71,6 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+
+
 }
