@@ -2,10 +2,16 @@ package application;
 
 import javafx.concurrent.Task;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FlickrWork extends Task<String> {
     private String _term;
@@ -22,6 +28,7 @@ public class FlickrWork extends Task<String> {
         // https://www.flickr.com/search/?text=_term;
         getHTML();
         downloadImgs();
+
         return null;
     }
 
@@ -53,8 +60,26 @@ public class FlickrWork extends Task<String> {
     }
 
     private void downloadImgs(){
+        String link;
+        int i = 1;
        for (String imgLine:_html){
-           System.out.println(imgLine);
+           link = "http://" + imgLine.substring(imgLine.indexOf("live.staticflickr.com/"), imgLine.indexOf(".jpg") + 4);
+           System.out.println(link);
+           try {
+
+               //Gets true link instead of the link that redirects you.
+               HttpURLConnection con = (HttpURLConnection) new URL(link).openConnection();
+               con.setInstanceFollowRedirects(false);
+               con.connect();
+               String link2 = con.getHeaderField("Location").toString();
+
+               InputStream in = new URL(link2).openConnection().getInputStream();
+               Files.copy(in, Paths.get(PathCD.getPathInstance().getPath() + "/mydir/extra/picture_" + i + ".jpg"));
+
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+           i++;
        }
     }
 }
