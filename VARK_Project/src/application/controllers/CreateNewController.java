@@ -1,9 +1,6 @@
 package application.controllers;
 
-import application.FlickrWork;
-import application.Main;
-import application.PathCD;
-import application.TransportClass;
+import application.*;
 import com.sun.jdi.connect.Transport;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -56,6 +53,8 @@ public class CreateNewController {
      * This method will add the existing creation to the ListView
      */
     public void initialize() {
+        errorName.setVisible(false);
+        errorImg.setVisible(false);
         team = Executors.newSingleThreadExecutor();
 
         String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/creations\" " + " | sort | cut -f1 -d'.'\n";
@@ -92,9 +91,6 @@ public class CreateNewController {
 
     @FXML
     public void EnterCreation(ActionEvent event) throws IOException {
-        errorName.setVisible(false);
-        errorImg.setVisible(false);
-
         if (textFldImagesNum.getText().isEmpty() || textFldImagesNum.getText() == null || textFieldCreationName.getText().isEmpty() || textFieldCreationName.getText() == null){
             errorImg.setVisible(true);
             errorImg.setText("Complete the fields!");
@@ -119,12 +115,6 @@ public class CreateNewController {
             errorName.setVisible(true);
             errorName.setText("Invalid naming. Please enter again.");
             return;
-            /*Alert invalid = new Alert(Alert.AlertType.ERROR);
-            invalid.setTitle("Error");
-            invalid.setHeaderText("mistake found!");
-            invalid.setContentText("Please rename or go back to the Main Menu!");
-
-            invalid.showAndWait();*/
 
         } else if ( (!textFldImagesNum.getText().matches("[a-zA-Z0-9_-]*")) || num <= 0 || num > 10 ){
             errorImg.setVisible(true);
@@ -132,73 +122,30 @@ public class CreateNewController {
             return;
         }
 
-        FlickrWork getImg = new FlickrWork(TransportClass.getInstance().getter(), textFldImagesNum.getCharacters().toString());
-        team.submit(getImg);
+        //FlickrWork getImg = new FlickrWork(TransportClass.getInstance().getter(), textFldImagesNum.getCharacters().toString());
+        //team.submit(getImg);
 
-        getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent workerStateEvent) {
+        //getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+        //    @Override
+        //    public void handle(WorkerStateEvent workerStateEvent) {
 
                 //TODO put in image implementation details.
+                CreationWork creationWork = new CreationWork(textFieldCreationName.getText());
+                team.submit(creationWork);
 
-                team.submit(new Task<Integer>() {
-
+                creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                     @Override
-                    protected Integer call() throws Exception {
-                        String term = TransportClass.getInstance().getter();
-                        String path = PathCD.getPathInstance().getPath();
-                        String soundCommand = "cat \"" + path + "/mydir/extra/lines.txt\" | text2wave -o \"" + path + "/mydir/extra/sound.wav\"";
-
-                        ProcessBuilder sound = new ProcessBuilder("bash", "-c", soundCommand);
-                        try {
-                            Process sod = sound.start();
-                            sod.waitFor();
-
-                            //video
-                            String videoCommand = "duration=`soxi -D \"" + path + "/mydir/extra/sound.wav\"` ; ffmpeg -f lavfi -i color=c=blue:s=320x240:d=\"$duration\" "
-                                    + "-vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + "'" + term + "'" + "\" \"" + path + "/mydir/extra/video.mp4\"";
-
-                            ProcessBuilder video = new ProcessBuilder("bash", "-c", videoCommand);
-                            Process vid = video.start();
-                            vid.waitFor();
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        String combineCommand = "ffmpeg -i \"" + path + "/mydir/extra/sound.wav\" -i \"" + path + "/mydir/extra/video.mp4\" -c:v copy -c:a aac -strict experimental \"" + path + "/mydir/creations/" + textFieldCreationName.getText() + ".mp4\" 2>/dev/null";
-                        ProcessBuilder getTogether = new ProcessBuilder("bash", "-c", combineCommand);
-
-                        try {
-                            Process combine = getTogether.start();
-                            combine.waitFor();
-
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-
-                        Platform.runLater(() -> {
-                            _CreationsExisted.clear();
-                            Alert complete = new Alert(Alert.AlertType.INFORMATION);
-                            complete.setHeaderText("Created");
-                            complete.setContentText(textFieldCreationName.getText() + " has been created.");
-                            complete.show();
-
-                            //TODO CHECK WORKING DELETION
-                            String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/* ; cd -"; //Clear files in extra folder.
-                            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
-                            try {
-                                Process end = pb.start();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
-
-                        return null;
+                    public void handle(WorkerStateEvent workerStateEvent) {
+                        _CreationsExisted.clear();
+                        Alert complete = new Alert(Alert.AlertType.INFORMATION);
+                        complete.setHeaderText("Created");
+                        complete.setContentText(textFieldCreationName.getText() + " has been created.");
+                        complete.show();
                     }
                 });
-            }
-        }); //TODO implement overwriting
+
+//            }
+//        }); //TODO implement overwriting
 
         Parent menuParent = null;
         try {

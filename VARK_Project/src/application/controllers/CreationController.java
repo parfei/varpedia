@@ -96,7 +96,7 @@ public class CreationController {
 
         @Override
         protected Void call() throws Exception {
-            progress.setVisible(true);
+            progress.setVisible(true); //TODO move this out of the task inner class.
             enterButton.setVisible(true);
             goingBack.setVisible(true);
             yourKeyWord.setVisible(true);
@@ -145,7 +145,6 @@ public class CreationController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 Platform.runLater(() -> {
                     try {
 
