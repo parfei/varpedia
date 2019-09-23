@@ -122,15 +122,16 @@ public class CreateNewController {
             return;
         }
 
-        //FlickrWork getImg = new FlickrWork(TransportClass.getInstance().getter(), textFldImagesNum.getCharacters().toString());
-        //team.submit(getImg);
+        FlickrWork getImg = new FlickrWork(TransportClass.getInstance().getter(), textFldImagesNum.getCharacters().toString());
+        team.submit(getImg);
 
-        //getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-        //    @Override
-        //    public void handle(WorkerStateEvent workerStateEvent) {
+        getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent workerStateEvent) {
 
                 //TODO put in image implementation details.
-                CreationWork creationWork = new CreationWork(textFieldCreationName.getText(), false, false);
+                CreationWork creationWork = new CreationWork(textFieldCreationName.getText(), Integer.parseInt(textFldImagesNum.getText()), false);
+                System.out.println("pic: " + Integer.parseInt(textFldImagesNum.getText()));
                 team.submit(creationWork);
 
                 creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -144,8 +145,8 @@ public class CreateNewController {
                     }
                 });
 
-//            }
-//        }); //TODO implement overwriting
+            }
+        }); //TODO implement overwriting
 
         Parent menuParent = null;
         try {

@@ -147,7 +147,6 @@ public class CreationController {
                 }
                 Platform.runLater(() -> {
                     try {
-
                         Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/numberOfLine.fxml"));
                         Scene createViewScene = new Scene(createViewParent);
                         // gets the Stage information
@@ -156,7 +155,6 @@ public class CreationController {
                         window.setScene(createViewScene);
                         window.show();
                     } catch (IOException e) {
-
                     }
 
                 });

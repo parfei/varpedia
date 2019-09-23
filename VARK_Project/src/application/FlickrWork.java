@@ -26,6 +26,7 @@ public class FlickrWork extends Task<String> {
         getHTML();
         downloadImgs();
 
+        System.out.println("flickr done");
         return null;
     }
 
@@ -54,27 +55,31 @@ public class FlickrWork extends Task<String> {
         }
     }
 
-    private void downloadImgs(){
+    private void downloadImgs() throws IOException {
         String link;
+        String trueLink;
+        InputStream in = null;
+
         int i = 1;
        for (String imgLine:_html){
            link = "http://" + imgLine.substring(imgLine.indexOf("live.staticflickr.com/"), imgLine.indexOf(".jpg") + 4);
-           System.out.println(link);
            try {
 
                //Gets true link instead of the link that redirects you.
                HttpURLConnection con = (HttpURLConnection) new URL(link).openConnection();
                con.setInstanceFollowRedirects(false);
                con.connect();
-               String trueLink = con.getHeaderField("Location").toString();
+               trueLink = con.getHeaderField("Location").toString();
 
                //Download the link using the true link.
-               InputStream in = new URL(trueLink).openConnection().getInputStream();
-               Files.copy(in, Paths.get(PathCD.getPathInstance().getPath() + "/mydir/extra/picture_" + i + ".jpg"));
+               in = new URL(trueLink).openConnection().getInputStream();
+               System.out.println(PathCD.getPathInstance().getPath() + "/mydir/extra/img" + i + ".jpg");
+               Files.copy(in, Paths.get(PathCD.getPathInstance().getPath() + "/mydir/extra/img" + i + ".jpg"));
 
            } catch (IOException e) {
                e.printStackTrace();
            }
+           System.out.println(link);
            i++;
        }
     }

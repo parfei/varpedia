@@ -30,15 +30,6 @@ public class Main extends Application {
      * This method will create a folder
      */
     private void initializeFolder(){
-        //path for the working directory
-        /*Path path = Paths.get("mydir");
-        //change path
-        if (Files.exists(path)) {
-
-        }
-        File dir = new File(path.toString());
-        dir.mkdir();*/
-
         String path = PathCD.getPathInstance().getPath();
         try {
             String command = "[ -e \"" + path + "/mydir\" ]"; //check if there is a creations folder.
