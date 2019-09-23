@@ -160,13 +160,6 @@ public class CreateNewController {
         window.setScene(createViewScene);
         window.show();
     }
-
-
-
-    @FXML
-    public void getImages(ActionEvent event) {
-
-    }
 }
 
 
