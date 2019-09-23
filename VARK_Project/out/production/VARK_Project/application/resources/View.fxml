@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
@@ -10,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ViewController">
+<AnchorPane prefHeight="400.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ViewController">
    <children>
       <Button fx:id="back" layoutX="470.0" layoutY="344.0" mnemonicParsing="false" onAction="#backToMain" text="Back">
          <font>
@@ -34,14 +35,17 @@
       </Label>
       <Pane fx:id="videoPlayer" layoutX="306.0" layoutY="64.0" prefHeight="195.0" prefWidth="354.0">
          <children>
-            <MediaView fx:id="view" fitHeight="200.0" fitWidth="200.0" />
+            <MediaView fx:id="view" fitHeight="195.0" fitWidth="345.0" preserveRatio="false">
+               <viewport>
+                  <Rectangle2D />
+               </viewport></MediaView>
          </children></Pane>
-      <ButtonBar fx:id="playOptions" layoutX="284.0" layoutY="259.0" prefHeight="46.0" prefWidth="294.0">
+      <ButtonBar fx:id="playOptions" layoutX="284.0" layoutY="259.0" prefHeight="46.0" prefWidth="389.0">
         <buttons>
             <Button fx:id="timeBack" layoutX="189.0" layoutY="20.0" mnemonicParsing="false" onAction="#videoPlay" text="&lt;&lt; 10" />
           <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#videoPlay" text="Pause" />
             <Button fx:id="stopButton" layoutX="125.0" layoutY="20.0" mnemonicParsing="false" onAction="#videoPlay" text="Stop" />
-            <Button fx:id="timeForward" layoutX="189.0" layoutY="20.0" mnemonicParsing="false" onAction="#videoPlay" text="10 &gt;&gt;" />
+            <Button fx:id="timeForward" layoutX="189.0" layoutY="20.0" minWidth="75.0" mnemonicParsing="false" onAction="#videoPlay" prefHeight="26.0" text="10 &gt;&gt;" />
         </buttons>
       </ButtonBar>
       <Text fx:id="errorText" layoutX="12.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="281.0" />
