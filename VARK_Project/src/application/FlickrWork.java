@@ -33,7 +33,7 @@ public class FlickrWork extends Task<String> {
      * Get the HTML from the page to search images for.
      * CONSIDER PAGES WHICH DON'T HAVE IMAGES FOR IT?
      */
-    private void getHTML(){
+    private void getHTML() throws IOException {
         try {
             URL url = new URL("https://www.flickr.com/search/?text=" + _term);
             //TODO throw exception if cannot find images for the specific term.
@@ -49,10 +49,8 @@ public class FlickrWork extends Task<String> {
                     counter++;
                 }
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException("Images cannot be found. Replacing with a blue background instead."); //TODO implement this.
         }
     }
 
