@@ -12,6 +12,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main extends Application {
 
@@ -22,24 +24,12 @@ public class Main extends Application {
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(new Scene(root, 450, 300));
         primaryStage.show();
-
-
-
     }
 
     /**
      * This method will create a folder
      */
     private void initializeFolder(){
-        //path for the working directory
-        /*Path path = Paths.get("mydir");
-        //change path
-        if (Files.exists(path)) {
-
-        }
-        File dir = new File(path.toString());
-        dir.mkdir();*/
-
         String path = PathCD.getPathInstance().getPath();
         try {
             String command = "[ -e \"" + path + "/mydir\" ]"; //check if there is a creations folder.
@@ -56,12 +46,22 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
-
 
     public static void main(String[] args) {
         launch(args);
     }
+
+    @Override //TODO check if it always works, implement for start, check if exits and nothing is blocking some process is running too.
+    public void stop() throws Exception { //In case the deletion of such extra files were not successful.
+        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/* ; cd -"; //Clear files in extra folder.
+        ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
+        try {
+            Process end = pb.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
