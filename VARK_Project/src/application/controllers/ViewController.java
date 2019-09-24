@@ -63,7 +63,7 @@ public class ViewController {
     {
         String path = PathCD.getPathInstance().getPath(); //TODO alphabetical order
 
-        String cmd = "ls"+ " \""+ path + "/mydir/creations\""+ " | sort | cut -f1 -d'.'\n";
+        String cmd = "ls"+ " \""+ path + "/mydir/creations\""+ " | cut -f1 -d'.' | sort";
         ProcessBuilder initializing = new ProcessBuilder("bash","-c",cmd);
         try{
             Process process = initializing.start();
