@@ -32,6 +32,8 @@ public class NumberOfLineController {
     private Label restriction;
     @FXML
     private ListView preView;
+    @FXML
+    private Label errorText;
 
     @FXML
     private URL location;
@@ -43,7 +45,7 @@ public class NumberOfLineController {
      */
     public void initialize()
     {
-
+        errorText.setVisible(false);
         String cmd = "cat -n \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
         ProcessBuilder pb = new ProcessBuilder("bash","-c",cmd);
         try{
@@ -90,17 +92,12 @@ public class NumberOfLineController {
 
             // While enter invalid number
             if(userNumber<1 ||userNumber>_originalText.size() ){
-                niceLabel.setText("You have enter an invalid number,please enter again!");
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("You make a significant mistake!");
-                alert.setContentText("Ooops, you enter a invalid number!!");
-
-                alert.showAndWait();
-
+                errorText.setText("Please enter between 1 and " + userNumber); //TODO fix wrapping of text
+                errorText.setVisible(true);
 
             }else{
-                niceLabel.setText("Success,Please wait for system");
+                errorText.setVisible(false);
+                niceLabel.setText("Success.");
                 this.snip();
                 _originalText.clear();
 
@@ -116,13 +113,8 @@ public class NumberOfLineController {
         }
         catch(Exception e){
 
-            niceLabel.setText("You have enter an invalid input ,please enter number !!!");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("You make a significant mistake!");
-            alert.setContentText("Ooops, Please go back and try again!");
-
-            alert.showAndWait();
+            errorText.setText("Invalid input. Please enter a valid number.");
+            errorText.setVisible(true);
         }
     }
 
