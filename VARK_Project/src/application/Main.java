@@ -43,11 +43,11 @@ public class Main extends Application {
         String path = PathCD.getPathInstance().getPath();
         try {
             String command = "[ -e \"" + path + "/mydir\" ]"; //check if there is a creations folder.
-            ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
+            ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command); //TODO fix this
 
             Process folder = pb.start();
             if (folder.waitFor() == 1) {
-                String command2 = "mkdir -p \"" + path + "/mydir/extra\" ; mkdir \"" + path + "/mydir/creations\""; //create a creations folder.
+                String command2 = "mkdir -p \"" + path + "/mydir/extra\" ; mkdir \"" + path + "/mydir/creations\"; mkdir \\\"\" + path + \"/mydir/audioPiece\\\""; //create a creations folder.
                 ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
                 pb2.start();
             }
