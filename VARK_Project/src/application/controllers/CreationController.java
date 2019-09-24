@@ -113,7 +113,7 @@ public class CreationController {
                 Process process = pb.start();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 _line = reader.readLine();
-                _line = _line.replace(". ", "\n");
+                //_line = _line.replace(". ", "\n");
 
                 /*while ((line = reader.readLine()) != null) {
                     _textGot.add(line);
@@ -170,10 +170,26 @@ public class CreationController {
 
                 }*/
 
-                Platform.runLater(() -> {
+                /*Platform.runLater(() -> {
                     try {
 
                         Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/numberOfLine.fxml"));
+                        Scene createViewScene = new Scene(createViewParent);
+                        // gets the Stage information
+                        Stage window = (Stage) ((Node) _event.getSource()).getScene().getWindow();
+                        window.setTitle("Select Line Menu");
+                        window.setScene(createViewScene);
+                        window.show();
+                    } catch (IOException e) {
+
+                    }
+
+                });*/
+
+                Platform.runLater(() -> {
+                    try {
+
+                        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
                         Scene createViewScene = new Scene(createViewParent);
                         // gets the Stage information
                         Stage window = (Stage) ((Node) _event.getSource()).getScene().getWindow();

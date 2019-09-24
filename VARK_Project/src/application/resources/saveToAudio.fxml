@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="756.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.SaveToAudioController">
+   <children>
+      <Label layoutX="11.0" layoutY="26.0" text="which voice do you prefer" />
+      <RadioButton fx:id="kal" layoutX="11.0" layoutY="64.0" mnemonicParsing="false" text="kal_diphone">
+         <toggleGroup>
+            <ToggleGroup fx:id="group" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="jdt" layoutX="14.0" layoutY="162.0" mnemonicParsing="false" text="akl_nz_jdt_diphoneRadio" toggleGroup="$group" />
+      <RadioButton fx:id="cw" layoutX="11.0" layoutY="245.0" mnemonicParsing="false" text="akl_nz_cw_cg_cg" toggleGroup="$group" />
+      <Button layoutX="213.0" layoutY="158.0" mnemonicParsing="false" onAction="#save" text="save-&gt;" />
+      <ListView layoutX="536.0" layoutY="90.0" prefHeight="200.0" prefWidth="200.0" />
+      <TextField layoutX="309.0" layoutY="167.0" />
+      <Label layoutX="303.0" layoutY="130.0" text="give a name of audio" />
+      <Label layoutX="548.0" layoutY="42.0" text="existing audios" />
+      <Button layoutX="674.0" layoutY="342.0" mnemonicParsing="false" onAction="#cancel" onMouseClicked="#cancel" text="cancel" />
+   </children>
+</AnchorPane>
