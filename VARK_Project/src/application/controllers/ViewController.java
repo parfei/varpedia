@@ -176,7 +176,7 @@ public class ViewController {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
 
-                String cmd= "rm \"" + PathCD.getPathInstance().getPath() + "mydir/creations/"+_choice+".mp4\"";
+                String cmd= "rm \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/"+_choice+".mp4\"";
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
                     Process process = pb.start();
