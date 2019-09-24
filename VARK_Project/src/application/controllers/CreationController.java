@@ -111,7 +111,7 @@ public class CreationController {
                 Process process = pb.start();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 _line = reader.readLine();
-                //_line = _line.replace(". ", "\n");
+                _line = _line.replace(". ", "\n");
 
             } catch (
                     IOException ex) {
@@ -149,7 +149,7 @@ public class CreationController {
                 Platform.runLater(() -> {
                     try {
 
-                        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
+                        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/numberOfLine.fxml"));
                         Scene createViewScene = new Scene(createViewParent);
                         // gets the Stage information
                         Stage window = (Stage) ((Node) _event.getSource()).getScene().getWindow();
