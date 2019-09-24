@@ -25,7 +25,7 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
 
     @Override
     protected String call() throws Exception { //TODO check when you mke th video first time
-        generateAudio();
+        generateAudio(); //Will make a separate audio instead of needing this...
         if (_picNum == 0){
             generateBlueVideo();
         } else {

@@ -111,7 +111,7 @@ public class CreationController {
                 Process process = pb.start();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 _line = reader.readLine();
-                //_line = _line.replace(". ", "\n");
+                _line = _line.replace(". ", "\n");
 
             } catch (
                     IOException ex) {
