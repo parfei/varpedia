@@ -14,5 +14,6 @@
       <TextField fx:id="userInput" layoutX="15.0" layoutY="187.0" promptText="number" />
       <Label fx:id="restriction" layoutX="17.0" layoutY="78.0" text="Line" />
       <Button layoutX="483.0" layoutY="360.0" mnemonicParsing="false" onAction="#backToMain" text="Going Back" />
+      <Label fx:id="errorText" layoutX="17.0" layoutY="110.0" textFill="RED" wrapText="true" />
    </children>
 </AnchorPane>

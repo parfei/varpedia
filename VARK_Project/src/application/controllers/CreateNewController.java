@@ -129,7 +129,6 @@ public class CreateNewController {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
 
-                //TODO put in image implementation details.
                 CreationWork creationWork = new CreationWork(textFieldCreationName.getText(), Integer.parseInt(textFldImagesNum.getText()), false);
                 System.out.println("pic: " + Integer.parseInt(textFldImagesNum.getText()));
                 team.submit(creationWork);
@@ -146,7 +145,7 @@ public class CreateNewController {
                 });
 
             }
-        }); //TODO implement overwriting
+        });
 
         Parent menuParent = null;
         try {
