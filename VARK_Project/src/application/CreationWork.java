@@ -94,10 +94,17 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-    } //TODO not playing for some reason properly. Need to stretch video.
+    }
 
     private void combineForms(){
-        String combineCommand = "ffmpeg -i \"" + _path + "/mydir/extra/sound.wav\" -i \"" + _path + "/mydir/extra/video.mp4\" -c:v copy -c:a aac -strict experimental \"" + _path + "/mydir/creations/" + _name + ".mp4\" 2>/dev/null";
+
+        String extra = "";
+
+        if (_overwrite){
+            extra = "-y";
+        }
+
+        String combineCommand = "ffmpeg " + extra + " -i \"" + _path + "/mydir/extra/sound.wav\" -i \"" + _path + "/mydir/extra/video.mp4\" -c:v copy -c:a aac -strict experimental \"" + _path + "/mydir/creations/" + _name + ".mp4\" 2>/dev/null";
         System.out.println(combineCommand);
         ProcessBuilder getTogether = new ProcessBuilder("bash", "-c", combineCommand);
 
