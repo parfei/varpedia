@@ -39,7 +39,7 @@ public class Main extends Application {
 
             Process folder = pb.start();
             if (folder.waitFor() == 1) {
-                String command2 = "mkdir -p \"" + path + "/mydir/extra\" ; mkdir \"" + path + "/mydir/creations\"; mkdir \"" + path + "/mydir/audioPiece\""; //create a creations folder.
+                String command2 = "mkdir -p \"" + path + "/mydir/extra\" ; mkdir -p \"" + path + "/mydir/creations\""; //create a creations folder.
                 ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
                 pb2.start();
             }

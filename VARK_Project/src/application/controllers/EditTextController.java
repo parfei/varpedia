@@ -111,23 +111,29 @@ public class EditTextController {
         }
     }
 
-   @FXML
-    public void backToMain(ActionEvent event){
+    public void backToMain(ActionEvent event) throws IOException {
+        String cmd1="rm -rf "+PathCD.getPathInstance().getPath()+"/mydir/audioPiece";
+        //String cmd2="rm -r"+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
+        //System.out.println(cmd2);
+        ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd1);
         try {
-
-            Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
-            Scene createViewScene = new Scene(createViewParent);
-            // gets the Stage information
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setTitle("Select Line Menu");
-            window.setScene(createViewScene);
-            window.show();
+            Process process = pb.start();
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
-
-
-
+        /*ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", cmd2);
+        try {
+            Process process = pb2.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
+        Scene createViewScene = new Scene(createViewParent);
+        // gets the Stage information
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle("Main Menu");
+        window.setScene(createViewScene);
+        window.show();
     }
 
     static int countWords(String str)

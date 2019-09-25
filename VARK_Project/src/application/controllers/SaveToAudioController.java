@@ -31,7 +31,7 @@ public class SaveToAudioController {
   private ToggleGroup group;
   @FXML
   private ListView existingAudioView;
-  private boolean _overwrite;
+
 
   @FXML
   private Label errorName;
@@ -57,7 +57,7 @@ public class SaveToAudioController {
   public void initialize(){
       errorName.setVisible(false);
       noneSelection.setVisible(false);
-      String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/audioPiece\" " + " | sort | cut -f1 -d'.'\n";
+      String command = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/audioPiece" + " | cut -f1 -d'.'\n";
       System.out.println(PathCD.getPathInstance().getPath());
       ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
       try {
@@ -109,7 +109,7 @@ public class SaveToAudioController {
       }
       else{
           if (kal.isSelected()){
-              String cmd="text2wave -o "+userInput+".wav " + "savedText.txt -eval kal.scm";
+              String cmd="text2wave -o \""+PathCD.getPathInstance().getPath()+"/mydir/audioPiece/" + userInput+".wav\" " + "savedText.txt -eval kal.scm";
               ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
               try {
                   Process process = pb.start();
@@ -143,21 +143,36 @@ public class SaveToAudioController {
 
           }
           else if (cw.isSelected()){
-              String cmd="text2wave -o "+userInput+".wav " + "savedText.txt -eval cw.scm";
+              String cmd="text2wave -o \""+PathCD.getPathInstance().getPath()+"/mydir/audioPiece/" + userInput+".wav\" " + "savedText.txt -eval cw.scm";
               ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
               try {
                   Process process = pb.start();
               } catch (IOException e) {
                   e.printStackTrace();
               }
-              String cmd2="mv "+userInput+".wav " +PathCD.getPathInstance().getPath() + "/mydir/audioPiece";
+              /*String cmd2="mv "+userInput+".wav " +PathCD.getPathInstance().getPath() + "/mydir/audioPiece";
               System.out.println(cmd2);
               ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", cmd2);
               try {
                   Process process = pb2.start();
               } catch (IOException e) {
                   e.printStackTrace();
-              }
+              }*/
+
+          }
+
+          try {
+              _audioExisted.clear();
+              existingAudioView.getItems().clear(); //TODO when kill the program, the audioPiece should be cleared, move to extra folder
+
+              Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
+              Scene createViewScene = new Scene(createViewParent);
+              // gets the Stage information
+              Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+              window.setTitle("Edit text menu");
+              window.setScene(createViewScene);
+              window.show();
+          } catch (IOException e) {
 
           }
 
@@ -180,5 +195,19 @@ public class SaveToAudioController {
 
       }
   }
+
+  public void readyToCombine(ActionEvent event) throws IOException {
+
+      Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/CombineAudio.fxml"));
+      Scene createViewScene = new Scene(createViewParent);
+      // gets the Stage information
+      Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+      window.setTitle("Edit text Menu");
+      window.setScene(createViewScene);
+      window.show();
+
+
+  }
+
 
 }
