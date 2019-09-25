@@ -61,7 +61,7 @@ public class ViewController {
      */
     public void initialize()
     {
-        String path = PathCD.getPathInstance().getPath(); //TODO alphabetical order
+        String path = PathCD.getPathInstance().getPath();
 
         String cmd = "ls"+ " \""+ path + "/mydir/creations\""+ " | cut -f1 -d'.' | sort";
         ProcessBuilder initializing = new ProcessBuilder("bash","-c",cmd);
@@ -103,7 +103,7 @@ public class ViewController {
     }
 
     @FXML
-    public void playVideo(ActionEvent event)throws IOException{ //TODO fix mediaplayer
+    public void playVideo(ActionEvent event)throws IOException{ //TODO fix mediaplayer!!
         view.setVisible(true);
 
         if(_choice!=null) {
@@ -144,9 +144,11 @@ public class ViewController {
     @FXML
     public void videoPlay(ActionEvent event){
         if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)  ){
-            String btn = ((Button)event.getSource()).getText();
+            Button btn = (Button)event.getSource();
+            String btnText = btn.getText(); //TODO check if needed
             if (btn.equals("Pause")){
                 _player.pause();
+                btn.setText("Resume");
             } else if (btn.equals("Stop")){
                 _player.stop();
                 view.setVisible(false);
@@ -154,8 +156,12 @@ public class ViewController {
                 _player.seek(new Duration(_player.getCurrentTime().toMillis() + 10000));
             } else if (btn.equals("10 >>")){
                 _player.seek(new Duration(_player.getCurrentTime().toMillis() - 10000));
-            } else{
-                //TODO implement resume functionality, mute functionality
+            } else if (btn.equals("Resume")){
+                _player.play(); //TODO check if it starts at the same spot
+            } else if (btn.equals("Mute")){
+                _player.setMute(true);
+            } else if (btn.equals("Unmute")){
+                _player.setMute(false);
             }
         }else{
             errorText.setVisible(true);

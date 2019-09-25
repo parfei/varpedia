@@ -35,11 +35,6 @@ public class MainController {
         window.setScene(createViewScene);
         window.show();
 
-
-
-
-
-
     }
     @FXML
     public void view(ActionEvent event)throws IOException{

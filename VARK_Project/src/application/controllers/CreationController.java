@@ -147,11 +147,11 @@ public class CreationController {
                 Platform.runLater(() -> {
                     try {
 
-                        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/numberOfLine.fxml"));
+                        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/.fxml"));
                         Scene createViewScene = new Scene(createViewParent);
                         // gets the Stage information
                         Stage window = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-                        window.setTitle("Select Line Menu");
+                        window.setTitle("Select Line Menu"); //TODO exception?
                         window.setScene(createViewScene);
                         window.show();
                     } catch (IOException e) {
