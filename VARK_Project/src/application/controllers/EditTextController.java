@@ -13,6 +13,7 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -70,21 +71,44 @@ public class EditTextController {
         }
     }
     @FXML
-    public void save(ActionEvent event){
-        try {
+    public void save(ActionEvent event) throws IOException {
 
-            Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/saveToAudio.fxml"));
-            Scene createViewScene = new Scene(createViewParent);
-            // gets the Stage information
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setTitle("Select Line Menu");
-            window.setScene(createViewScene);
-            window.show();
-        } catch (IOException e) {
+        if (textArea.getSelectedText() == null || textArea.getSelectedText().isEmpty()) { //TOdo text may be comma, full stop
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("No selection");
+            error.setHeaderText("please select a trunk");
+            error.setContentText("please select a trunk");
+            error.showAndWait();
+        } else {
+            FileWriter writer=new FileWriter("savedText.txt");
+            writer.write(textArea.getSelectedText());
+            writer.close();
+
+
+
+            /*String cmd="echo "+textArea.getSelectedText() + " > temp1.txt";
+            ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
+            try {
+                Process process = pb.start();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }*/
+
+            try {
+
+                Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/saveToAudio.fxml"));
+                Scene createViewScene = new Scene(createViewParent);
+                // gets the Stage information
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                window.setTitle("Select Line Menu");
+                window.setScene(createViewScene);
+                window.show();
+            } catch (IOException e) {
+
+            }
+
 
         }
-
-
     }
 
    @FXML

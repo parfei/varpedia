@@ -11,18 +11,20 @@
 <AnchorPane prefHeight="400.0" prefWidth="756.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.SaveToAudioController">
    <children>
       <Label layoutX="11.0" layoutY="26.0" text="which voice do you prefer" />
-      <RadioButton fx:id="kal" layoutX="11.0" layoutY="64.0" mnemonicParsing="false" text="kal_diphone">
+      <RadioButton fx:id="kal" layoutX="14.0" layoutY="100.0" mnemonicParsing="false" text="kal_diphone">
          <toggleGroup>
             <ToggleGroup fx:id="group" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="jdt" layoutX="14.0" layoutY="162.0" mnemonicParsing="false" text="akl_nz_jdt_diphoneRadio" toggleGroup="$group" />
-      <RadioButton fx:id="cw" layoutX="11.0" layoutY="245.0" mnemonicParsing="false" text="akl_nz_cw_cg_cg" toggleGroup="$group" />
-      <Button layoutX="213.0" layoutY="158.0" mnemonicParsing="false" onAction="#save" text="save-&gt;" />
-      <ListView layoutX="536.0" layoutY="90.0" prefHeight="200.0" prefWidth="200.0" />
-      <TextField layoutX="309.0" layoutY="167.0" />
-      <Label layoutX="303.0" layoutY="130.0" text="give a name of audio" />
+      <RadioButton fx:id="jdt" layoutX="14.0" layoutY="181.0" mnemonicParsing="false" text="akl_nz_jdt_diphoneRadio" toggleGroup="$group" />
+      <RadioButton fx:id="cw" layoutX="14.0" layoutY="256.0" mnemonicParsing="false" text="akl_nz_cw_cg_cg" toggleGroup="$group" />
+      <Button layoutX="417.0" layoutY="149.0" mnemonicParsing="false" onAction="#save" text="save-&gt;" />
+      <ListView fx:id="existingAudioView" layoutX="536.0" layoutY="90.0" prefHeight="200.0" prefWidth="200.0" />
+      <TextField fx:id="textField" layoutX="224.0" layoutY="96.0" />
+      <Label layoutX="224.0" layoutY="26.0" text="give a name of audio" />
       <Label layoutX="548.0" layoutY="42.0" text="existing audios" />
       <Button layoutX="674.0" layoutY="342.0" mnemonicParsing="false" onAction="#cancel" onMouseClicked="#cancel" text="cancel" />
+      <Label fx:id="errorName" layoutX="224.0" layoutY="58.0" text="Label" />
+      <Label fx:id="noneSelection" layoutX="14.0" layoutY="50.0" text="Label" />
    </children>
 </AnchorPane>

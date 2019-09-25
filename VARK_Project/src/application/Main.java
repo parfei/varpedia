@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -20,6 +21,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         this.initializeFolder();
+        this.writeScheme();
         Parent root = FXMLLoader.load(getClass().getResource("resources/menu.fxml"));
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(new Scene(root, 450, 300));
@@ -62,6 +64,22 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+
+    public void writeScheme() throws IOException {
+        FileWriter writer1=new FileWriter("kal.scm");
+        writer1.write("(voice_kal_diphone)");
+        writer1.close();
+
+        FileWriter writer2=new FileWriter("jdt.scm");
+        writer2.write("(voice_akl_nz_jdt_diphone)");
+        writer2.close();
+
+        FileWriter writer3=new FileWriter("cw.scm");
+        writer3.write("(voice_akl_nz_cw_cg_cg)");
+        writer3.close();
+    }
+
+
 
 
 }
