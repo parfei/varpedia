@@ -72,8 +72,15 @@ public class CreationController {
         _InputFromUser = yourKeyWord.getText();
         if (_InputFromUser.trim().isEmpty() || _InputFromUser == null) {
             whatDoYouWant.setText("Invalid input, please enter again");
-
+            yourKeyWord.clear(); //TODO check
         } else {
+            String cmd1="mkdir "+PathCD.getPathInstance().getPath()+"/mydir/audioPiece";
+            ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd1);
+            try {
+                Process process = pb.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             TransportClass transport = TransportClass.getInstance();
             transport.setter(_InputFromUser);
 
@@ -96,7 +103,7 @@ public class CreationController {
 
         @Override
         protected Void call() throws Exception {
-            progress.setVisible(true);
+            progress.setVisible(true); //TODO move this out of the task inner class.
             enterButton.setVisible(true);
             goingBack.setVisible(true);
             yourKeyWord.setVisible(true);
@@ -105,8 +112,6 @@ public class CreationController {
                 progress.progressProperty().bind(this.progressProperty());
             });
 
-
-            //String command = "wikit " + _InputFromUser + " | sed 's/\\([.]\\) \\([[:upper:]]\\)/\\1\\n\\2/g'";
             String command = "wikit " + _InputFromUser;
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
             try {
@@ -114,12 +119,6 @@ public class CreationController {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 _line = reader.readLine();
                 //_line = _line.replace(". ", "\n");
-
-                /*while ((line = reader.readLine()) != null) {
-                    _textGot.add(line);
-                }
-                System.out.println(_textGot);*/
-
 
             } catch (
                     IOException ex) {
@@ -140,51 +139,20 @@ public class CreationController {
                 Platform.runLater(() -> {
                         whatDoYouWant.setText("Your input name is invalid, please enter again");
                         //clear the searched text in the wikipedia
-                        //_textGot.clear();
+                        yourKeyWord.clear();
                 });
             } else {
                 resultOut = true;
 
                 // get the format of the searchedText
                 String command = "echo -e \"" + _line + "\" > \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
+                //String command = "echo " + _line +  " > " + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
                 try {
                     Process process = pb.start();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                /*
-                for (int i = 1; i < _textGot.size(); i++) {
-                    _textFormat.add(_textGot.get(i - 1) + "\n");
-
-                }
-                //create a temp text file in the mydir folder.
-                try {
-                    FileWriter writer = new FileWriter("\"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"");
-                    for (String str : _textFormat) {
-                        writer.write(str);
-                    }
-                    writer.close();
-                } catch (IOException e) {
-
-                }*/
-
-                /*Platform.runLater(() -> {
-                    try {
-
-                        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/numberOfLine.fxml"));
-                        Scene createViewScene = new Scene(createViewParent);
-                        // gets the Stage information
-                        Stage window = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-                        window.setTitle("Select Line Menu");
-                        window.setScene(createViewScene);
-                        window.show();
-                    } catch (IOException e) {
-
-                    }
-
-                });*/
 
                 Platform.runLater(() -> {
                     try {
@@ -193,20 +161,17 @@ public class CreationController {
                         Scene createViewScene = new Scene(createViewParent);
                         // gets the Stage information
                         Stage window = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-                        window.setTitle("Select Line Menu");
+                        window.setTitle("Edit text Menu");
                         window.setScene(createViewScene);
                         window.show();
                     } catch (IOException e) {
+                        e.printStackTrace();
 
                     }
 
                 });
 
             }
-
-
-            //_textFormat.clear();
-            //_textGot.clear();
         }
     }
 }
