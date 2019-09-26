@@ -48,8 +48,8 @@ public class EditTextController {
     }
     @FXML
     public void preview() {
-        String selectedText = textArea.getSelectedText();
-        System.out.println(selectedText);
+        String selectedText = textArea.getSelectedText(); //TODO can't search "man job" for some reason
+        //System.out.println(selectedText);
         int numberOfWords = countWords(selectedText);
         if (numberOfWords > 25) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -59,7 +59,7 @@ public class EditTextController {
             alert.showAndWait();
 
         } else {
-            String cmd = "echo " + selectedText + " | festival --tts";
+            String cmd = "echo " + selectedText + " | festival --tts"; //TODO can't pronounce when there is bracket
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
             try {
                 Process process = pb.start();
@@ -72,16 +72,28 @@ public class EditTextController {
     }
     @FXML
     public void save(ActionEvent event) throws IOException {
+        String selectedText=textArea.getSelectedText();
 
-        if (textArea.getSelectedText() == null || textArea.getSelectedText().isEmpty()) { //TOdo text may be comma, full stop
+        if (selectedText== null ||selectedText.isEmpty()) { //TOdo text may be comma, full stop
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("No selection");
             error.setHeaderText("please select a trunk");
             error.setContentText("please select a trunk");
             error.showAndWait();
-        } else {
+        }
+
+        //System.out.println(selectedText);
+        int numberOfWords = countWords(selectedText);
+        if (numberOfWords > 25) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("select a smaller chunk");
+            alert.setHeaderText("too much words");
+            alert.setContentText("please select a smaller chunk");
+            alert.showAndWait();
+        }
+        else {
             FileWriter writer=new FileWriter("savedText.txt");
-            writer.write(textArea.getSelectedText());
+            writer.write(selectedText);
             writer.close();
 
 
@@ -100,10 +112,11 @@ public class EditTextController {
                 Scene createViewScene = new Scene(createViewParent);
                 // gets the Stage information
                 Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                window.setTitle("Select Line Menu");
+                window.setTitle("Save to Audio Menu");
                 window.setScene(createViewScene);
                 window.show();
             } catch (IOException e) {
+                e.printStackTrace();
 
             }
 
@@ -112,7 +125,9 @@ public class EditTextController {
     }
 
     public void backToMain(ActionEvent event) throws IOException {
-        String cmd1="rm -rf "+PathCD.getPathInstance().getPath()+"/mydir/audioPiece";
+        //String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/* ; cd -";
+        //String command2 = "mkdir -p \"" + path + "/mydir/extra\" ; mkdir \"" + path + "/mydir/creations\"; ";
+        String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/audioPiece\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
         //String cmd2="rm -r"+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
         //System.out.println(cmd2);
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd1);
@@ -134,6 +149,21 @@ public class EditTextController {
         window.setTitle("Main Menu");
         window.setScene(createViewScene);
         window.show();
+    }
+
+    public void readyToCombine(ActionEvent event) throws IOException {
+
+
+
+        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/CombineAudio.fxml"));
+        Scene createViewScene = new Scene(createViewParent);
+        // gets the Stage information
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setTitle("CombineAudio menu");
+        window.setScene(createViewScene);
+        window.show();
+
+
     }
 
     static int countWords(String str)

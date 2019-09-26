@@ -23,9 +23,8 @@
       <TextField fx:id="textField" layoutX="224.0" layoutY="96.0" />
       <Label layoutX="224.0" layoutY="26.0" text="give a name of audio" />
       <Label layoutX="548.0" layoutY="42.0" text="existing audios" />
-      <Button layoutX="665.0" layoutY="340.0" mnemonicParsing="false" onAction="#cancel" onMouseClicked="#cancel" text="cancel" />
+      <Button layoutX="665.0" layoutY="340.0" mnemonicParsing="false" onAction="#cancel" onMouseClicked="#cancel" text="Cancel" />
       <Label fx:id="errorName" layoutX="224.0" layoutY="58.0" text="Label" />
       <Label fx:id="noneSelection" layoutX="14.0" layoutY="50.0" text="Label" />
-      <Button layoutX="536.0" layoutY="340.0" mnemonicParsing="false" onAction="#backToMain" text="back to main" />
    </children>
 </AnchorPane>

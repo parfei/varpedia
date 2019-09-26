@@ -146,6 +146,7 @@ public class CreationController {
 
                 // get the format of the searchedText
                 String command = "echo -e \"" + _line + "\" > \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
+                //String command = "echo " + _line +  " > " + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
                 try {
                     Process process = pb.start();
@@ -160,10 +161,11 @@ public class CreationController {
                         Scene createViewScene = new Scene(createViewParent);
                         // gets the Stage information
                         Stage window = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-                        window.setTitle("Select Line Menu");
+                        window.setTitle("Edit text Menu");
                         window.setScene(createViewScene);
                         window.show();
                     } catch (IOException e) {
+                        e.printStackTrace();
 
                     }
 

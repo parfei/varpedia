@@ -38,8 +38,12 @@ public class Main extends Application {
             ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command); //TODO fix this
 
             Process folder = pb.start();
+
             if (folder.waitFor() == 1) {
-                String command2 = "mkdir -p \"" + path + "/mydir/extra\" ; mkdir -p \"" + path + "/mydir/creations\""; //create a creations folder.
+                //String cmd1="mkdir "+PathCD.getPathInstance().getPath()+"/mydir/audioPiece";
+                //String command2 = "mkdir " + path + "/mydir/extra ; mkdir " + path + "/mydir/creations"; //create a creations folder.
+                String command2 = "mkdir -p \"" + path + "/mydir/extra\" ; mkdir \"" + path + "/mydir/creations\"; "; //create a creations folder.
+                System.out.print(command2);
                 ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
                 pb2.start();
             }
@@ -50,9 +54,7 @@ public class Main extends Application {
         }
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+
 
     @Override //TODO check if it always works, implement for start, check if exits and nothing is blocking some process is running too.
     public void stop() throws Exception { //In case the deletion of such extra files were not successful.
@@ -77,6 +79,10 @@ public class Main extends Application {
         FileWriter writer3=new FileWriter("cw.scm");
         writer3.write("(voice_akl_nz_cw_cg_cg)");
         writer3.close();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 
 
