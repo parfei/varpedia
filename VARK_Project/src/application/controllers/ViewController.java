@@ -115,7 +115,7 @@ public class ViewController {
      * @throws IOException
      */
     @FXML
-    public void playVideo(ActionEvent event)throws IOException{ //TODO fix mediaplayer!!
+    public void playVideo(ActionEvent event)throws IOException{
         view.setVisible(true);
 
         if(_choice!=null) {
@@ -129,6 +129,7 @@ public class ViewController {
                 public void run() {
                     playOptions.setVisible(false);
                     view.setVisible(false);
+                    pauseButton.setText("Pause"); //TODO do similarly for mute button
                 }
             });
 
@@ -151,29 +152,37 @@ public class ViewController {
      */
     @FXML
     public void videoPlay(ActionEvent event){
-        if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)  ){
-            Button btn = (Button)event.getSource();
-            String btnText = btn.getText(); //TODO check if needed
-            if (btn.equals("Pause")){
+        Button btn = (Button)event.getSource();
+        String btnText = btn.getText();
+        if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)){
+            if (btnText.equals("Pause")){
                 _player.pause();
                 btn.setText("Resume");
-            } else if (btn.equals("Stop")){
+            } else if (btnText.equals("Stop")){
                 _player.stop();
                 view.setVisible(false);
-            } else if (btn.equals("<< 10")){
+            } else if (btnText.equals("<< 10")){
                 _player.seek(new Duration(_player.getCurrentTime().toMillis() + 10000));
-            } else if (btn.equals("10 >>")){
+            } else if (btnText.equals("10 >>")){
                 _player.seek(new Duration(_player.getCurrentTime().toMillis() - 10000));
-            } else if (btn.equals("Resume")){
-                _player.play(); //TODO check if it starts at the same spot
-            } else if (btn.equals("Mute")){
+            } else if (btnText.equals("Mute")){
                 _player.setMute(true);
-            } else if (btn.equals("Unmute")){
+                btn.setText("Unmute");
+            } else if (btnText.equals("Unmute")){
                 _player.setMute(false);
+                btn.setText("Mute");
             }
         }else{
-            errorText.setVisible(true);
-            errorText.setText("There is nothing playing at the moment.");
+            if (btnText.equals("Resume")){
+                _player.play();
+                btn.setText("Pause");
+            } else if (btnText.equals("Stop")) {
+                _player.stop();
+                view.setVisible(false);
+            }else {
+                errorText.setVisible(true);
+                errorText.setText("There is nothing playing at the moment.");
+            }
         }
     }
 

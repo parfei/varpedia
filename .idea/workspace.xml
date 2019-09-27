@@ -4,7 +4,6 @@
     <list default="true" id="4a7c2ee8-d429-4339-a745-e1924ff6e1b3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/flickr.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/flickr.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jigao_ass_2/sample/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/Jigao_ass_2/sample/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Jigao_ass_2/sample/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Jigao_ass_2/sample/Main.java" afterDir="false" />
@@ -38,11 +37,11 @@
       <change beforePath="$PROJECT_DIR$/VARK_Project/savedText.txt" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/savedText.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/CreationWork.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/CreationWork.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/FlickrWork.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/FlickrWork.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/config/flickr-api-key.txt" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/config/flickr-api-key.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CombineAudio.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CombineAudio.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/EditTextController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/EditTextController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/SaveToAudioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/SaveToAudioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/ViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/ViewController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/CombineAudio.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/CombineAudio.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/EditText.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/EditText.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/View.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/View.fxml" afterDir="false" />
