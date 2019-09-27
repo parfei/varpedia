@@ -94,7 +94,7 @@ public class FlickrWork extends Task<String> {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); //TODO throw exception if cannot find images for the specific term
         }
 
         System.out.println("\nDone");
