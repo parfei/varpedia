@@ -72,13 +72,6 @@ public class CreationController {
             whatDoYouWant.setText("Invalid input, please enter again");
             yourKeyWord.clear(); //TODO check
         } else {
-            String cmd1="mkdir "+PathCD.getPathInstance().getPath()+"/mydir/audioPiece";
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd1);
-            try {
-                Process process = pb.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             TransportClass transport = TransportClass.getInstance();
             transport.setter(_InputFromUser);
 
@@ -144,8 +137,6 @@ public class CreationController {
                 //resultOut = true;
 
                 // get the format of the searchedText
-                //String command = "echo -e \"" + _line + "\" > " + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
-                //String command = "echo -e \"" + _line + "\" > \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
                 String command = "echo -e \"" + _line + "\" &> \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
 
                 System.out.println(command);

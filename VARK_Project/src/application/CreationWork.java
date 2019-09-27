@@ -18,9 +18,9 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
     public CreationWork(String name, int picNum, Boolean overwrite){
         _name = name;
         _term = TransportClass.getInstance().getter();
-        _path = PathCD.getPathInstance().getPath();
         _overwrite = overwrite;
         _picNum = picNum;
+        _path = PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name + "/";
     }
 
     @Override
@@ -34,7 +34,7 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
         combineForms();
 
         System.out.println("creationwork done");
-        Platform.runLater(() -> {
+        /*Platform.runLater(() -> {
 
             String command = "cd \"" + _path + "/mydir\" ; rm -rf extra/* ; cd -"; //Clear files in extra folder.
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
@@ -43,13 +43,13 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        });*/
 
         return null;
     }
 
     private void generateAudio(){
-        String soundCommand = "cat \"" + _path + "/mydir/extra/lines.txt\" | text2wave -o \"" + _path + "/mydir/extra/sound.wav\"";
+        String soundCommand = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/lines.txt\" | text2wave -o \"" + _path + "sound.wav\"";
 
         ProcessBuilder sound = new ProcessBuilder("bash", "-c", soundCommand);
         try {
@@ -62,8 +62,8 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
 
     private void generateBlueVideo(){
         //video
-        String videoCommand = "duration=`soxi -D \"" + _path + "/mydir/extra/sound.wav\"` ; ffmpeg -f lavfi -i color=c=blue:s=320x240:d=\"$duration\" "
-                + "-vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + "'" + _term + "'" + "\" \"" + _path + "/mydir/extra/video.mp4\"";
+        String videoCommand = "duration=`soxi -D \"" + _path + "sound.wav\"` ; ffmpeg -f lavfi -i color=c=blue:s=320x240:d=\"$duration\" "
+                + "-vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + "'" + _term + "'" + "\" \"" + _path + "video.mp4\"";
         ProcessBuilder video = new ProcessBuilder("bash", "-c", videoCommand);
         Process vid = null;
         try {
@@ -78,12 +78,9 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
 
         //video
         try{
-            //String videoCommand = "duration=`soxi -D \"" + _path + "/mydir/extra/sound.wav\"` ; ffmpeg -framerate " + _picNum + "/\"$duration\" -f image2 -s 800x600 -i \"" + _path + "/mydir/extra/img%01d.jpg\" " +
-            //        "-vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='" + _term + "'\" -r 25 \"" + _path + "/mydir/extra/video.mp4\"";
-
-            String videoCommand = "duration=`soxi -D \"" + _path + "/mydir/extra/sound.wav\"` ; " +
-            "ffmpeg -framerate " + _picNum + "/\"$duration\" -f image2 -s 800x600 -i \"" + _path + "/mydir/extra/img%01d.jpg\" -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -r 25 \"" + _path + "/mydir/extra/slideshow.mp4\" ; " +
-            "ffmpeg -y -i \"" + _path + "/mydir/extra/slideshow.mp4\" -vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='" + _term + "'\" \"" + _path + "/mydir/extra/video.mp4\"";
+            String videoCommand = "duration=`soxi -D \"" + _path + "sound.wav\"` ; " +
+            "ffmpeg -framerate " + _picNum + "/\"$duration\" -f image2 -s 800x600 -i \"" + _path + "img%01d.jpg\" -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -r 25 \"" + _path + "slideshow.mp4\" ; " +
+            "ffmpeg -y -i \"" + _path + "slideshow.mp4\" -vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='" + _term + "'\" \"" + _path + "video.mp4\"";
 
             System.out.println(videoCommand);
             ProcessBuilder video = new ProcessBuilder("bash", "-c", videoCommand);
@@ -103,7 +100,8 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
             extra = "-y";
         }
 
-        String combineCommand = "ffmpeg " + extra + " -i \"" + _path + "/mydir/extra/sound.wav\" -i \"" + _path + "/mydir/extra/video.mp4\" -c:v copy -c:a aac -strict experimental \"" + _path + "/mydir/creations/" + _name + ".mp4\" 2>/dev/null";
+        String combineCommand = "ffmpeg " + extra + " -i \"" + _path + "sound.wav\" -i \"" + _path + "video.mp4\" -c:v copy -c:a aac -strict experimental \"" +
+                PathCD.getPathInstance().getPath() + "/mydir/creations/" + _term + "/" + _name + ".mp4\" 2>/dev/null";
         System.out.println(combineCommand);
         ProcessBuilder getTogether = new ProcessBuilder("bash", "-c", combineCommand);
 

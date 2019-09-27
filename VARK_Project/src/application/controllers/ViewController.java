@@ -66,7 +66,7 @@ public class ViewController {
     {
         String path = PathCD.getPathInstance().getPath();
 
-        String cmd = "ls"+ " \""+ path + "/mydir/creations\""+ " | cut -f1 -d'.' | sort";
+        String cmd = "ls -R"+ " \""+ path + "/mydir/creations\""+ " | grep .mp4 | cut -f1 -d'.' | sort";
         ProcessBuilder initializing = new ProcessBuilder("bash","-c",cmd);
         try{
             Process process = initializing.start();
@@ -120,7 +120,7 @@ public class ViewController {
 
         if(_choice!=null) {
 
-            File file = new File(PathCD.getPathInstance().getPath() + "/mydir/creations/" + _choice + ".mp4");
+            File file = new File(PathCD.getPathInstance().getPath() + "/mydir/creations/" + _choice + ".mp4"); //TODO FIX
             _player = new MediaPlayer(new Media(file.toURI().toString()));
             _player.setAutoPlay(true);
 
@@ -204,7 +204,7 @@ public class ViewController {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
 
-                String cmd= "rm \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/"+_choice+".mp4\"";
+                String cmd= "rm \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/"+_choice+".mp4\""; //TODO FIX
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
                     Process process = pb.start();

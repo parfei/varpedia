@@ -61,7 +61,7 @@ public class SaveToAudioController {
   public void initialize(){
       errorName.setVisible(false);
       noneSelection.setVisible(false);
-      String command = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/audioPiece" + " | cut -f1 -d'.'\n";
+      String command = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/extra/audio" + " | cut -f1 -d'.'\n";
       System.out.println(PathCD.getPathInstance().getPath());
       ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
       try {
@@ -113,7 +113,7 @@ public class SaveToAudioController {
       }
       else {
           if (kal.isSelected()) {
-              String cmd = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/audioPiece/" + userInput + ".wav " + "savedText.txt -eval kal.scm";
+              String cmd = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audio/" + userInput + ".wav " + "savedText.txt -eval kal.scm";
               ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
               try {
                   Process process = pb.start();
@@ -144,7 +144,7 @@ public class SaveToAudioController {
                   e.printStackTrace();
               }*/
           } else if (jdt.isSelected()) {
-              String cmd = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/audioPiece/" + userInput + ".wav " + "savedText.txt -eval jdt.scm";
+              String cmd = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audio/" + userInput + ".wav " + "savedText.txt -eval jdt.scm";
               System.out.println(cmd);
               ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
               try {
@@ -177,7 +177,7 @@ public class SaveToAudioController {
               }*/
 
           } else if (cw.isSelected()) { //TODO CAN
-              String cmd = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/audioPiece/" + userInput + ".wav " + "savedText.txt -eval cw.scm";
+              String cmd = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audio/" + userInput + ".wav " + "savedText.txt -eval cw.scm";
               System.out.println(cmd);
               ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
               try {
