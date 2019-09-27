@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="flickr">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/VARK_Project/libs/jackson-core-2.9.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/VARK_Project/libs/slf4j-api-1.7.25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/VARK_Project/libs/jackson-annotations-2.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/VARK_Project/libs/jackson-databind-2.9.9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/VARK_Project/libs/slf4j-nop-1.7.26.jar!/" />
+      <root url="jar://$PROJECT_DIR$/VARK_Project/libs/flickr4java-3.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/VARK_Project/libs/scribejava-apis-6.6.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/VARK_Project/libs/scribejava-core-6.2.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

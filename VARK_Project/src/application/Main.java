@@ -27,8 +27,6 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 450, 300));
         primaryStage.show();
 
-        /*ExecutorService team = Executors.newSingleThreadExecutor();
-        team.submit(new FlickrWork("apple", "4"));*/
     }
 
     /**
