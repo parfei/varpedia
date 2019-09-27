@@ -41,10 +41,7 @@ public class Main extends Application {
             Process folder = pb.start();
 
             if (folder.waitFor() == 1) {
-                //String cmd1="mkdir "+PathCD.getPathInstance().getPath()+"/mydir/audioPiece";
-                //String command2 = "mkdir " + path + "/mydir/extra ; mkdir " + path + "/mydir/creations"; //create a creations folder.
-                String command2 = "mkdir -p \"" + path + "/mydir/extra\" ; mkdir \"" + path + "/mydir/creations\"; "; //create a creations folder.
-                System.out.print(command2);
+                String command2 = "mkdir -p \"" + path + "/mydir/extra/audio\" ; mkdir \"" + path + "/mydir/creations\"; "; //create a creations folder.
                 ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
                 pb2.start();
             }

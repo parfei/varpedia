@@ -202,16 +202,6 @@ public class SaveToAudioController {
                   e.printStackTrace();
               }
 
-
-              /*String cmd2="mv "+userInput+".wav " +PathCD.getPathInstance().getPath() + "/mydir/audioPiece";
-              System.out.println(cmd2);
-              ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", cmd2);
-              try {
-                  Process process = pb2.start();
-              } catch (IOException e) {
-                  e.printStackTrace();
-              }*/
-
           } else {
               System.out.println("bug");
           }
