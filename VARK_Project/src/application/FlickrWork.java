@@ -82,19 +82,22 @@ public class FlickrWork extends Task<String> {
             PhotoList<Photo> results = photos.search(params, resultsPerPage, page);
             System.out.println("Retrieving " + results.size()+ " results");
 
+            int count = 1;
             for (Photo photo: results) {
                 try {
                     BufferedImage image = photos.getImage(photo, Size.LARGE);
-                    String filename = query.trim().replace(' ', '-')+"-"+System.currentTimeMillis()+"-"+photo.getId()+".jpg";
+                    String filename = "img" + Integer.toString(count) + ".jpg";
                     File outputfile = new File(PathCD.getPathInstance().getPath() + "/mydir/extra",filename);
                     ImageIO.write(image, "jpg", outputfile);
                     System.out.println("Downloaded "+filename);
+
+                    count++;
                 } catch (FlickrException fe) {
                     System.err.println("Ignoring image " +photo.getId() +": "+ fe.getMessage());
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace(); //TODO throw exception if cannot find images for the specific term
+            e.printStackTrace(); //TODO throw exception if cannot find images for the specific term or not enough images?
         }
 
         System.out.println("\nDone");

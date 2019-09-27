@@ -15,7 +15,7 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
     private int _picNum;
     private Boolean _overwrite;
 
-    public CreationWork(String name, int picNum, Boolean overwrite){//TODO call methods of these instead to remove the need for constructor
+    public CreationWork(String name, int picNum, Boolean overwrite){
         _name = name;
         _term = TransportClass.getInstance().getter();
         _path = PathCD.getPathInstance().getPath();
@@ -25,7 +25,7 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
 
     @Override
     protected String call() throws Exception { //TODO check when you mke th video first time
-        generateAudio(); //Will make a separate audio instead of needing this...
+        generateAudio(); //TODO Will make a separate audio instead of needing this...
         if (_picNum == 0){
             generateBlueVideo();
         } else {
@@ -34,7 +34,7 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
         combineForms();
 
         System.out.println("creationwork done");
-        Platform.runLater(() -> {
+        /*Platform.runLater(() -> {
 
             String command = "cd \"" + _path + "/mydir\" ; rm -rf extra/* ; cd -"; //Clear files in extra folder.
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
@@ -43,7 +43,7 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        });*/
 
         return null;
     }
@@ -77,14 +77,13 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
     private void generatePicVideo(){
 
         //video
-        String audioLength = "echo `soxi -D \"" + _path + "/mydir/extra/sound.wav\"`";
-        ProcessBuilder length = new ProcessBuilder("bash", "-c", audioLength);
         try{
-            BufferedReader reader = new BufferedReader(new InputStreamReader(length.start().getInputStream()));
-            String dura = reader.readLine();
-            double duration = Double.parseDouble(dura)/_picNum;
-            String videoCommand = "ffmpeg -r 1/" + duration + " -f image2 -s 800x600 -i \"" + _path + "/mydir/extra/img%01d.jpg\" " +
-                    "-vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='" + _term + "'\" \"" + _path + "/mydir/extra/video.mp4\"";
+            //String videoCommand = "duration=`soxi -D \"" + _path + "/mydir/extra/sound.wav\"` ; ffmpeg -framerate " + _picNum + "/\"$duration\" -f image2 -s 800x600 -i \"" + _path + "/mydir/extra/img%01d.jpg\" " +
+            //        "-vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='" + _term + "'\" -r 25 \"" + _path + "/mydir/extra/video.mp4\"";
+
+            String videoCommand = "duration=`soxi -D \"" + _path + "/mydir/extra/sound.wav\"` ; " +
+            "ffmpeg -framerate 5/\"$duration\" -f image2 -s 800x600 -i \"" + _path + "/mydir/extra/img%01d.jpg\" -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -r 25 \"" + _path + "/mydir/extra/slideshow.mp4\" ; " +
+            "ffmpeg -y -i \"" + _path + "/mydir/extra/slideshow.mp4\" -vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='" + _term + "'\" \"" + _path + "/mydir/extra/video.mp4\"";
 
             System.out.println(videoCommand);
             ProcessBuilder video = new ProcessBuilder("bash", "-c", videoCommand);
