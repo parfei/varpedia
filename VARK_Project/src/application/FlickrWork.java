@@ -39,7 +39,8 @@ public class FlickrWork extends Task<String> {
     }
 
     private String getAPIKey(String key) throws IOException {
-        String config = PathCD.getPathInstance().getPath() + Main.class.getProtectionDomain().getCodeSource().getLocation() + "/config/flickr-api-key.txt";
+        String config = PathCD.getPathInstance().getPath().substring(0, PathCD.getPathInstance().getPath().indexOf("/out"))
+                + "/src/application/config/flickr-api-key.txt";
         File file = new File(config);
 
         BufferedReader br = null;
@@ -85,7 +86,7 @@ public class FlickrWork extends Task<String> {
                 try {
                     BufferedImage image = photos.getImage(photo, Size.LARGE);
                     String filename = query.trim().replace(' ', '-')+"-"+System.currentTimeMillis()+"-"+photo.getId()+".jpg";
-                    File outputfile = new File(PathCD.getPathInstance().getPath() + "/extra",filename);
+                    File outputfile = new File(PathCD.getPathInstance().getPath() + "/mydir/extra",filename);
                     ImageIO.write(image, "jpg", outputfile);
                     System.out.println("Downloaded "+filename);
                 } catch (FlickrException fe) {
