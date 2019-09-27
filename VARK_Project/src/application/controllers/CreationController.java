@@ -118,6 +118,7 @@ public class CreationController {
                 Process process = pb.start();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 _line = reader.readLine();
+
                 //_line = _line.replace(". ", "\n");
 
             } catch (
@@ -142,11 +143,15 @@ public class CreationController {
                         yourKeyWord.clear();
                 });
             } else {
-                resultOut = true;
+                //resultOut = true;
 
                 // get the format of the searchedText
-                String command = "echo -e \"" + _line + "\" > \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
-                //String command = "echo " + _line +  " > " + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
+                //String command = "echo -e \"" + _line + "\" > " + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
+                //String command = "echo -e \"" + _line + "\" > \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
+                String command = "echo -e \"" + _line + "\" &> \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
+
+                System.out.println(command);
+
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
                 try {
                     Process process = pb.start();

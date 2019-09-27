@@ -117,8 +117,8 @@ public class SaveToAudioController {
               ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
               try {
                   Process process = pb.start();
-                  process.waitFor();
-              } catch (IOException | InterruptedException e) {
+                  //process.waitFor();
+              } catch (IOException e) {
                   e.printStackTrace();
               }
               try {
@@ -149,8 +149,8 @@ public class SaveToAudioController {
               ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
               try {
                   Process process = pb.start();
-                  process.waitFor();
-              } catch (IOException | InterruptedException e) {
+                  //process.waitFor();
+              } catch (IOException e) {
                   e.printStackTrace();
               }
               try {
@@ -182,8 +182,8 @@ public class SaveToAudioController {
               ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
               try {
                   Process process = pb.start();
-                  process.waitFor();
-              } catch (IOException | InterruptedException e) {
+                  //process.waitFor();
+              } catch (IOException e) {
                   e.printStackTrace();
               }
               try {
@@ -220,7 +220,7 @@ public class SaveToAudioController {
 
 
 
-      }
+  }
 
 
 
