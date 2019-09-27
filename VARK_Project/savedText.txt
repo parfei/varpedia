@@ -1,1 +1,5 @@
+<<<<<<< Updated upstream
 meaning that each of its molecules contains one oxygen and two hydrogen atoms, connected by covalent bonds. Water is the name of the liquid 
+=======
+chemical substance
+>>>>>>> Stashed changes
