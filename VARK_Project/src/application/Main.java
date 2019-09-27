@@ -36,7 +36,7 @@ public class Main extends Application {
         String path = PathCD.getPathInstance().getPath();
         try {
             String command = "[ -e \"" + path + "/mydir\" ]"; //check if there is a creations folder.
-            ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command); //TODO fix this
+            ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
 
             Process folder = pb.start();
 

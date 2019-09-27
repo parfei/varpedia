@@ -19,7 +19,6 @@ import java.util.List;
 
 
 public class CombineAudio {
-    //String command = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/audioPiece" + " | cut -f1 -d'.'\n";
     //combine the audio
     private List<String> _audioExisted = new ArrayList<String>();
     @FXML
