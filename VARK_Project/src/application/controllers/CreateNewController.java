@@ -57,7 +57,7 @@ public class CreateNewController {
         errorImg.setVisible(false);
         team = Executors.newSingleThreadExecutor();
 
-        String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/creations\" " + " | sort | cut -f1 -d'.'\n";
+        String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/creations\" " + " | cut -f1 -d'.' | sort";
         ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
         try {
             String line;

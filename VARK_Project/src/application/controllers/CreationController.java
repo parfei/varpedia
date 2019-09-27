@@ -24,8 +24,6 @@ import java.util.List;
 
 public class CreationController {
     public String _InputFromUser;
-    //private List<String> _textGot = new ArrayList<String>();
-    //private List<String> _textFormat = new ArrayList<String>();
     private String _line;
 
     @FXML

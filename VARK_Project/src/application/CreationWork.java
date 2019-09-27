@@ -55,7 +55,7 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
         try {
             Process sod = sound.start();
             sod.waitFor();
-        } catch (IOException | InterruptedException e) { //TODO need to fix this
+        } catch (IOException | InterruptedException e) {
             // e.printStackTrace();
         }
     }
