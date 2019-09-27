@@ -147,7 +147,7 @@ public class CreationController {
                 Platform.runLater(() -> {
                     try {
 
-                        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/numberOfLine.fxml"));
+                        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
                         Scene createViewScene = new Scene(createViewParent);
                         // gets the Stage information
                         Stage window = (Stage) ((Node) _event.getSource()).getScene().getWindow();
