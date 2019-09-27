@@ -93,7 +93,7 @@ public class CreationController {
      */
     class DoingJob extends Task<Void> {
         private boolean resultOut;
-        public ActionEvent _event;
+        private ActionEvent _event;
 
         public DoingJob(ActionEvent event) {
             _event = event;

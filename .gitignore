@@ -7,11 +7,11 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
-VARK_Project/.idea/**/workspace.xml
-VARK_Project/.idea/**/tasks.xml
-VARK_Project/.idea/**/usage.statistics.xml
-VARK_Project/.idea/**/dictionaries
-VARK_Project/.idea/**/shelf
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
 
 # Generated files
 VARK_Project/.idea/**/contentModel.xml
@@ -115,3 +115,4 @@ VARK_Project/*.rar
 VARK_Project/hs_err_pid*
 
 # End of https://www.gitignore.io/api/java,intellij+all
+/.idea/workspace.xml

@@ -22,6 +22,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.util.Duration;
 
+/**
+ * Controller for the view window of the application.
+ */
 public class ViewController {
     private List <String > innovation = new ArrayList<String>();
     private String _choice;
@@ -92,6 +95,10 @@ public class ViewController {
         creation.backToMain(event);
     }
 
+    /**
+     * Retrieve the user selection of the ListView.
+     * @param mouseEvent
+     */
     @FXML
     public void getTheSelection(javafx.scene.input.MouseEvent mouseEvent) {
         errorText.setVisible(false);
@@ -102,6 +109,11 @@ public class ViewController {
         }
     }
 
+    /**
+     * Play the video when the button "Play" is clicked.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void playVideo(ActionEvent event)throws IOException{ //TODO fix mediaplayer!!
         view.setVisible(true);
@@ -126,21 +138,17 @@ public class ViewController {
 
             playOptions.setVisible(true);
 
-            /*String cmd = "ffplay -autoexit \""+ PathCD.getPathInstance().getPath() + "/mydir/creations/" +_choice+".mp4\"";
-            System.out.println(cmd);
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
-            try {
-                Process process = pb.start();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }*/
-
         }else{
             errorText.setVisible(true);
             errorText.setText("Select something to play."); //If user has not selected anything, prompt them.
         }
     }
 
+    /**
+     * A method that will execute when one of the embedded video player buttons are pressed. Depending on the type of button pressed,
+     * a different piece of code will execute.
+     * @param event
+     */
     @FXML
     public void videoPlay(ActionEvent event){
         if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)  ){
@@ -169,6 +177,11 @@ public class ViewController {
         }
     }
 
+    /**
+     * Will execute to delete a video when requested by the user.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void deleteVideo(ActionEvent event)throws IOException{
 
