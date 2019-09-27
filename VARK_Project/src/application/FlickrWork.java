@@ -31,11 +31,13 @@ public class FlickrWork extends Task<String> {
         // https://www.flickr.com/search/?text=_term;
         /*getHTML();
         downloadImgs();*/
-
-        getPhotos();
-
+        try {
+            getPhotos();
+        } catch (RuntimeException e){
+            return "0";
+        }
         System.out.println("flickr done");
-        return null;
+        return Integer.toString(_num);
     }
 
     private String getAPIKey(String key) throws IOException {
@@ -93,11 +95,12 @@ public class FlickrWork extends Task<String> {
 
                     count++;
                 } catch (FlickrException fe) {
-                    System.err.println("Ignoring image " +photo.getId() +": "+ fe.getMessage());
+                    throw new RuntimeException();
                 }
             }
         } catch (Exception e) {
             e.printStackTrace(); //TODO throw exception if cannot find images for the specific term or not enough images?
+            throw new RuntimeException("No Flickr results for " + _term + ". Creating a blue video instead...");
         }
 
         System.out.println("\nDone");

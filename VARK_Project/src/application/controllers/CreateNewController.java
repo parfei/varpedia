@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -129,7 +130,15 @@ public class CreateNewController {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
 
-                CreationWork creationWork = new CreationWork(textFieldCreationName.getText(), Integer.parseInt(textFldImagesNum.getText()), false);
+                CreationWork creationWork = null;
+                try {
+                    creationWork = new CreationWork(textFieldCreationName.getText(), Integer.parseInt(getImg.get()), false);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
                 System.out.println("pic: " + Integer.parseInt(textFldImagesNum.getText()));
                 team.submit(creationWork);
 
