@@ -5,13 +5,17 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="labelask" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreationController">
+<AnchorPane fx:id="labelask" prefHeight="332.0" prefWidth="836.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreationController">
    <children>
-      <Label fx:id="whatDoYouWant" layoutX="334.0" layoutY="98.0" prefHeight="16.0" prefWidth="594.0" text="Hi, What do you want to search" />
-      <TextField fx:id="yourKeyWord" layoutX="152.0" layoutY="136.0" prefHeight="26.0" prefWidth="594.0" promptText="Your Keyword" />
-      <Button fx:id="enterButton" layoutX="793.0" layoutY="136.0" mnemonicParsing="false" onAction="#search" text="search" />
-      <Button fx:id="goingBack" layoutX="830.0" layoutY="360.0" mnemonicParsing="false" onAction="#backToMain" text="Back" />
+      <Label fx:id="whatDoYouWant" layoutX="334.0" layoutY="98.0" text="Enter your key word">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <TextField fx:id="yourKeyWord" layoutX="247.0" layoutY="153.0" prefHeight="26.0" prefWidth="356.0" promptText="Your Keyword" />
+      <Button fx:id="enterButton" layoutX="653.0" layoutY="153.0" mnemonicParsing="false" onAction="#search" text="search" />
+      <Button fx:id="goingBack" layoutX="792.0" layoutY="305.0" mnemonicParsing="false" onAction="#backToMain" text="Back" />
       <ProgressBar fx:id="progress" layoutX="328.0" layoutY="244.0" prefWidth="200.0" progress="0.0" />
    </children>
 </AnchorPane>
