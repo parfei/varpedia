@@ -126,7 +126,7 @@ public class EditTextController {
 
     public void backToMain(ActionEvent event) throws IOException {
 
-        String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/extra/audio\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
+        String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/extra/audioPiece\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
         //String cmd2="rm -r"+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
 
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd1);

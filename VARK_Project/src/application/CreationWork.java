@@ -53,7 +53,7 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
     }
 
     private void generateCombinedAudio(){ //TODO retrieve combined audio string, for each string concantenate together to produce audiox`
-        String combine= "$(cd " + PathCD.getPathInstance().getPath() + "/mydir/extra/audio ; sox $(ls -tcr | grep wav) sound.wav)"; //TODO path
+        String combine= "$(cd " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece ; sox $(ls -tcr | grep wav) sound.wav)"; //TODO path
         System.out.println(combine);
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", combine);
         try {
