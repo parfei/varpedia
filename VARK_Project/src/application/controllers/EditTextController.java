@@ -47,7 +47,7 @@ public class EditTextController {
 
     }
     @FXML
-    public void preview() {
+    public void preview() { //TODO PREVIEW FOR DIFFERENT VOICES!!
         String selectedText = textArea.getSelectedText(); //TODO can't search "man job" for some reason
         //System.out.println(selectedText);
         int numberOfWords = countWords(selectedText);
@@ -154,7 +154,7 @@ public class EditTextController {
 
 
 
-        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/CreateNewController.fxml"));
+        Parent createViewParent = FXMLLoader.load(Main.class.getResource("createNew.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();

@@ -58,7 +58,7 @@ public class SaveToAudioController {
 
   }*/
 
-  public void initialize(){
+  public void initialize(){ //TODO fix showing of existing audio files
       errorName.setVisible(false);
       noneSelection.setVisible(false);
       String command = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/extra/audio" + " | cut -f1 -d'.'\n";
