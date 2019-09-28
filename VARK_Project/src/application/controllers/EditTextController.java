@@ -50,6 +50,7 @@ public class EditTextController {
     public void preview() {
         String selectedText = textArea.getSelectedText(); //TODO can't search "man job" for some reason
         //System.out.println(selectedText);
+
         int numberOfWords = countWords(selectedText);
         if (numberOfWords > 25) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -59,7 +60,8 @@ public class EditTextController {
             alert.showAndWait();
 
         } else {
-            String cmd = "echo " + selectedText + " | festival --tts"; //TODO can't pronounce when there is bracket
+            String textWithoutBrackets = selectedText.replaceAll("[\\[\\](){}']","");
+            String cmd = "echo " + textWithoutBrackets + " | festival --tts"; //TODO can't pronounce when there is bracket
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
             try {
                 Process process = pb.start();
