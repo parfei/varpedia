@@ -147,8 +147,8 @@ public class CreationController {
 
                 // get the format of the searchedText
                 //String command = "echo -e \"" + _line + "\" > " + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
-                //String command = "echo -e \"" + _line + "\" > \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
-                String command = "echo -e \"" + _line + "\" &> \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
+                String command = "echo -e \"" + _line + "\" > \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
+                //String command = "echo -e \"" + _line + "\" &> \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
 
                 System.out.println(command);
 
