@@ -154,7 +154,7 @@ public class EditTextController {
 
 
 
-        Parent createViewParent = FXMLLoader.load(Main.class.getResource("createNew.fxml"));
+        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/createNew.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();

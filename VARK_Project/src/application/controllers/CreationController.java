@@ -155,9 +155,9 @@ public class CreationController {
                         Scene createViewScene = new Scene(createViewParent);
                         // gets the Stage information
                         Stage window = (Stage) ((Node) _event.getSource()).getScene().getWindow();
+                        window.show();
                         window.setTitle("Edit text Menu");
                         window.setScene(createViewScene);
-                        window.show();
                     } catch (IOException e) {
                     }
 
