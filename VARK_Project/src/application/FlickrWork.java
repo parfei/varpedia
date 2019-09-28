@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Retrieving and downloading required images from Flickr is all done in this class.
  * It is done in the background, as it is a heavily computational task.
  */
-public class FlickrWork extends Task<String> { //TODO check 10 images
+public class FlickrWork extends Task<String> {
     private String _term;
     private String _name;
     private int _num;

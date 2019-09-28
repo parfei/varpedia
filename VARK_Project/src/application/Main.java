@@ -1,6 +1,8 @@
 package application;
 
 import javafx.application.Application;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,6 +28,18 @@ public class Main extends Application {
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(new Scene(root, 450, 300));
         primaryStage.show();
+
+        /*TransportClass.getInstance().setter("apple");
+        ExecutorService team = Executors.newSingleThreadExecutor();
+        FlickrWork task = new FlickrWork("apple", "1");
+        team.submit(task);
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent workerStateEvent) {
+                team.submit(new CreationWork("apple", 1, false, false));
+            }
+        });*/
+
 
     }
 
@@ -56,13 +70,13 @@ public class Main extends Application {
 
     @Override //TODO check if it always works, implement for start, check if exits and nothing is blocking some process is running too.
     public void stop() throws Exception { //In case the deletion of such extra files were not successful.
-        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/* ; cd -"; //Clear files in extra folder.
+        /*String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/* ; cd -"; //Clear files in extra folder.
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
         try {
             Process end = pb.start();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public void writeScheme() throws IOException {
@@ -82,8 +96,5 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
-
-
 
 }

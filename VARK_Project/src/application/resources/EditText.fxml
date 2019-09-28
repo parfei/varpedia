@@ -13,5 +13,6 @@
       <Button layoutX="290.0" layoutY="358.0" mnemonicParsing="false" onAction="#preview" text="Preview" />
       <Label layoutX="14.0" layoutY="6.0" text="text" />
       <Button layoutX="504.0" layoutY="358.0" mnemonicParsing="false" onAction="#readyToCombine" text="Create" />
+      <Label layoutX="154.0" layoutY="14.0" text="Maximum 25 words" />
    </children>
 </AnchorPane>

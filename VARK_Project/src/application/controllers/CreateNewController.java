@@ -134,7 +134,7 @@ public class CreateNewController {
 
                 CreationWork creationWork = null;
                 try {
-                    creationWork = new CreationWork(textFieldCreationName.getText(), Integer.parseInt(getImg.get()), false); //TODO implement false
+                    creationWork = new CreationWork(textFieldCreationName.getText(), Integer.parseInt(getImg.get()), false, true); //TODO implement false
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
