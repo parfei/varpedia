@@ -79,6 +79,8 @@ public class Main extends Application {
         FileWriter writer3=new FileWriter("cw.scm");
         writer3.write("(voice_akl_nz_cw_cg_cg)");
         writer3.close();
+
+
     }
 
     public static void main(String[] args) {

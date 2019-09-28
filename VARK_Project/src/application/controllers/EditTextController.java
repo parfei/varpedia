@@ -8,8 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -20,8 +19,19 @@ import java.io.InputStreamReader;
 public class EditTextController {
     @FXML
     private TextArea textArea;
+    @FXML
+    private Label askForVoice;
+    @FXML
+    private ToggleGroup group;
 
     private StringBuffer _stringBuffer = new StringBuffer();
+
+    @FXML
+    private RadioButton default_voice;
+    @FXML
+    private RadioButton male_voice;
+    @FXML
+    private RadioButton female_voice;
 
     static final int OUT = 0;
     static final int IN = 1;
@@ -47,27 +57,76 @@ public class EditTextController {
 
     }
     @FXML
-    public void preview() {
+    public void preview() throws IOException {
         String selectedText = textArea.getSelectedText(); //TODO can't search "man job" for some reason
         //System.out.println(selectedText);
+        RadioButton selectedRadioButton = (RadioButton) group .getSelectedToggle();
+
 
         int numberOfWords = countWords(selectedText);
         if (numberOfWords > 25) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("select a smaller chunk");
-            alert.setHeaderText("too much words");
+            alert.setHeaderText("too many words");
             alert.setContentText("please select a smaller chunk");
             alert.showAndWait();
 
-        } else {
+        } else if (selectedRadioButton==null) {
+            askForVoice.setText("SELECT A VOICE PLEASE");
+            return;
+        }else{
             String textWithoutBrackets = selectedText.replaceAll("[\\[\\](){}']","");
-            String cmd = "echo " + textWithoutBrackets + " | festival --tts"; //TODO can't pronounce when there is bracket
+            if (default_voice.isSelected()){
+                FileWriter writer=new FileWriter("default_voice");
+                writer.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+textWithoutBrackets +"\"" + ")") ;
+                writer.close();
+                String cmd="festival -b default_voice";
+                ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
+                try {
+                    Process process = pb.start();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+            else if (male_voice.isSelected()){
+                FileWriter writer=new FileWriter("male_voice");
+                writer.write("(voice_akl_nz_jdt_diphone)"+"\n"+"(SayText" + " "+"\""+textWithoutBrackets+"\"" + ")") ;
+                writer.close();
+                String cmd="festival -b male_voice";
+                ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
+                try {
+                    Process process = pb.start();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+
+
+            }
+            else if (female_voice.isSelected()){
+                FileWriter writer=new FileWriter("female_voice.scm");
+                writer.write("(voice_akl_nz_cw_cg_cg)"+"\n"+"(SayText" + " "+"\""+textWithoutBrackets+"\"" + ")") ;
+                writer.close();
+                String cmd="festival -b female_voice.scm";
+                ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
+                try {
+                    Process process = pb.start();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+            else {
+                //do nothing
+            }
+           /* String cmd = "echo " + textWithoutBrackets + " | festival --tts"; //TODO can't pronounce when there is bracket
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
             try {
                 Process process = pb.start();
             } catch (IOException ex) {
                 ex.printStackTrace();
-            }
+            }*/
 
 
         }

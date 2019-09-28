@@ -13,7 +13,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <HBox alignment="BOTTOM_CENTER" layoutX="28.0" layoutY="220.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="62.0" prefWidth="392.0" spacing="40.0">
+      <HBox alignment="BOTTOM_CENTER" layoutX="28.0" layoutY="183.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="62.0" prefWidth="392.0" spacing="40.0">
          <children>
             <Button mnemonicParsing="false" onAction="#create" prefHeight="28.0" prefWidth="171.0" text="Create New Creation">
                <font>

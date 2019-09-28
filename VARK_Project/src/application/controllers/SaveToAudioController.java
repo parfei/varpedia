@@ -89,8 +89,6 @@ public class SaveToAudioController {
           noneSelection.setText("please select a button");
           return;
       }
-      String toggleGroupValue = selectedRadioButton.getText();
-      System.out.println(toggleGroupValue);
 
       if (userInput.trim().isEmpty() || userInput == null) {
           errorName.setVisible(true);
