@@ -47,7 +47,7 @@ public class EditTextController {
 
     }
     @FXML
-    public void preview() {
+    public void preview() { //TODO PREVIEW FOR DIFFERENT VOICES!!
         String selectedText = textArea.getSelectedText(); //TODO can't search "man job" for some reason
         //System.out.println(selectedText);
         int numberOfWords = countWords(selectedText);
@@ -125,11 +125,10 @@ public class EditTextController {
     }
 
     public void backToMain(ActionEvent event) throws IOException {
-        //String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/* ; cd -";
-        //String command2 = "mkdir -p \"" + path + "/mydir/extra\" ; mkdir \"" + path + "/mydir/creations\"; ";
-        String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/audioPiece\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
+
+        String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/extra/audio\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
         //String cmd2="rm -r"+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
-        //System.out.println(cmd2);
+
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd1);
         try {
             Process process = pb.start();
@@ -155,7 +154,7 @@ public class EditTextController {
 
 
 
-        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/CombineAudio.fxml"));
+        Parent createViewParent = FXMLLoader.load(Main.class.getResource("createNew.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();

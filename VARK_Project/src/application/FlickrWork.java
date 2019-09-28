@@ -20,13 +20,15 @@ import java.util.ArrayList;
  * Retrieving and downloading required images from Flickr is all done in this class.
  * It is done in the background, as it is a heavily computational task.
  */
-public class FlickrWork extends Task<String> { //TODO check 10 images
+public class FlickrWork extends Task<String> {
     private String _term;
+    private String _name;
     private int _num;
     private ArrayList<String> _html = new ArrayList<String>();
 
-    public FlickrWork(String term, String num){
-        _term = term;
+    public FlickrWork(String name, String num){
+        _name = name;
+        _term = TransportClass.getInstance().getter();
         _num = Integer.parseInt(num);
     }
 
@@ -100,7 +102,7 @@ public class FlickrWork extends Task<String> { //TODO check 10 images
                 try {
                     BufferedImage image = photos.getImage(photo, Size.LARGE);
                     String filename = "img" + Integer.toString(count) + ".jpg";
-                    File outputfile = new File(PathCD.getPathInstance().getPath() + "/mydir/extra",filename);
+                    File outputfile = new File(PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name,filename);
                     ImageIO.write(image, "jpg", outputfile); //Download the image
                     System.out.println("Downloaded "+filename);
 

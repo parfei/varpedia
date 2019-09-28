@@ -58,7 +58,7 @@ public class CreateNewController {
         errorImg.setVisible(false);
         team = Executors.newSingleThreadExecutor();
 
-        String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/creations\" " + " | cut -f1 -d'.' | sort";
+        String command = "ls -R \"" + PathCD.getPathInstance().getPath() + "/mydir/creations\" " + " | grep .mp4 | cut -f1 -d'.' | sort";
         ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
         try {
             String line;
@@ -123,7 +123,9 @@ public class CreateNewController {
             return;
         }
 
-        FlickrWork getImg = new FlickrWork(TransportClass.getInstance().getter(), textFldImagesNum.getCharacters().toString());
+        createDirectories();
+
+        FlickrWork getImg = new FlickrWork(textFieldCreationName.getCharacters().toString(), textFldImagesNum.getCharacters().toString());
         team.submit(getImg);
 
         getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -132,7 +134,7 @@ public class CreateNewController {
 
                 CreationWork creationWork = null;
                 try {
-                    creationWork = new CreationWork(textFieldCreationName.getText(), Integer.parseInt(getImg.get()), false);
+                    creationWork = new CreationWork(textFieldCreationName.getText(), Integer.parseInt(getImg.get()), false, true); //TODO implement false
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -168,6 +170,14 @@ public class CreateNewController {
         window.setTitle("Main Menu");
         window.setScene(createViewScene);
         window.show();
+    }
+
+    private void createDirectories() throws IOException {
+        String path = PathCD.getPathInstance().getPath();
+        String command2 = "mkdir -p \"" + path + "/mydir/extra/" + TransportClass.getInstance().getter() + "/" + textFieldCreationName.getCharacters().toString() + "\"" +
+                " ; mkdir -p \"" + path + "/mydir/creations/" + TransportClass.getInstance().getter() + "\""; //create a creations folders
+        ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
+        pb2.start();
     }
 }
 

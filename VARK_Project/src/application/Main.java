@@ -1,6 +1,8 @@
 package application;
 
 import javafx.application.Application;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -27,6 +29,18 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 450, 300));
         primaryStage.show();
 
+        /*TransportClass.getInstance().setter("apple");
+        ExecutorService team = Executors.newSingleThreadExecutor();
+        FlickrWork task = new FlickrWork("apple", "1");
+        team.submit(task);
+        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent workerStateEvent) {
+                team.submit(new CreationWork("apple", 1, false, false));
+            }
+        });*/
+
+
     }
 
     /**
@@ -36,15 +50,12 @@ public class Main extends Application {
         String path = PathCD.getPathInstance().getPath();
         try {
             String command = "[ -e \"" + path + "/mydir\" ]"; //check if there is a creations folder.
-            ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command); //TODO fix this
+            ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
 
             Process folder = pb.start();
 
             if (folder.waitFor() == 1) {
-                //String cmd1="mkdir "+PathCD.getPathInstance().getPath()+"/mydir/audioPiece";
-                //String command2 = "mkdir " + path + "/mydir/extra ; mkdir " + path + "/mydir/creations"; //create a creations folder.
-                String command2 = "mkdir -p \"" + path + "/mydir/extra\" ; mkdir \"" + path + "/mydir/creations\"; "; //create a creations folder.
-                System.out.print(command2);
+                String command2 = "mkdir -p \"" + path + "/mydir/extra/audio\" ; mkdir \"" + path + "/mydir/creations\"; "; //create a creations folder.
                 ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
                 pb2.start();
             }
@@ -59,13 +70,13 @@ public class Main extends Application {
 
     @Override //TODO check if it always works, implement for start, check if exits and nothing is blocking some process is running too.
     public void stop() throws Exception { //In case the deletion of such extra files were not successful.
-        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/* ; cd -"; //Clear files in extra folder.
+        /*String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/* ; cd -"; //Clear files in extra folder.
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
         try {
             Process end = pb.start();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public void writeScheme() throws IOException {
@@ -85,8 +96,5 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
-
-
 
 }
