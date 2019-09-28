@@ -28,7 +28,7 @@ public class CombineAudio {
 
     public void initialize(){
 
-        String command = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/audioPiece" + " | cut -f1 -d'.'\n";
+        String command = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece" + " | cut -f1 -d'.'\n";
         System.out.println(PathCD.getPathInstance().getPath());
         ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
         try {
@@ -50,7 +50,7 @@ public class CombineAudio {
 
 
     public void combineAudioPieces(){
-        String combine= "$(cd " + PathCD.getPathInstance().getPath() + "/mydir/audioPiece ; sox $(ls -tcr | grep wav) sound.wav)";
+        String combine= "$(cd " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece ; sox $(ls -tcr | grep wav) sound.wav)";
         System.out.println(combine);
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", combine);
         try {

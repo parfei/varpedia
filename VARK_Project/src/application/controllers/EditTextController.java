@@ -60,7 +60,8 @@ public class EditTextController {
     }
     @FXML
     public void preview() throws IOException {
-        String selectedText = textArea.getSelectedText(); //TODO can't search "man job" for some reason
+        String selectedText = textArea.getSelectedText();
+        String textWithoutBrackets = selectedText.replaceAll("[\\[\\](){}']","");//TODO can't search "man job" for some reason
         //System.out.println(selectedText);
         RadioButton selectedRadioButton = (RadioButton) group .getSelectedToggle();
 
@@ -84,10 +85,10 @@ public class EditTextController {
             askForVoice.setText("SELECT A VOICE PLEASE");
             return;
         }else{
-            String textWithoutBrackets = selectedText.replaceAll("[\\[\\](){}']","");
+           // String textWithoutBrackets = selectedText.replaceAll("[\\[\\](){}']","");
             if (default_voice.isSelected()){
                 FileWriter writer=new FileWriter("default_voice");
-                writer.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+textWithoutBrackets +"\"" + ")") ;
+                writer.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+selectedText +"\"" + ")") ;
                 writer.close();
                 String cmd="festival -b default_voice";
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
@@ -170,12 +171,13 @@ public class EditTextController {
     @FXML
     public void save(ActionEvent event) throws IOException {
         String selectedText=textArea.getSelectedText();
+        String saveble = selectedText.replaceAll("[\\[\\](){}']","");
 
         if (selectedText== null ||selectedText.isEmpty()) { //TOdo text may be comma, full stop
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("No selection");
-            error.setHeaderText("please select a trunk");
-            error.setContentText("please select a trunk");
+            error.setHeaderText("please select a chunk");
+            error.setContentText("please select a part of text ");
             error.showAndWait();
         }
 
@@ -190,7 +192,7 @@ public class EditTextController {
         }
         else {
             FileWriter writer=new FileWriter("savedText.txt");
-            writer.write(selectedText);
+            writer.write(saveble);
             writer.close();
 
 
@@ -224,7 +226,7 @@ public class EditTextController {
     public void backToMain(ActionEvent event) throws IOException {
         //String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/* ; cd -";
         //String command2 = "mkdir -p \"" + path + "/mydir/extra\" ; mkdir \"" + path + "/mydir/creations\"; ";
-        String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/audioPiece\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
+        String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/extra/audioPiece\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
         //String cmd2="rm -r"+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
         //System.out.println(cmd2);
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd1);

@@ -74,7 +74,7 @@ public class CreationController {
             whatDoYouWant.setText("Invalid input, please enter again");
             yourKeyWord.clear(); //TODO check
         } else {
-            String cmd1="mkdir "+PathCD.getPathInstance().getPath()+"/mydir/audioPiece";
+            String cmd1="mkdir "+PathCD.getPathInstance().getPath()+"/mydir/extra/audioPiece";
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd1);
             try {
                 Process process = pb.start();
