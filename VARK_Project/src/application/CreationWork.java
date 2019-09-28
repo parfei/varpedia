@@ -48,6 +48,18 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
         return null;
     }
 
+    private void generateCombinedAudio(){ //TODO retrieve combined audio string, for each string concantenate together to produce audiox`
+        String combine= "$(cd " + PathCD.getPathInstance().getPath() + "/mydir/extra/audio ; sox $(ls -tcr | grep wav) sound.wav)";
+        System.out.println(combine);
+        ProcessBuilder pb = new ProcessBuilder("bash", "-c", combine);
+        try {
+            Process process = pb.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void generateAudio(){
         String soundCommand = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/lines.txt\" | text2wave -o \"" + _path + "sound.wav\"";
 
@@ -79,8 +91,8 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
         //video
         try{
             String videoCommand = "duration=`soxi -D \"" + _path + "sound.wav\"` ; " +
-            "ffmpeg -framerate " + _picNum + "/\"$duration\" -f image2 -s 800x600 -i \"" + _path + "img%01d.jpg\" -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -r 25 \"" + _path + "slideshow.mp4\" ; " +
-            "ffmpeg -y -i \"" + _path + "slideshow.mp4\" -vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='" + _term + "'\" \"" + _path + "video.mp4\"";
+                    "ffmpeg -framerate " + _picNum + "/\"$duration\" -f image2 -s 800x600 -i \"" + _path + "img%01d.jpg\" -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -r 25 \"" + _path + "slideshow.mp4\" ; " +
+                    "ffmpeg -y -i \"" + _path + "slideshow.mp4\" -vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='" + _term + "'\" \"" + _path + "video.mp4\"";
 
             System.out.println(videoCommand);
             ProcessBuilder video = new ProcessBuilder("bash", "-c", videoCommand);
