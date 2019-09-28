@@ -40,7 +40,8 @@ public class EditTextController {
     @FXML
     public void initialize() {
 
-        String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
+        //String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\""; //TODO check with Jennifer
+        String cmd="cat temp.txt";
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
         try {
             Process process = pb.start();
@@ -172,8 +173,8 @@ public class EditTextController {
     public void save(ActionEvent event) throws IOException {
         String selectedText=textArea.getSelectedText();
         String saveble = selectedText.replaceAll("[\\[\\](){}']","");
-
-        if (selectedText== null ||selectedText.isEmpty()) { //TOdo text may be comma, full stop
+        int numberOfWords = countWords(selectedText);
+        if (selectedText== null ||selectedText.isEmpty()) { //TODO text may be comma, full stop
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("No selection");
             error.setHeaderText("please select a chunk");
@@ -182,8 +183,8 @@ public class EditTextController {
         }
 
         //System.out.println(selectedText);
-        int numberOfWords = countWords(selectedText);
-        if (numberOfWords > 25) {
+
+        else if (numberOfWords > 25) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("select a smaller chunk");
             alert.setHeaderText("too much words");

@@ -147,7 +147,19 @@ public class CreationController {
 
                 // get the format of the searchedText
                 //String command = "echo -e \"" + _line + "\" > " + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
-                String command = "echo -e \"" + _line + "\" > \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
+               String path = PathCD.getPathInstance().getPath();
+               System.out.println(path);//TODO MOVE THIS AFTER TESTING
+                try {
+                    FileWriter tempWriter = new FileWriter("temp.txt");
+                    tempWriter.write(_line);
+                    tempWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+
+                /*String command = "echo -e \"" + _line + "\" > \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
                 //String command = "echo -e \"" + _line + "\" &> \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
 
                 System.out.println(command);
@@ -157,7 +169,7 @@ public class CreationController {
                     Process process = pb.start();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
+                }*/
 
                 Platform.runLater(() -> {
                     try {
