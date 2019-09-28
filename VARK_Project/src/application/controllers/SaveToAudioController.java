@@ -115,7 +115,7 @@ public class SaveToAudioController {
               ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
               try {
                   Process process = pb.start();
-                  //process.waitFor();
+
               } catch (IOException e) {
                   e.printStackTrace();
               }
@@ -147,7 +147,8 @@ public class SaveToAudioController {
               ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
               try {
                   Process process = pb.start();
-                  //process.waitFor();
+
+
               } catch (IOException e) {
                   e.printStackTrace();
               }

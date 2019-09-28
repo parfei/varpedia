@@ -13,7 +13,7 @@
       <Button layoutX="290.0" layoutY="358.0" mnemonicParsing="false" onAction="#preview" text="Preview" />
       <Button layoutX="372.0" layoutY="358.0" mnemonicParsing="false" onAction="#save" text="Save" />
       <Button layoutX="442.0" layoutY="358.0" mnemonicParsing="false" onAction="#backToMain" text="Exit" />
-      <Label layoutX="14.0" layoutY="6.0" text="text" />
+      <Label fx:id="select" layoutX="14.0" layoutY="6.0" text="please select a readable text for male and female voice option" />
       <Button layoutX="504.0" layoutY="358.0" mnemonicParsing="false" onAction="#readyToCombine" text="Create" />
       <RadioButton fx:id="default_voice" layoutX="337.0" layoutY="135.0" mnemonicParsing="false" text="default voice">
          <toggleGroup>

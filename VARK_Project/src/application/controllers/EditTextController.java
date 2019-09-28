@@ -23,6 +23,8 @@ public class EditTextController {
     private Label askForVoice;
     @FXML
     private ToggleGroup group;
+    @FXML
+    private Label select;
 
     private StringBuffer _stringBuffer = new StringBuffer();
 
@@ -64,7 +66,14 @@ public class EditTextController {
 
 
         int numberOfWords = countWords(selectedText);
-        if (numberOfWords > 25) {
+        if (numberOfWords==0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No chunk selected");
+            alert.setHeaderText("Please select a chunk");
+            alert.setContentText("select a chunk so we can carry on");
+            alert.showAndWait();
+        }
+        else if (numberOfWords > 25) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("select a smaller chunk");
             alert.setHeaderText("too many words");
@@ -84,7 +93,15 @@ public class EditTextController {
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
                     Process process = pb.start();
-                } catch (IOException ex) {
+                    int exitStatus=process.waitFor();
+                    if (exitStatus==255){
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Text selected can't be read");
+                        alert.setHeaderText("Make sure the text is readable");
+                        alert.setContentText("Sorry, the speaker can't read your selected text");
+                        alert.showAndWait();
+                    }
+                } catch (IOException | InterruptedException ex) {
                     ex.printStackTrace();
                 }
 
@@ -97,9 +114,20 @@ public class EditTextController {
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
                     Process process = pb.start();
-                } catch (IOException ex) {
+                    int exitStatus=process.waitFor();
+                    if (exitStatus==255){
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Text selected can't be read");
+                        alert.setHeaderText("Make sure the text is readable");
+                        alert.setContentText("Sorry, the speaker can't read your selected text or uncommon word");
+                        alert.showAndWait();
+                    }
+                } catch (IOException | InterruptedException ex) {
                     ex.printStackTrace();
                 }
+
+
+
 
 
 
@@ -112,7 +140,15 @@ public class EditTextController {
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
                     Process process = pb.start();
-                } catch (IOException ex) {
+                    int exitStatus=process.waitFor();
+                    if (exitStatus==255){
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Text selected can't be read");
+                        alert.setHeaderText("Make sure the text is readable");
+                        alert.setContentText("Sorry, the speaker can't read your selected text or uncommon word");
+                        alert.showAndWait();
+                    }
+                } catch (IOException | InterruptedException ex) {
                     ex.printStackTrace();
                 }
 
