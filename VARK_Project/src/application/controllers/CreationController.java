@@ -159,8 +159,6 @@ public class CreationController {
                         window.setScene(createViewScene);
                         window.show();
                     } catch (IOException e) {
-                        e.printStackTrace();
-
                     }
 
                 });

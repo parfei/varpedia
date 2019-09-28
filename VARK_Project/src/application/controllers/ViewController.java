@@ -119,8 +119,9 @@ public class ViewController {
         view.setVisible(true);
 
         if(_choice!=null) {
-
-            File file = new File(PathCD.getPathInstance().getPath() + "/mydir/creations/" + _choice + ".mp4"); //TODO FIX
+            String path = findCreation(_choice);
+            System.out.println(path);
+            File file = new File(path);
             _player = new MediaPlayer(new Media(file.toURI().toString()));
             _player.setAutoPlay(true);
 
@@ -129,7 +130,7 @@ public class ViewController {
                 public void run() {
                     playOptions.setVisible(false);
                     view.setVisible(false);
-                    pauseButton.setText("Pause"); //TODO do similarly for mute button
+                    pauseButton.setText("Pause");
                 }
             });
 
@@ -165,13 +166,13 @@ public class ViewController {
                 _player.seek(new Duration(_player.getCurrentTime().toMillis() + 10000));
             } else if (btnText.equals("10 >>")){
                 _player.seek(new Duration(_player.getCurrentTime().toMillis() - 10000));
-            } else if (btnText.equals("Mute")){
+            } /*else if (btnText.equals("Mute")){
                 _player.setMute(true);
                 btn.setText("Unmute");
             } else if (btnText.equals("Unmute")){
                 _player.setMute(false);
                 btn.setText("Mute");
-            }
+            }*/
         }else{
             if (btnText.equals("Resume")){
                 _player.play();
@@ -204,11 +205,12 @@ public class ViewController {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
 
-                String cmd= "rm \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/"+_choice+".mp4\""; //TODO FIX
+                String path = findCreation(_choice);
+
+                String cmd= "rm \"" + path + "\"";
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
                     Process process = pb.start();
-
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -216,11 +218,26 @@ public class ViewController {
                 stuffCreated.getItems().clear();
                 this.initialize();
 
-            } else {
-                errorText.setVisible(true);
-                errorText.setText("Select something to delete.");
+            } else if (result.get() == ButtonType.CANCEL){
+                return;
             }
+        } else {
+            errorText.setVisible(true);
+            errorText.setText("Select something to delete.");
         }
+    }
+
+    private String findCreation(String name){
+        String command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/\"*\"/" + name + ".mp4\"";
+        ProcessBuilder find = new ProcessBuilder("bash", "-c", command);
+        try {
+            Process process = find.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            return reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
