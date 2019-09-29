@@ -12,6 +12,12 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/workspace.xml
+VARK_Project/.idea/**/workspace.xml
+VARK_Project/.idea/**/tasks.xml
+VARK_Project/.idea/**/usage.statistics.xml
+VARK_Project/.idea/**/dictionaries
+VARK_Project/.idea/**/shelf
 
 # Generated files
 VARK_Project/.idea/**/contentModel.xml
@@ -50,6 +56,7 @@ cmake-build-*/
 
 # IntelliJ files to ignore
 VARK_Project/out/
+VARK_Project/test_vids
 VARK_Project/src/out/production/mydir/test
 
 # mpeltonen/sbt-idea plugin
