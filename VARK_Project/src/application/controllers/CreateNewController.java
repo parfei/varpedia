@@ -109,7 +109,6 @@ public class CreateNewController {
 
             overwrite.showAndWait();
             if (overwrite.getResult() == ButtonType.OK){
-                _overwrite = true;
             }
 
         } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
@@ -134,7 +133,7 @@ public class CreateNewController {
 
                 CreationWork creationWork = null;
                 try {
-                    creationWork = new CreationWork(textFieldCreationName.getText(), Integer.parseInt(getImg.get()), false, true); //TODO implement false
+                    creationWork = new CreationWork(textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -147,6 +146,9 @@ public class CreateNewController {
                 creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                     @Override
                     public void handle(WorkerStateEvent workerStateEvent) {
+
+                        cleanUp();
+
                         _CreationsExisted.clear();
                         Alert complete = new Alert(Alert.AlertType.INFORMATION);
                         complete.setHeaderText("Created");
@@ -178,6 +180,21 @@ public class CreateNewController {
                 " ; mkdir -p \"" + path + "/mydir/creations/" + TransportClass.getInstance().getter() + "\""; //create a creations folders
         ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
         pb2.start();
+    }
+
+    private void cleanUp(){
+
+        //String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/" + TransportClass.getInstance().getter() + "/" + textFieldCreationName.getCharacters().toString() +
+        //"/* ; cd -"; //Clear files in extra folder.
+
+        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -";
+
+        ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
+        try {
+            Process end = pb.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

@@ -40,8 +40,8 @@ public class EditTextController {
     @FXML
     public void initialize() {
 
-        //String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\""; //TODO check with Jennifer
-        String cmd="cat temp.txt";
+        String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\""; //TODO check with Jennifer
+        //String cmd="cat temp.txt";
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
         try {
             Process process = pb.start();
@@ -192,7 +192,7 @@ public class EditTextController {
             alert.showAndWait();
         }
         else {
-            FileWriter writer=new FileWriter("savedText.txt");
+            FileWriter writer=new FileWriter(PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt");
             writer.write(saveble);
             writer.close();
 

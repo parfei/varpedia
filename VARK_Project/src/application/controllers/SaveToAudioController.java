@@ -61,10 +61,10 @@ public class SaveToAudioController {
 
   }*/
 
-    public void initialize() { //TODO jennifer will fix
+    public void initialize() {
         errorName.setVisible(false);
         noneSelection.setVisible(false);
-        String command = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece" + " | cut -f1 -d'.'\n";
+        String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
         System.out.println(PathCD.getPathInstance().getPath());
         ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
         try {
@@ -109,7 +109,8 @@ public class SaveToAudioController {
             return;
         } else {
             if (kal.isSelected()) {
-                String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " + "savedText.txt -eval kal.scm";
+                String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " +
+                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt -eval kal.scm";
 
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
                 try {
@@ -167,7 +168,8 @@ public class SaveToAudioController {
                   e.printStackTrace();
               }*/
             } else if (jdt.isSelected()) {
-                String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " + "savedText.txt -eval jdt.scm";
+                String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " +
+                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt -eval jdt.scm";
 
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
                 try {
@@ -227,7 +229,8 @@ public class SaveToAudioController {
               }*/
 
             else if (cw.isSelected()) {
-                String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " + "savedText.txt -eval cw.scm";
+                String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " +
+                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt -eval cw.scm";
 
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
                 try {
