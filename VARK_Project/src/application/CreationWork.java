@@ -11,13 +11,11 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
     private String _term;
     private String _path;
     private int _picNum;
-    private Boolean _overwrite;
     private Boolean _combine;
 
-    public CreationWork(String name, int picNum, Boolean overwrite, Boolean combine){
+    public CreationWork(String name, int picNum, Boolean combine){
         _name = name;
         _term = TransportClass.getInstance().getter();
-        _overwrite = overwrite;
         _picNum = picNum;
         _path = PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name + "/";
         _combine = combine;
@@ -38,16 +36,6 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
         combineForms();
 
         System.out.println("creationwork done");
-        /*Platform.runLater(() -> {
-
-            String command = "cd \"" + _path + "/mydir\" ; rm -rf extra/* ; cd -"; //Clear files in extra folder.
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
-            try {
-                Process end = pb.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });*/
 
         return null;
     }
@@ -111,15 +99,9 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
         }
     }
 
-    private void combineForms(){
+    private void combineForms(){ //TODO if problem with video creation, it will be from the -y option here.
 
-        String extra = "";
-
-        if (_overwrite){
-            extra = "-y";
-        }
-
-        String combineCommand = "ffmpeg " + extra + " -i \"" + _path + "sound.wav\" -i \"" + _path + "video.mp4\" -c:v copy -c:a aac -strict experimental \"" +
+        String combineCommand = "ffmpeg -y -i \"" + _path + "sound.wav\" -i \"" + _path + "video.mp4\" -c:v copy -c:a aac -strict experimental \"" +
                 PathCD.getPathInstance().getPath() + "/mydir/creations/" + _term + "/" + _name + ".mp4\" 2>/dev/null";
         System.out.println(combineCommand);
         ProcessBuilder getTogether = new ProcessBuilder("bash", "-c", combineCommand);
