@@ -6,25 +6,24 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="366.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="448.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainController">
    <children>
-      <Label fx:id="greeting" alignment="CENTER" layoutX="99.0" layoutY="94.0" prefHeight="26.0" prefWidth="250.0" text="Welcome to VARpedia!">
+      <Label fx:id="greeting" alignment="CENTER" layoutX="99.0" layoutY="94.0" prefHeight="26.0" prefWidth="250.0" text="Welcome! what do you want to do ">
          <font>
-            <Font size="20.0" />
+            <Font size="14.0" />
          </font>
       </Label>
-      <HBox alignment="BOTTOM_CENTER" layoutX="28.0" layoutY="183.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="62.0" prefWidth="392.0" spacing="40.0">
+      <HBox alignment="BOTTOM_CENTER" layoutX="71.0" layoutY="172.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="306.0" spacing="40.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#create" prefHeight="28.0" prefWidth="171.0" text="Create New Creation">
+            <Button mnemonicParsing="false" onAction="#create" text="Create">
                <font>
-                  <Font size="14.0" />
+                  <Font size="10.0" />
                </font>
             </Button>
-            <Button fx:id="view" mnemonicParsing="false" onAction="#view" text="View Existing Creation">
+            <Button fx:id="view" mnemonicParsing="false" onAction="#view" text="View">
                <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
+                  <Font size="10.0" />
+               </font></Button>
          </children>
       </HBox>
    </children>

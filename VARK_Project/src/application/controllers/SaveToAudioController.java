@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SaveToAudioController {
 
@@ -181,26 +182,38 @@ public class SaveToAudioController {
                 String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav";
                 File file = new File(file_path);
                 if (file.length() == 0) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("audio not save");
-                    alert.setHeaderText("part not readable");
-                    alert.setContentText("check the part that you select is readable");
-                    alert.showAndWait();
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Give up or save in default voice");
+                    alert.setHeaderText("Can't save the audio in this voice");
+                    alert.setContentText("Do you want to save in default voice");
+                    Optional<ButtonType> result = alert.showAndWait();
                     String deleteCmd = "rm -f " + file_path;
                     System.out.println(deleteCmd);
                     ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", deleteCmd);
                     try {
                         Process delete = pb2.start();
-                       // int exitStatus = delete.waitFor();
-                        //System.out.println(exitStatus);
+                        int exitStatus = delete.waitFor();
+                        System.out.println(exitStatus);
                     } catch (IOException e) {
                         e.printStackTrace();
-                    } //catch (InterruptedException e) {
-                        //e.printStackTrace();
-                    //}
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
-                    // boolean success=Files.deleteIfExists(Paths.get("\""+file_path+"\""));
-                    //System.out.println(success);
+                    if (result.get() == ButtonType.OK) {
+                        String createDefaultAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " + "savedText.txt -eval kal.scm";
+
+                        ProcessBuilder pb3 = new ProcessBuilder("bash", "-c", createDefaultAudio);
+                        try {
+                            Process process = pb3.start();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        //do nothing
+                    }
+
 
                 }
                 try {
@@ -242,11 +255,11 @@ public class SaveToAudioController {
                 String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav";
                 File file = new File(file_path);
                 if (file.length() == 0) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("audio not save");
-                    alert.setHeaderText("part not readable");
-                    alert.setContentText("check the part that you select is readable");
-                    alert.showAndWait();
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Give up or save in default voice");
+                    alert.setHeaderText("Can't save the audio in this voice");
+                    alert.setContentText("Do you want to save in default voice");
+                    Optional<ButtonType> result = alert.showAndWait();
                     String deleteCmd = "rm -f " + file_path;
                     System.out.println(deleteCmd);
                     ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", deleteCmd);
@@ -260,8 +273,20 @@ public class SaveToAudioController {
                         e.printStackTrace();
                     }
 
-                    // boolean success=Files.deleteIfExists(Paths.get("\""+file_path+"\""));
-                    //System.out.println(success);
+                    if (result.get()==ButtonType.OK){
+                        String createDefaultAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " + "savedText.txt -eval kal.scm";
+
+                        ProcessBuilder pb3= new ProcessBuilder("bash", "-c", createDefaultAudio);
+                        try {
+                            Process process = pb3.start();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }else {
+                        //do nothing
+                    }
+
 
                 }
                 try {
@@ -279,7 +304,10 @@ public class SaveToAudioController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else {//do nothing
+
+            }
+
+            else {//do nothing
             }
         }
 

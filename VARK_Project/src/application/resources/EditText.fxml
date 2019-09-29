@@ -10,11 +10,11 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.EditTextController">
    <children>
       <TextArea fx:id="textArea" layoutX="14.0" layoutY="32.0" prefHeight="352.0" prefWidth="268.0" wrapText="true" />
-      <Button layoutX="290.0" layoutY="358.0" mnemonicParsing="false" onAction="#preview" text="Preview" />
-      <Button layoutX="372.0" layoutY="358.0" mnemonicParsing="false" onAction="#save" text="Save" />
-      <Button layoutX="442.0" layoutY="358.0" mnemonicParsing="false" onAction="#backToMain" text="Exit" />
+      <Button layoutX="308.0" layoutY="358.0" mnemonicParsing="false" onAction="#preview" text="Preview" />
+      <Button layoutX="398.0" layoutY="358.0" mnemonicParsing="false" onAction="#save" text="Save" />
+      <Button layoutX="473.0" layoutY="358.0" mnemonicParsing="false" onAction="#backToMain" text="Exit" />
       <Label fx:id="select" layoutX="14.0" layoutY="6.0" text="please select a readable text for male and female voice option" />
-      <Button layoutX="504.0" layoutY="358.0" mnemonicParsing="false" onAction="#readyToCombine" text="Create" />
+      <Button layoutX="532.0" layoutY="358.0" mnemonicParsing="false" onAction="#readyToCombine" text="Create" />
       <RadioButton fx:id="default_voice" layoutX="337.0" layoutY="135.0" mnemonicParsing="false" text="default voice">
          <toggleGroup>
             <ToggleGroup fx:id="group" />
@@ -23,5 +23,6 @@
       <RadioButton fx:id="male_voice" layoutX="337.0" layoutY="167.0" mnemonicParsing="false" text="male voice" toggleGroup="$group" />
       <RadioButton fx:id="female_voice" layoutX="337.0" layoutY="199.0" mnemonicParsing="false" text="female voice" toggleGroup="$group" />
       <Label fx:id="askForVoice" layoutX="337.0" layoutY="64.0" text="please select a voice" />
+      <Label fx:id="remindLabel" layoutX="290.0" layoutY="248.0" text="switch to default voice due to limitation of other voice" />
    </children>
 </AnchorPane>
