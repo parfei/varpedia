@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4a7c2ee8-d429-4339-a745-e1924ff6e1b3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/default_voice" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/flickr.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/flickr.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
@@ -55,6 +54,7 @@
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/menu.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/numberOfLine.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/numberOfLine.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/saveToAudio.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/saveToAudio.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/default_voice" beforeDir="false" afterPath="$PROJECT_DIR$/default_voice" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

@@ -70,7 +70,7 @@ public class CreateNewController {
         errorImg.setVisible(false);
         team = Executors.newSingleThreadExecutor();
 
-        String listAudio = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece" + " | cut -f1 -d'.'\n";
+        String listAudio = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
         ProcessBuilder builder = new ProcessBuilder("bash", "-c", listAudio);
         try {
             String line;
@@ -240,8 +240,8 @@ public class CreateNewController {
         Scene createViewScene = new Scene(menuParent);
         // gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("Main Menu");
         window.setScene(createViewScene);
+        window.setTitle("Main Menu");
         window.show();
     }
 

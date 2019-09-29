@@ -284,10 +284,10 @@ public class EditTextController {
         controller.initData(_term);
 
         Scene createViewScene = new Scene(createViewParent);
-        // gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("CombineAudio menu");
         window.setScene(createViewScene);
+        // gets the Stage information
+        window.setTitle("Creation Menu");
         window.show();
 
 
