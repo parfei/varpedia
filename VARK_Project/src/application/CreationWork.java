@@ -28,7 +28,7 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
         if (_combine){
             generateCombinedAudio();
         } else {
-            generateAudio(); //TODO Will make a separate audio instead of needing this...
+            generateAudio();
         }
         if (_picNum == 0){
             generateBlueVideo();
@@ -52,7 +52,7 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
         return null;
     }
 
-    private void generateCombinedAudio(){ //TODO retrieve combined audio string, for each string concantenate together to produce audiox`
+    private void generateCombinedAudio(){
         String combine= "$(cd " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece ; sox $(ls -tcr | grep wav) sound.wav)"; //TODO path
         System.out.println(combine);
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", combine);

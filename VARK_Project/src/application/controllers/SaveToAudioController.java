@@ -145,7 +145,7 @@ public class SaveToAudioController {
                 }
                 try {
                     _audioExisted.clear();
-                    existingAudioView.getItems().clear(); //TODO when kill the program, the audioPiece should be cleared, move to extra folder
+                    existingAudioView.getItems().clear();
 
                     Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
                     Scene createViewScene = new Scene(createViewParent);
@@ -203,7 +203,7 @@ public class SaveToAudioController {
                 }
                 try {
                     _audioExisted.clear();
-                    existingAudioView.getItems().clear(); //TODO when kill the program, the audioPiece should be cleared, move to extra folder
+                    existingAudioView.getItems().clear();
 
                     Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
                     Scene createViewScene = new Scene(createViewParent);
@@ -226,7 +226,7 @@ public class SaveToAudioController {
                   e.printStackTrace();
               }*/
 
-            else if (cw.isSelected()) { //TODO CAN
+            else if (cw.isSelected()) {
                 String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " + "savedText.txt -eval cw.scm";
 
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
@@ -263,7 +263,7 @@ public class SaveToAudioController {
                 }
                 try {
                     _audioExisted.clear();
-                    existingAudioView.getItems().clear(); //TODO when kill the program, the audioPiece should be cleared, move to extra folder
+                    existingAudioView.getItems().clear();
 
                     Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
                     Scene createViewScene = new Scene(createViewParent);

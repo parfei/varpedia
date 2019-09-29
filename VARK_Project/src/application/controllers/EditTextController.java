@@ -62,7 +62,7 @@ public class EditTextController {
     @FXML
     public void preview() throws IOException {
         String selectedText = textArea.getSelectedText();
-        String textWithoutBrackets = selectedText.replaceAll("[\\[\\](){}']","");//TODO can't search "man job" for some reason
+        String textWithoutBrackets = selectedText.replaceAll("[\\[\\](){}']","");
         //System.out.println(selectedText);
         RadioButton selectedRadioButton = (RadioButton) group .getSelectedToggle();
 
@@ -158,7 +158,7 @@ public class EditTextController {
             else {
                 //do nothing
             }
-           /* String cmd = "echo " + textWithoutBrackets + " | festival --tts"; //TODO can't pronounce when there is bracket
+           /* String cmd = "echo " + textWithoutBrackets + " | festival --tts";
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
             try {
                 Process process = pb.start();

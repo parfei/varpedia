@@ -20,14 +20,6 @@
                   <Font size="10.0" />
                </font>
             </Button>
-            <Button fx:id="play" mnemonicParsing="false" onAction="#play" text="Play">
-               <font>
-                  <Font size="10.0" />
-               </font></Button>
-            <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" text="Delete">
-               <font>
-                  <Font size="10.0" />
-               </font></Button>
             <Button fx:id="view" mnemonicParsing="false" onAction="#view" text="View">
                <font>
                   <Font size="10.0" />
