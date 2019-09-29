@@ -37,8 +37,15 @@ public class EditTextController {
     @FXML
     private Label remindLabel;
 
+    private String _term;
+
     static final int OUT = 0;
     static final int IN = 1;
+
+    public void initData(String term){
+        _term = term;
+    }
+
     @FXML
     public void initialize() {
         remindLabel.setVisible(false);
@@ -252,12 +259,7 @@ public class EditTextController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", cmd2);
-        try {
-            Process process = pb2.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+
         Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
@@ -269,9 +271,11 @@ public class EditTextController {
 
     public void readyToCombine(ActionEvent event) throws IOException {
 
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/createNew.fxml"));
+        Parent createViewParent = loader.load();
+        CreateNewController controller = loader.<CreateNewController>getController();
+        controller.initData(_term);
 
-
-        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/createNew.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();

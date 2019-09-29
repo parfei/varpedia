@@ -48,7 +48,12 @@ public class CreateNewController {
 
     private List<String> _CreationsExisted = new ArrayList<String>();
     private ExecutorService team;
-    private Boolean _overwrite;
+    private String _term;
+
+
+    public void initData(String term){
+        _term = term;
+    }
 
     /**
      * This method will add the existing creation to the ListView
@@ -124,7 +129,7 @@ public class CreateNewController {
 
         createDirectories();
 
-        FlickrWork getImg = new FlickrWork(textFieldCreationName.getCharacters().toString(), textFldImagesNum.getCharacters().toString());
+        FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getCharacters().toString(), textFldImagesNum.getCharacters().toString());
         team.submit(getImg);
 
         getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -133,7 +138,7 @@ public class CreateNewController {
 
                 CreationWork creationWork = null;
                 try {
-                    creationWork = new CreationWork(textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true);
+                    creationWork = new CreationWork(_term, textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -176,8 +181,8 @@ public class CreateNewController {
 
     private void createDirectories() throws IOException {
         String path = PathCD.getPathInstance().getPath();
-        String command2 = "mkdir -p \"" + path + "/mydir/extra/" + TransportClass.getInstance().getter() + "/" + textFieldCreationName.getCharacters().toString() + "\"" +
-                " ; mkdir -p \"" + path + "/mydir/creations/" + TransportClass.getInstance().getter() + "\""; //create a creations folders
+        String command2 = "mkdir -p \"" + path + "/mydir/extra/" + _term + "/" + textFieldCreationName.getCharacters().toString() + "\"" +
+                " ; mkdir -p \"" + path + "/mydir/creations/" + _term + "\""; //create a creations folders
         ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
         pb2.start();
     }

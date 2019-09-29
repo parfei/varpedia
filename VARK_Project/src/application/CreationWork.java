@@ -13,9 +13,9 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
     private int _picNum;
     private Boolean _combine;
 
-    public CreationWork(String name, int picNum, Boolean combine){
+    public CreationWork(String term, String name, int picNum, Boolean combine){
         _name = name;
-        _term = TransportClass.getInstance().getter();
+        _term = term;
         _picNum = picNum;
         _path = PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name + "/";
         _combine = combine;

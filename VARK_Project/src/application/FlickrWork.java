@@ -26,9 +26,9 @@ public class FlickrWork extends Task<String> {
     private int _num;
     private ArrayList<String> _html = new ArrayList<String>();
 
-    public FlickrWork(String name, String num){
+    public FlickrWork(String term, String name, String num){
         _name = name;
-        _term = TransportClass.getInstance().getter();
+        _term = term;
         _num = Integer.parseInt(num);
     }
 

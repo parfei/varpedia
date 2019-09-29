@@ -95,7 +95,7 @@ public class SaveToAudioController {
             return;
         } else {
             if (kal.isSelected()) {
-                String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt -eval kal.scm";
+                String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
                 System.out.println(createAudio);
 
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
@@ -140,8 +140,8 @@ public class SaveToAudioController {
                 }
 
             } else if (jdt.isSelected()) {
-                String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " +
-                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt -eval jdt.scm";
+                String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".\" \"" +
+                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval jdt.scm";
 
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
                 try {
@@ -172,7 +172,8 @@ public class SaveToAudioController {
                     }
 
                     if (result.get() == ButtonType.OK) {
-                        String createDefaultAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " + "savedText.txt -eval kal.scm";
+                        String createDefaultAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" +
+                                PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
 
                         ProcessBuilder pb3 = new ProcessBuilder("bash", "-c", createDefaultAudio);
                         try {
@@ -206,8 +207,8 @@ public class SaveToAudioController {
                 }
 
             else if (cw.isSelected()) {
-                String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " +
-                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt -eval cw.scm";
+                String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" +
+                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval cw.scm";
 
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
                 try {
@@ -238,7 +239,8 @@ public class SaveToAudioController {
                     }
 
                     if (result.get()==ButtonType.OK){
-                        String createDefaultAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " + "savedText.txt -eval kal.scm";
+                        String createDefaultAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" +
+                                PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
 
                         ProcessBuilder pb3= new ProcessBuilder("bash", "-c", createDefaultAudio);
                         try {
