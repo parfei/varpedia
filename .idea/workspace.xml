@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="assignment-3:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="4a7c2ee8-d429-4339-a745-e1924ff6e1b3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
@@ -38,10 +43,8 @@
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/FlickrWork.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/FlickrWork.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/config/flickr-api-key.txt" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/config/flickr-api-key.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CombineAudio.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CombineAudio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CreateNewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CreateNewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CreationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CreationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/EditTextController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/EditTextController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/SaveToAudioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/SaveToAudioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/ViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/ViewController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/CombineAudio.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/CombineAudio.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/Creation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/Creation.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/EditText.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/EditText.fxml" afterDir="false" />

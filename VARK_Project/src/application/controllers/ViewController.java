@@ -140,6 +140,22 @@ public class ViewController {
 
             playOptions.setVisible(true);
 
+            /*String cmd = "ffplay -autoexit \"" + path "\"";
+            System.out.println(cmd);
+            ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
+            try {
+                Process process = pb.start();
+
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+
+            }else{
+
+            }*/
+
         }else{
             errorText.setVisible(true);
             errorText.setText("Select something to play."); //If user has not selected anything, prompt them.
@@ -208,6 +224,7 @@ public class ViewController {
                 String path = findCreation(_choice);
 
                 String cmd= "rm \"" + path + "\"";
+                System.out.println(cmd);
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
                     Process process = pb.start();
@@ -229,6 +246,7 @@ public class ViewController {
 
     private String findCreation(String name){
         String command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/\"*\"/" + name + ".mp4\"";
+
         ProcessBuilder find = new ProcessBuilder("bash", "-c", command);
         try {
             Process process = find.start();
