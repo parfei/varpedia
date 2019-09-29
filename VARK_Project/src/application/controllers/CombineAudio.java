@@ -27,7 +27,7 @@ public class CombineAudio {
 
     public void initialize(){
 
-        String command = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/extra/audio" + " | cut -f1 -d'.'\n";
+        String command = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece" + " | cut -f1 -d'.'\n";
         System.out.println(PathCD.getPathInstance().getPath());
         ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
         try {
@@ -48,8 +48,8 @@ public class CombineAudio {
     }
 
 
-    public void combineAudioPieces(){ //TODO check?
-        String combine= "$(cd " + PathCD.getPathInstance().getPath() + "/mydir/extra/audio ; sox $(ls -tcr | grep wav) sound.wav)";
+    public void combineAudioPieces(){
+        String combine= "$(cd " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece ; sox $(ls -tcr | grep wav) sound.wav)";
         System.out.println(combine);
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", combine);
         try {
@@ -60,7 +60,7 @@ public class CombineAudio {
     }
 
     public void backToMain(ActionEvent event) throws IOException {
-        String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/extra/audio\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
+        String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/audioPiece\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
         //String cmd2="rm -r"+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
         //System.out.println(cmd2);
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd1);

@@ -48,6 +48,8 @@ public class Main extends Application {
      */
     private void initializeFolder(){
         String path = PathCD.getPathInstance().getPath();
+        System.out.println(path);//TODO REMOVE THIS AFTER TESTING
+
         try {
             String command = "[ -e \"" + path + "/mydir\" ]"; //check if there is a creations folder.
             ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
@@ -91,6 +93,8 @@ public class Main extends Application {
         FileWriter writer3=new FileWriter("cw.scm");
         writer3.write("(voice_akl_nz_cw_cg_cg)");
         writer3.close();
+
+
     }
 
     public static void main(String[] args) {

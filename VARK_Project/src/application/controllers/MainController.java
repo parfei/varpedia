@@ -31,7 +31,7 @@ public class MainController {
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setTitle("Create View");
+        window.setTitle("Creation");
         window.setScene(createViewScene);
         window.show();
 
@@ -46,7 +46,7 @@ public class MainController {
         window.setScene(createViewScene);
         window.show();
     }
-    @FXML
+    /*@FXML
     public void play(ActionEvent event)throws IOException{
 
         this.view(event);
@@ -54,7 +54,7 @@ public class MainController {
     @FXML
     public void delete(ActionEvent event)throws IOException{
         this.view(event);
-    }
+    }*/
 
 
 
