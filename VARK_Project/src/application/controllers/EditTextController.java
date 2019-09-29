@@ -34,11 +34,14 @@ public class EditTextController {
     private RadioButton male_voice;
     @FXML
     private RadioButton female_voice;
+    @FXML
+    private Label remindLabel;
 
     static final int OUT = 0;
     static final int IN = 1;
     @FXML
     public void initialize() {
+        remindLabel.setVisible(false);
 
         //String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\""; //TODO check with Jennifer
         String cmd="cat temp.txt";
@@ -95,16 +98,10 @@ public class EditTextController {
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
                     Process process = pb.start();
-                    int exitStatus=process.waitFor();
-                    if (exitStatus==255){
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Text selected can't be read");
-                        alert.setHeaderText("Make sure the text is readable");
-                        alert.setContentText("Sorry, the speaker can't read your selected text");
-                        alert.showAndWait();
-                    }
-                } catch (IOException | InterruptedException ex) {
-                    ex.printStackTrace();
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
             }
@@ -118,11 +115,22 @@ public class EditTextController {
                     Process process = pb.start();
                     int exitStatus=process.waitFor();
                     if (exitStatus==255){
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("voice changed to default");
+                        alert.setHeaderText("switch voice to the default due to limitation of other voice options");
+                        alert.setContentText("Sorry for the inconvenience");
+                        alert.showAndWait();
+                        FileWriter newWriter=new FileWriter("default_voice");
+                        newWriter.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+selectedText +"\"" + ")") ;
+                        newWriter.close();
+                        String useDefault="festival -b default_voice";
+                        ProcessBuilder pronounce = new ProcessBuilder("bash", "-c", useDefault);
+                        pronounce.start();
+                        /*Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Text selected can't be read");
                         alert.setHeaderText("Make sure the text is readable");
                         alert.setContentText("Sorry, the speaker can't read your selected text or uncommon word");
-                        alert.showAndWait();
+                        alert.showAndWait();*/
                     }
                 } catch (IOException | InterruptedException ex) {
                     ex.printStackTrace();
@@ -144,11 +152,20 @@ public class EditTextController {
                     Process process = pb.start();
                     int exitStatus=process.waitFor();
                     if (exitStatus==255){
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Text selected can't be read");
-                        alert.setHeaderText("Make sure the text is readable");
-                        alert.setContentText("Sorry, the speaker can't read your selected text or uncommon word");
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("voice changed to default");
+                        alert.setHeaderText("switch voice to the default due to limitation of other voice options");
+                        alert.setContentText("Sorry for the inconvenience");
                         alert.showAndWait();
+
+
+                        FileWriter newWriter=new FileWriter("default_voice");
+                        newWriter.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+selectedText +"\"" + ")") ;
+                        newWriter.close();
+                        String useDefault="festival -b default_voice";
+                        ProcessBuilder pronounce = new ProcessBuilder("bash", "-c", useDefault);
+                        pronounce.start();
+
                     }
                 } catch (IOException | InterruptedException ex) {
                     ex.printStackTrace();
