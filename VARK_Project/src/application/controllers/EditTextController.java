@@ -38,13 +38,20 @@ public class EditTextController {
     @FXML
     private Label remindLabel;
 
+    private String _term;
+
     static final int OUT = 0;
     static final int IN = 1;
+
+    public void initData(String term){
+        _term = term;
+    }
+
     @FXML
     public void initialize() {
         remindLabel.setVisible(false);
 
-        String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\""; //TODO check with Jennifer
+        String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
         //String cmd="cat temp.txt";
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
         try {
@@ -253,12 +260,7 @@ public class EditTextController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", cmd2);
-        try {
-            Process process = pb2.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+
         Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
@@ -276,54 +278,20 @@ public class EditTextController {
 
     public void readyToCombine(ActionEvent event) throws IOException {
 
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/createNew.fxml"));
+        Parent createViewParent = loader.load();
+        CreateNewController controller = loader.getController();
+        controller.initData(_term);
 
-        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/createNew.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setTitle("CombineAudio menu");
         window.setScene(createViewScene);
         window.show();
+
+
     }
-
-        //Path directory = Paths.get(file_path);
-
-
-        /*File parentDir = new File(file_path);
-        if (parentDir.isDirectory() && parentDir.list().length == 0) {
-            System.out.println("empty");
-        } else {
-            System.out.println("not empty");
-            System.out.println(parentDir.list().length);
-        }
-    }*/
-
-
-
-
-
-       /* if (isDirEmpty(directory)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("No audio created");
-            alert.setHeaderText("Check you have made an audio");
-            alert.setContentText("make a audio before creation");
-
-        } else {
-            Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/createNew.fxml"));
-            Scene createViewScene = new Scene(createViewParent);
-            // gets the Stage information
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setTitle("CombineAudio menu");
-            window.setScene(createViewScene);
-            window.show();*/
-
-
-
-
-
-
-
-
 
     static int countWords(String str)
     {

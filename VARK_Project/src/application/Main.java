@@ -29,7 +29,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 450, 300));
         primaryStage.show();
 
-        /*TransportClass.getInstance().setter("apple");
+        /*TransportClass.getInstance().setter("apple"); //testing
         ExecutorService team = Executors.newSingleThreadExecutor();
         FlickrWork task = new FlickrWork("apple", "1");
         team.submit(task);

@@ -1,7 +1,6 @@
 package application.controllers;
 import application.Main;
 import application.PathCD;
-import application.TransportClass;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -17,9 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class CreationController {
@@ -73,8 +69,9 @@ public class CreationController {
             whatDoYouWant.setText("Invalid input, please enter again");
             yourKeyWord.clear(); //TODO check
         } else {
-            TransportClass transport = TransportClass.getInstance();
-            transport.setter(_InputFromUser);
+
+            //TransportClass transport = TransportClass.getInstance();
+            //transport.setter(_InputFromUser);
 
             DoingJob doingJob = new DoingJob(event);
             Thread thread = new Thread(doingJob);
@@ -152,15 +149,18 @@ public class CreationController {
 
                 Platform.runLater(() -> {
                     try {
+                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
+                        Parent createViewParent = loader.load();
+                        EditTextController controller = loader.getController();
+                        controller.initData(_InputFromUser);
 
-                        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
                         Scene createViewScene = new Scene(createViewParent);
                         // gets the Stage information
                         Stage window = (Stage) ((Node) _event.getSource()).getScene().getWindow();
                         window.show();
                         window.setTitle("Edit text Menu");
                         window.setScene(createViewScene);
-                    } catch (IOException e) {
+                    } catch (IOException e) { //TODO error?
                     }
 
                 });

@@ -13,9 +13,9 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
     private int _picNum;
     private Boolean _combine;
 
-    public CreationWork(String name, int picNum, Boolean combine){
+    public CreationWork(String term, String name, int picNum, Boolean combine){
         _name = name;
-        _term = TransportClass.getInstance().getter();
+        _term = term;
         _picNum = picNum;
         _path = PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name + "/";
         _combine = combine;
@@ -41,13 +41,14 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
     }
 
     private void generateCombinedAudio(){
-        String combine= "cd " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece ; sox $(ls -tcr | grep wav) \"" + PathCD.getPathInstance().getPath()
-         + "/mydir/extra/" + _term + "/" + _name + "/sound.wav\" ; cd -"; //TODO check
+        String combine= "cd \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\" ; sox $(ls -tcr | grep wav) \"" +
+                PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name + "/sound.wav\"";
         System.out.println(combine);
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", combine);
         try {
             Process process = pb.start();
-        } catch (IOException e) {
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 

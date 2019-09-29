@@ -53,7 +53,12 @@ public class CreateNewController {
 
     private List<String> _CreationsExisted = new ArrayList<String>();
     private ExecutorService team;
-    private Boolean _overwrite;
+    private String _term;
+
+
+    public void initData(String term){
+        _term = term;
+    }
 
     /**
      * This method will add the existing creation to the ListView
@@ -101,7 +106,6 @@ public class CreateNewController {
         }
     }
 
-
     @FXML
     public void returnToStart(ActionEvent event) throws IOException {
 
@@ -138,34 +142,57 @@ public class CreateNewController {
             errorImg.setText("Complete the fields!");
             return;
         }
+        errorImg.setVisible(false);
+        errorName.setVisible(false);
 
-        Integer num = Integer.parseInt(textFldImagesNum.getText());
+        Boolean error = false;
 
-        if (_CreationsExisted.contains(textFieldCreationName.getText())) {
-            errorName.setText("Duplicated name.");
-            Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
-            overwrite.setTitle("Duplicated Name");
-            overwrite.setHeaderText("Would you like to overwrite " + textFieldCreationName.getText() + "?");
-            overwrite.setContentText("OK: overwrite. Cancel: retry your name, or you can choose to go back to the menu.");
-
-            overwrite.showAndWait();
-            if (overwrite.getResult() == ButtonType.OK) {
+        try {
+            Integer num = Integer.parseInt(textFldImagesNum.getText());
+            if ( num <= 0 || num > 10 ){
+                errorImg.setVisible(true);
+                errorImg.setText("Please enter between 1-10");
+                error = true;
             }
-
-        } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
-            errorName.setVisible(true);
-            errorName.setText("Invalid naming. Please enter again.");
-            return;
-
-        } else if ((!textFldImagesNum.getText().matches("[a-zA-Z0-9_-]*")) || num <= 0 || num > 10) {
+        } catch (NumberFormatException e){
             errorImg.setVisible(true);
-            errorImg.setText("Invalid number. Please enter between 1-10");
+            errorImg.setText("Enter a valid input.");
+            error = true;
+        }
+
+        try {
+            if (_CreationsExisted.contains(textFieldCreationName.getText())) {
+                errorName.setText("Duplicated name.");
+                Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
+                overwrite.setTitle("Duplicated Name");
+                overwrite.setHeaderText("Would you like to overwrite " + textFieldCreationName.getText() + "?");
+                overwrite.setContentText("OK: overwrite. Cancel: retry your name, or you can choose to go back to the menu.");
+
+                overwrite.showAndWait();
+                if (overwrite.getResult() == ButtonType.OK) {
+                }else{
+                    return;
+                }
+            } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
+                errorName.setVisible(true);
+                errorName.setText("Enter a-z chara name only");
+                error = true;
+            }
+        } catch (Exception e){
+            errorImg.setVisible(true);
+            errorImg.setText("Enter a valid input.");
+            error = true;
+        }
+
+        if (error){
+            textFieldCreationName.clear();
+            textFldImagesNum.clear();
             return;
         }
 
         createDirectories();
 
-        FlickrWork getImg = new FlickrWork(textFieldCreationName.getCharacters().toString(), textFldImagesNum.getCharacters().toString());
+        FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getCharacters().toString(), textFldImagesNum.getCharacters().toString());
         team.submit(getImg);
 
         getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -174,7 +201,7 @@ public class CreateNewController {
 
                 CreationWork creationWork = null;
                 try {
-                    creationWork = new CreationWork(textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true);
+                    creationWork = new CreationWork(_term, textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -201,6 +228,9 @@ public class CreateNewController {
             }
         });
 
+        textFieldCreationName.clear();
+        textFldImagesNum.clear();
+
         Parent menuParent = null;
         try {
             menuParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
@@ -217,8 +247,9 @@ public class CreateNewController {
 
     private void createDirectories() throws IOException {
         String path = PathCD.getPathInstance().getPath();
-        String command2 = "mkdir -p \"" + path + "/mydir/extra/" + TransportClass.getInstance().getter() + "/" + textFieldCreationName.getCharacters().toString() + "\"" +
-                " ; mkdir -p \"" + path + "/mydir/creations/" + TransportClass.getInstance().getter() + "\""; //create a creations folders
+        System.out.println("Creating directories for: " +_term);
+        String command2 = "mkdir -p \"" + path + "/mydir/extra/" + _term + "/" + textFieldCreationName.getCharacters().toString() + "\"" +
+                " ; mkdir -p \"" + path + "/mydir/creations/" + _term + "\""; //create a creations folders
         ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
         pb2.start();
     }
@@ -247,6 +278,5 @@ public class CreateNewController {
 
 
 }
-
 
 
