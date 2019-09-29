@@ -110,8 +110,8 @@ public class SaveToAudioController {
             return;
         } else {
             if (kal.isSelected()) {
-                String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " +
-                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt -eval kal.scm";
+                String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt -eval kal.scm";
+                System.out.println(createAudio);
 
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
                 try {

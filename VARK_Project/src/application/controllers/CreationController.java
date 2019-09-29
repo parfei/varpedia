@@ -59,6 +59,7 @@ public class CreationController {
         window.setScene(createViewScene);
         window.show();
 
+        //text2wave -o some.wav some.txt -eval slow.scm
 
     }
 
@@ -139,7 +140,7 @@ public class CreationController {
                 // get the format of the searchedText
                 //String command = "echo -e \"" + _line + "\" > " + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
                String path = PathCD.getPathInstance().getPath() + "/mydir/extra";
-               System.out.println(path);//TODO MOVE THIS AFTER TESTING
+
                 try {
                     FileWriter tempWriter = new FileWriter(path + "/temp.txt");
                     tempWriter.write(_line);
@@ -148,19 +149,6 @@ public class CreationController {
                     e.printStackTrace();
                 }
 
-
-
-                /*String command = "echo -e \"" + _line + "\" > \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
-                //String command = "echo -e \"" + _line + "\" &> \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
-
-                System.out.println(command);
-
-                ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
-                try {
-                    Process process = pb.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
 
                 Platform.runLater(() -> {
                     try {

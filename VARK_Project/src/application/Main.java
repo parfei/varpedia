@@ -48,7 +48,7 @@ public class Main extends Application {
      */
     private void initializeFolder(){
         String path = PathCD.getPathInstance().getPath();
-        System.out.println(path);//TODO REMOVE THIS AFTER TESTING
+
 
         try {
             String command = "[ -e \"" + path + "/mydir\" ]"; //check if there is a creations folder.
