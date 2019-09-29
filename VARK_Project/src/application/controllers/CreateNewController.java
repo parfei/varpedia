@@ -147,7 +147,7 @@ public class CreateNewController {
                     @Override
                     public void handle(WorkerStateEvent workerStateEvent) {
 
-                        //cleanUp();
+                        cleanUp();
 
                         _CreationsExisted.clear();
                         Alert complete = new Alert(Alert.AlertType.INFORMATION);
