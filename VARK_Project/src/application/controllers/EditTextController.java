@@ -50,7 +50,7 @@ public class EditTextController {
     public void initialize() {
         remindLabel.setVisible(false);
 
-        String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\""; //TODO check with Jennifer
+        String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
         //String cmd="cat temp.txt";
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
         try {
@@ -273,7 +273,7 @@ public class EditTextController {
 
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/createNew.fxml"));
         Parent createViewParent = loader.load();
-        CreateNewController controller = loader.<CreateNewController>getController();
+        CreateNewController controller = loader.getController();
         controller.initData(_term);
 
         Scene createViewScene = new Scene(createViewParent);

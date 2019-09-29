@@ -151,7 +151,7 @@ public class CreationController {
                     try {
                         FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
                         Parent createViewParent = loader.load();
-                        EditTextController controller = loader.<EditTextController>getController();
+                        EditTextController controller = loader.getController();
                         controller.initData(_InputFromUser);
 
                         Scene createViewScene = new Scene(createViewParent);
@@ -160,7 +160,7 @@ public class CreationController {
                         window.show();
                         window.setTitle("Edit text Menu");
                         window.setScene(createViewScene);
-                    } catch (IOException e) {
+                    } catch (IOException e) { //TODO error?
                     }
 
                 });

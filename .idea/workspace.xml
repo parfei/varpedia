@@ -40,20 +40,20 @@
       <change beforePath="$PROJECT_DIR$/VARK_Project/out/production/VARK_Project/application/resources/numberOfLine.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/out/production/VARK_Project/application/resources/numberOfLine.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/CreationWork.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/CreationWork.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/FlickrWork.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/FlickrWork.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/TransportClass.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/config/flickr-api-key.txt" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/config/flickr-api-key.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CombineAudio.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CombineAudio.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CreateNewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CreateNewController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CreationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CreationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/EditTextController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/EditTextController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/SaveToAudioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/SaveToAudioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/ViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/ViewController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/CombineAudio.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/CombineAudio.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/EditText.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/EditText.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/View.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/View.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/createNew.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/createNew.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/numberOfLine.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/numberOfLine.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/saveToAudio.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/saveToAudio.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backup/transport.txt" beforeDir="false" afterPath="$PROJECT_DIR$/backup/transport.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

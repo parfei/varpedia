@@ -163,9 +163,9 @@ public class ViewController {
                 _player.stop();
                 view.setVisible(false);
             } else if (btnText.equals("<< 10")){
-                _player.seek(new Duration(_player.getCurrentTime().toMillis() + 10000));
-            } else if (btnText.equals("10 >>")){
                 _player.seek(new Duration(_player.getCurrentTime().toMillis() - 10000));
+            } else if (btnText.equals("10 >>")){
+                _player.seek(new Duration(_player.getCurrentTime().toMillis() + 10000));
             } /*else if (btnText.equals("Mute")){
                 _player.setMute(true);
                 btn.setText("Unmute");

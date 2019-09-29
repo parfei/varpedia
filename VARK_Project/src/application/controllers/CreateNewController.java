@@ -97,33 +97,51 @@ public class CreateNewController {
 
     @FXML
     public void EnterCreation(ActionEvent event) throws IOException {
-        if (textFldImagesNum.getText().isEmpty() || textFldImagesNum.getText() == null || textFieldCreationName.getText().isEmpty() || textFieldCreationName.getText() == null){
+        errorImg.setVisible(false);
+        errorName.setVisible(false);
+
+        Boolean error = false;
+
+        try {
+            Integer num = Integer.parseInt(textFldImagesNum.getText());
+            if ( num <= 0 || num > 10 ){
+                errorImg.setVisible(true);
+                errorImg.setText("Please enter between 1-10");
+                error = true;
+            }
+        } catch (NumberFormatException e){
             errorImg.setVisible(true);
-            errorImg.setText("Complete the fields!");
-            return;
+            errorImg.setText("Enter a valid input.");
+            error = true;
         }
 
-        Integer num = Integer.parseInt(textFldImagesNum.getText());
+        try {
+            if (_CreationsExisted.contains(textFieldCreationName.getText())) {
+                errorName.setText("Duplicated name.");
+                Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
+                overwrite.setTitle("Duplicated Name");
+                overwrite.setHeaderText("Would you like to overwrite " + textFieldCreationName.getText() + "?");
+                overwrite.setContentText("OK: overwrite. Cancel: retry your name, or you can choose to go back to the menu.");
 
-        if (_CreationsExisted.contains(textFieldCreationName.getText())) {
-            errorName.setText("Duplicated name.");
-            Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
-            overwrite.setTitle("Duplicated Name");
-            overwrite.setHeaderText("Would you like to overwrite " + textFieldCreationName.getText() + "?");
-            overwrite.setContentText("OK: overwrite. Cancel: retry your name, or you can choose to go back to the menu.");
-
-            overwrite.showAndWait();
-            if (overwrite.getResult() == ButtonType.OK){
+                overwrite.showAndWait();
+                if (overwrite.getResult() == ButtonType.OK) {
+                }else{
+                    return;
+                }
+            } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
+                errorName.setVisible(true);
+                errorName.setText("Enter a-z chara name only");
+                error = true;
             }
-
-        } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
-            errorName.setVisible(true);
-            errorName.setText("Invalid naming. Please enter again.");
-            return;
-
-        } else if ( (!textFldImagesNum.getText().matches("[a-zA-Z0-9_-]*")) || num <= 0 || num > 10 ){
+        } catch (Exception e){
             errorImg.setVisible(true);
-            errorImg.setText("Invalid number. Please enter between 1-10");
+            errorImg.setText("Enter a valid input.");
+            error = true;
+        }
+
+        if (error){
+            textFieldCreationName.clear();
+            textFldImagesNum.clear();
             return;
         }
 
@@ -165,6 +183,9 @@ public class CreateNewController {
             }
         });
 
+        textFieldCreationName.clear();
+        textFldImagesNum.clear();
+
         Parent menuParent = null;
         try {
             menuParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
@@ -181,6 +202,7 @@ public class CreateNewController {
 
     private void createDirectories() throws IOException {
         String path = PathCD.getPathInstance().getPath();
+        System.out.println("Creating directories for: " +_term);
         String command2 = "mkdir -p \"" + path + "/mydir/extra/" + _term + "/" + textFieldCreationName.getCharacters().toString() + "\"" +
                 " ; mkdir -p \"" + path + "/mydir/creations/" + _term + "\""; //create a creations folders
         ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
