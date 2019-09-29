@@ -58,6 +58,7 @@ public class CreateNewController {
 
     public void initData(String term){
         _term = term;
+        System.out.println(_term);
     }
 
     /**

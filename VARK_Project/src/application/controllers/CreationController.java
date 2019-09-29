@@ -149,6 +149,14 @@ public class CreationController {
 
                 Platform.runLater(() -> {
                     try {
+                        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -"; //Clear files in extra folder.
+                        ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", command);
+                        try {
+                            Process end = pb2.start();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                         FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
                         Parent createViewParent = loader.load();
                         EditTextController controller = loader.getController();

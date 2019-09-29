@@ -45,6 +45,7 @@ public class EditTextController {
 
     public void initData(String term){
         _term = term;
+        System.out.println(_term);
     }
 
     @FXML
@@ -249,6 +250,7 @@ public class EditTextController {
         }
     }
 
+    @FXML
     public void backToMain(ActionEvent event) throws IOException {
 
         String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/extra/audioPiece\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
@@ -276,11 +278,13 @@ public class EditTextController {
         }
     }
 
+    @FXML
     public void readyToCombine(ActionEvent event) throws IOException {
-
+        System.out.println("Here " + _term);
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/createNew.fxml"));
         Parent createViewParent = loader.load();
         CreateNewController controller = loader.getController();
+        
         controller.initData(_term);
 
         Scene createViewScene = new Scene(createViewParent);
