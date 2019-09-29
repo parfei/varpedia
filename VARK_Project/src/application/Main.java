@@ -24,7 +24,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         this.initializeFolder();
         this.writeScheme();
-        Parent root = FXMLLoader.load(getClass().getResource("resources/menu.fxml"));
+        Parent root = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(new Scene(root, 450, 300));
         primaryStage.show();
