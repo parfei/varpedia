@@ -41,7 +41,8 @@ public class CreationWork extends Task<String> { //TODO check if actually concur
     }
 
     private void generateCombinedAudio(){
-        String combine= "$(cd " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece ; sox $(ls -tcr | grep wav) sound.wav)"; //TODO check
+        String combine= "cd " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece ; sox $(ls -tcr | grep wav) \"" + PathCD.getPathInstance().getPath()
+         + "/mydir/extra/" + _term + "/" + _name + "/sound.wav\" ; cd -"; //TODO check
         System.out.println(combine);
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", combine);
         try {
