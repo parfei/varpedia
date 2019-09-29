@@ -33,34 +33,19 @@ public class SaveToAudioController {
 
     @FXML
     private Toggle kal;
-
     @FXML
     private Toggle jdt;
-
     @FXML
     private Toggle cw;
 
 
     @FXML
     private Label errorName;
-
     @FXML
     private Label noneSelection;
 
     private List<String> _audioExisted = new ArrayList<String>();
 
-
-  /*public void playKal(){
-
-  }
-
-  public void playJdt(){
-
-  }
-
-  public void playCw(){
-
-  }*/
 
     public void initialize() {
         errorName.setVisible(false);
@@ -133,17 +118,9 @@ public class SaveToAudioController {
                     ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", deleteCmd);
                     try {
                         Process delete = pb2.start();
-                        // int exitStatus = delete.waitFor();
-                        //System.out.println(exitStatus);
                     } catch (IOException e) {
                         e.printStackTrace();
                     } //catch (InterruptedException e) {
-                    //e.printStackTrace();
-                    //}
-
-                    // boolean success=Files.deleteIfExists(Paths.get("\""+file_path+"\""));
-                    //System.out.println(success);
-
                 }
                 try {
                     _audioExisted.clear();
@@ -161,13 +138,7 @@ public class SaveToAudioController {
                     e.printStackTrace();
 
                 }
-             /* String cmd2="mv "+ userInput+".wav " +PathCD.getPathInstance().getPath() + "/mydir/audioPiece";
-              ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", cmd2);
-              try {
-                  Process process = pb2.start();
-              } catch (IOException e) {
-                  e.printStackTrace();
-              }*/
+
             } else if (jdt.isSelected()) {
                 String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " +
                         PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt -eval jdt.scm";
@@ -233,13 +204,6 @@ public class SaveToAudioController {
                 }
 
                 }
-              /*String cmd2="mv "+userInput+".wav " +PathCD.getPathInstance().getPath() + "/mydir/audioPiece";
-              ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", cmd2);
-              try {
-                  Process process = pb2.start();
-              } catch (IOException e) {
-                  e.printStackTrace();
-              }*/
 
             else if (cw.isSelected()) {
                 String createAudio = "text2wave -o " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav " +
@@ -312,16 +276,6 @@ public class SaveToAudioController {
         }
 
     }
-
-
-              /*String cmd2="mv "+userInput+".wav " +PathCD.getPathInstance().getPath() + "/mydir/audioPiece";
-              System.out.println(cmd2);
-              ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", cmd2);
-              try {
-                  Process process = pb2.start();
-              } catch (IOException e) {
-                  e.printStackTrace();
-              }*/
 
 
     public void cancel(ActionEvent event) {
