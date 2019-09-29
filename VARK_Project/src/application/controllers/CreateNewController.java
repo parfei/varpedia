@@ -184,8 +184,11 @@ public class CreateNewController {
 
     private void cleanUp(){
 
-        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/" + TransportClass.getInstance().getter() + "/" + textFieldCreationName.getCharacters().toString() +
-        "/* ; cd -"; //Clear files in extra folder.
+        //String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/" + TransportClass.getInstance().getter() + "/" + textFieldCreationName.getCharacters().toString() +
+        //"/* ; cd -"; //Clear files in extra folder.
+
+        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -";
+
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
         try {
             Process end = pb.start();

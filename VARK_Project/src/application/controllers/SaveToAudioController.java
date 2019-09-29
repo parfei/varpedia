@@ -61,7 +61,7 @@ public class SaveToAudioController {
 
   }*/
 
-    public void initialize() { //TODO jennifer will fix
+    public void initialize() {
         errorName.setVisible(false);
         noneSelection.setVisible(false);
         String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
