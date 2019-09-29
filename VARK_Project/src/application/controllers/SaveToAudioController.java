@@ -64,7 +64,7 @@ public class SaveToAudioController {
     public void initialize() { //TODO jennifer will fix
         errorName.setVisible(false);
         noneSelection.setVisible(false);
-        String command = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece" + " | cut -f1 -d'.'\n";
+        String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
         System.out.println(PathCD.getPathInstance().getPath());
         ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
         try {
