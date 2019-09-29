@@ -58,7 +58,6 @@ public class CreateNewController {
 
     public void initData(String term){
         _term = term;
-        System.out.println(_term);
     }
 
     /**
@@ -129,8 +128,13 @@ public class CreateNewController {
             alert.setHeaderText("Go back and make audios ");
             alert.setContentText("Make audio first");
             alert.showAndWait();
-            Parent createView = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
-            Scene createViewScene = new Scene(createView);
+
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
+            Parent createViewParent = loader.load();
+            EditTextController controller = loader.getController();
+
+            controller.initData(_term);
+            Scene createViewScene = new Scene(createViewParent);
             // gets the Stage information
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setTitle("Edit Text Menu");
@@ -193,7 +197,7 @@ public class CreateNewController {
 
         createDirectories();
 
-        FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getCharacters().toString(), textFldImagesNum.getCharacters().toString());
+        FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getText(), textFldImagesNum.getText());
         team.submit(getImg);
 
         getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -203,13 +207,13 @@ public class CreateNewController {
                 CreationWork creationWork = null;
                 try {
                     creationWork = new CreationWork(_term, textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true);
+                    System.out.println("pic: " + getImg.get());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
 
-                System.out.println("pic: " + Integer.parseInt(textFldImagesNum.getText()));
                 team.submit(creationWork);
 
                 creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -223,14 +227,14 @@ public class CreateNewController {
                         complete.setHeaderText("Created");
                         complete.setContentText(textFieldCreationName.getText() + " has been created.");
                         complete.show();
+
+                        textFieldCreationName.clear();
+                        textFldImagesNum.clear();
                     }
                 });
 
             }
         });
-
-        textFieldCreationName.clear();
-        textFldImagesNum.clear();
 
         Parent menuParent = null;
         try {
@@ -249,7 +253,7 @@ public class CreateNewController {
     private void createDirectories() throws IOException {
         String path = PathCD.getPathInstance().getPath();
         System.out.println("Creating directories for: " +_term);
-        String command2 = "mkdir -p \"" + path + "/mydir/extra/" + _term + "/" + textFieldCreationName.getCharacters().toString() + "\"" +
+        String command2 = "mkdir -p \"" + path + "/mydir/extra/" + _term + "/" + textFieldCreationName.getText() + "\"" +
                 " ; mkdir -p \"" + path + "/mydir/creations/" + _term + "\""; //create a creations folders
         ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
         pb2.start();

@@ -45,7 +45,11 @@ public class SaveToAudioController {
     private Label noneSelection;
 
     private List<String> _audioExisted = new ArrayList<String>();
+    private String _term;
 
+    public void initData(String term){
+        _term = term;
+    }
 
     public void initialize() {
         errorName.setVisible(false);
@@ -126,7 +130,11 @@ public class SaveToAudioController {
                     _audioExisted.clear();
                     existingAudioView.getItems().clear();
 
-                    Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
+                    FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
+                    Parent createViewParent = loader.load();
+                    EditTextController controller = loader.getController();
+
+                    controller.initData(_term);
                     Scene createViewScene = new Scene(createViewParent);
                     // gets the Stage information
                     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -192,7 +200,11 @@ public class SaveToAudioController {
                     _audioExisted.clear();
                     existingAudioView.getItems().clear();
 
-                    Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
+                    FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
+                    Parent createViewParent = loader.load();
+                    EditTextController controller = loader.getController();
+
+                    controller.initData(_term);
                     Scene createViewScene = new Scene(createViewParent);
                     // gets the Stage information
                     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -259,7 +271,11 @@ public class SaveToAudioController {
                     _audioExisted.clear();
                     existingAudioView.getItems().clear();
 
-                    Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
+                    FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
+                    Parent createViewParent = loader.load();
+                    EditTextController controller = loader.getController();
+
+                    controller.initData(_term);
                     Scene createViewScene = new Scene(createViewParent);
                     // gets the Stage information
                     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -283,7 +299,11 @@ public class SaveToAudioController {
     public void cancel(ActionEvent event) {
         try {
 
-            Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/createNew.fxml"));
+            Parent createViewParent = loader.load();
+            CreateNewController controller = loader.getController();
+
+            controller.initData(_term);
             Scene createViewScene = new Scene(createViewParent);
             // gets the Stage information
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();

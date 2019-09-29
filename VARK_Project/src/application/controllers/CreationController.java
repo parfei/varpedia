@@ -153,7 +153,10 @@ public class CreationController {
                         ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", command);
                         try {
                             Process end = pb2.start();
+                            end.waitFor();
                         } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
 

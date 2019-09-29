@@ -234,7 +234,12 @@ public class EditTextController {
 
             try {
 
-                Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/saveToAudio.fxml"));
+                FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/saveToAudio.fxml"));
+                Parent createViewParent = loader.load();
+                SaveToAudioController controller = loader.getController();
+
+                controller.initData(_term);
+
                 Scene createViewScene = new Scene(createViewParent);
                 // gets the Stage information
                 Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -280,11 +285,10 @@ public class EditTextController {
 
     @FXML
     public void readyToCombine(ActionEvent event) throws IOException {
-        System.out.println("Here " + _term);
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/createNew.fxml"));
         Parent createViewParent = loader.load();
         CreateNewController controller = loader.getController();
-        
+
         controller.initData(_term);
 
         Scene createViewScene = new Scene(createViewParent);
