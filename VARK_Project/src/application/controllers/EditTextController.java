@@ -11,10 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class EditTextController {
     @FXML
@@ -267,8 +268,13 @@ public class EditTextController {
         window.show();
     }
 
-    public void readyToCombine(ActionEvent event) throws IOException {
+    private static boolean isDirEmpty(final Path directory) throws IOException {
+        try(DirectoryStream<Path> dirStream = Files.newDirectoryStream(directory)) {
+            return !dirStream.iterator().hasNext();
+        }
+    }
 
+    public void readyToCombine(ActionEvent event) throws IOException {
 
 
         Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/createNew.fxml"));
@@ -278,9 +284,46 @@ public class EditTextController {
         window.setTitle("CombineAudio menu");
         window.setScene(createViewScene);
         window.show();
-
-
     }
+
+        //Path directory = Paths.get(file_path);
+
+
+        /*File parentDir = new File(file_path);
+        if (parentDir.isDirectory() && parentDir.list().length == 0) {
+            System.out.println("empty");
+        } else {
+            System.out.println("not empty");
+            System.out.println(parentDir.list().length);
+        }
+    }*/
+
+
+
+
+
+       /* if (isDirEmpty(directory)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No audio created");
+            alert.setHeaderText("Check you have made an audio");
+            alert.setContentText("make a audio before creation");
+
+        } else {
+            Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/createNew.fxml"));
+            Scene createViewScene = new Scene(createViewParent);
+            // gets the Stage information
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setTitle("CombineAudio menu");
+            window.setScene(createViewScene);
+            window.show();*/
+
+
+
+
+
+
+
+
 
     static int countWords(String str)
     {

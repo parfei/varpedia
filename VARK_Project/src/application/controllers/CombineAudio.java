@@ -28,7 +28,6 @@ public class CombineAudio {
     public void initialize(){
 
         String command = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece" + " | cut -f1 -d'.'\n";
-        System.out.println(PathCD.getPathInstance().getPath());
         ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
         try {
             String line;

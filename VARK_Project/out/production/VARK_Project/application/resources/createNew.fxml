@@ -8,33 +8,35 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreateNewController">
+<AnchorPane prefHeight="400.0" prefWidth="784.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreateNewController">
    <children>
-      <Label fx:id="labelMessage" layoutX="287.0" prefHeight="38.0" prefWidth="174.0" text="Existing Creations" />
-      <ListView fx:id="listViewExistCreation" layoutX="287.0" layoutY="41.0" prefHeight="318.0" prefWidth="268.0" />
-      <Button layoutX="453.0" layoutY="366.0" mnemonicParsing="false" onAction="#returnToStart" text="goBackToMainMenu" />
-      <VBox layoutX="35.0" layoutY="101.0" prefHeight="212.0" prefWidth="229.0">
+      <Label fx:id="labelMessage" layoutX="515.0" layoutY="36.0" prefHeight="26.0" prefWidth="171.0" text="Existing Creations" />
+      <ListView fx:id="listViewExistCreation" layoutX="515.0" layoutY="90.0" prefHeight="318.0" prefWidth="268.0" />
+      <Button layoutX="621.0" layoutY="452.0" mnemonicParsing="false" onAction="#returnToStart" text="goBackToMainMenu" />
+      <VBox layoutX="249.0" layoutY="106.0" prefHeight="212.0" prefWidth="229.0">
          <children>
+            <Label fx:id="errorName" prefHeight="16.0" prefWidth="185.0" textFill="RED" />
+            <Label text="Creation name:" />
             <VBox prefHeight="76.0" prefWidth="229.0">
                <children>
-                  <Label text="Creation name:" />
                   <TextField fx:id="textFieldCreationName" promptText="Name " />
-               </children>
-            </VBox>
-            <VBox prefHeight="56.0" prefWidth="229.0">
-               <children>
-                  <Label text="No. of images:" />
-                  <HBox prefHeight="38.0" prefWidth="229.0">
+                  <VBox prefHeight="62.0" prefWidth="229.0">
                      <children>
-                        <TextField fx:id="textFldImagesNum" promptText="Number" />
+                        <Label text="No. of images:" />
+                        <HBox prefHeight="38.0" prefWidth="229.0">
+                           <children>
+                              <TextField fx:id="textFldImagesNum" promptText="Number" />
+                           </children>
+                        </HBox>
                      </children>
-                  </HBox>
+                  </VBox>
                </children>
             </VBox>
             <Button mnemonicParsing="false" onAction="#EnterCreation" text="Enter" />
-            <Label fx:id="errorName" prefHeight="16.0" prefWidth="185.0" textFill="RED" />
             <Label fx:id="errorImg" prefHeight="14.0" prefWidth="229.0" text="ERROR: not a valid num (1-10)" textFill="RED" />
          </children>
       </VBox>
+      <ListView fx:id="audioList" layoutX="14.0" layoutY="57.0" onMouseClicked="#getTheSelection" prefHeight="368.0" prefWidth="200.0" />
+      <Label layoutX="11.0" layoutY="36.0" text="Existing audios" />
    </children>
 </AnchorPane>

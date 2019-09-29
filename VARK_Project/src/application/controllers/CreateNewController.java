@@ -3,6 +3,7 @@ package application.controllers;
 import application.*;
 import com.sun.jdi.connect.Transport;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
@@ -27,6 +28,10 @@ import java.util.concurrent.Executors;
 
 public class CreateNewController {
 
+    private String _choice;
+    private List<String> _audioExisted = new ArrayList<String>();
+    @FXML
+    private ListView audioList;
     @FXML
     private Label labelMessage;
     @FXML
@@ -53,16 +58,36 @@ public class CreateNewController {
     /**
      * This method will add the existing creation to the ListView
      */
-    public void initialize() {
+    public void initialize() throws IOException {
+
+
         errorName.setVisible(false);
         errorImg.setVisible(false);
         team = Executors.newSingleThreadExecutor();
 
-        String command = "ls -R \"" + PathCD.getPathInstance().getPath() + "/mydir/creations\" " + " | grep .mp4 | cut -f1 -d'.' | sort";
-        ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
+        String listAudio = "ls -tcr " + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece" + " | cut -f1 -d'.'\n";
+        ProcessBuilder builder = new ProcessBuilder("bash", "-c", listAudio);
         try {
             String line;
             Process process = builder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+
+            while ((line = reader.readLine()) != null) {
+                _audioExisted.add(line);
+            }
+            audioList.getItems().addAll(_audioExisted);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        String command = "ls -R \"" + PathCD.getPathInstance().getPath() + "/mydir/creations\" " + " | grep .mp4 | cut -f1 -d'.' | sort";
+        ProcessBuilder builder1 = new ProcessBuilder("bash", "-c", command);
+        try {
+            String line;
+            Process process = builder1.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
 
@@ -75,6 +100,7 @@ public class CreateNewController {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     public void returnToStart(ActionEvent event) throws IOException {
@@ -92,7 +118,22 @@ public class CreateNewController {
 
     @FXML
     public void EnterCreation(ActionEvent event) throws IOException {
-        if (textFldImagesNum.getText().isEmpty() || textFldImagesNum.getText() == null || textFieldCreationName.getText().isEmpty() || textFieldCreationName.getText() == null){
+        if (_audioExisted.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("No audio to combine");
+            alert.setHeaderText("Go back and make audios ");
+            alert.setContentText("Make audio first");
+            alert.showAndWait();
+            Parent createView = FXMLLoader.load(Main.class.getResource("resources/EditText.fxml"));
+            Scene createViewScene = new Scene(createView);
+            // gets the Stage information
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setTitle("Edit Text Menu");
+            window.setScene(createViewScene);
+            window.show();
+
+        }
+        if (textFldImagesNum.getText().isEmpty() || textFldImagesNum.getText() == null || textFieldCreationName.getText().isEmpty() || textFieldCreationName.getText() == null) {
             errorImg.setVisible(true);
             errorImg.setText("Complete the fields!");
             return;
@@ -108,7 +149,7 @@ public class CreateNewController {
             overwrite.setContentText("OK: overwrite. Cancel: retry your name, or you can choose to go back to the menu.");
 
             overwrite.showAndWait();
-            if (overwrite.getResult() == ButtonType.OK){
+            if (overwrite.getResult() == ButtonType.OK) {
             }
 
         } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
@@ -116,7 +157,7 @@ public class CreateNewController {
             errorName.setText("Invalid naming. Please enter again.");
             return;
 
-        } else if ( (!textFldImagesNum.getText().matches("[a-zA-Z0-9_-]*")) || num <= 0 || num > 10 ){
+        } else if ((!textFldImagesNum.getText().matches("[a-zA-Z0-9_-]*")) || num <= 0 || num > 10) {
             errorImg.setVisible(true);
             errorImg.setText("Invalid number. Please enter between 1-10");
             return;
@@ -182,7 +223,7 @@ public class CreateNewController {
         pb2.start();
     }
 
-    private void cleanUp(){
+    private void cleanUp() {
 
         //String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/" + TransportClass.getInstance().getter() + "/" + textFieldCreationName.getCharacters().toString() +
         //"/* ; cd -"; //Clear files in extra folder.
@@ -196,6 +237,16 @@ public class CreateNewController {
             e.printStackTrace();
         }
     }
+    public void getTheSelection(){
+        try{
+            ObservableList selectedCreation = audioList.getSelectionModel().getSelectedItems();
+            _choice = selectedCreation.get(0).toString();
+        }catch (Exception e){
+        }
+    }
+
+
 }
+
 
 

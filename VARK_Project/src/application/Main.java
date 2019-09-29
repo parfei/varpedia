@@ -72,13 +72,13 @@ public class Main extends Application {
 
     @Override //TODO check if it always works, implement for start, check if exits and nothing is blocking some process is running too.
     public void stop() throws Exception { //In case the deletion of such extra files were not successful.
-        /*String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/* ; cd -"; //Clear files in extra folder.
+        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -"; //Clear files in extra folder.
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
         try {
             Process end = pb.start();
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     public void writeScheme() throws IOException {
