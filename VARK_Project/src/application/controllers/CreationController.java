@@ -138,10 +138,10 @@ public class CreationController {
 
                 // get the format of the searchedText
                 //String command = "echo -e \"" + _line + "\" > " + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
-               String path = PathCD.getPathInstance().getPath();
+               String path = PathCD.getPathInstance().getPath() + "/mydir/extra";
                System.out.println(path);//TODO MOVE THIS AFTER TESTING
                 try {
-                    FileWriter tempWriter = new FileWriter("temp.txt");
+                    FileWriter tempWriter = new FileWriter(path + "/temp.txt");
                     tempWriter.write(_line);
                     tempWriter.close();
                 } catch (IOException e) {

@@ -43,13 +43,13 @@
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/FlickrWork.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/FlickrWork.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/config/flickr-api-key.txt" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/config/flickr-api-key.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CombineAudio.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CombineAudio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CreationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/CreationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/EditTextController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/EditTextController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/controllers/SaveToAudioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/controllers/SaveToAudioController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/CombineAudio.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/CombineAudio.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/EditText.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/EditText.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/View.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/View.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/createNew.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/createNew.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/menu.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/numberOfLine.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/numberOfLine.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VARK_Project/src/application/resources/saveToAudio.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/VARK_Project/src/application/resources/saveToAudio.fxml" afterDir="false" />
     </list>
