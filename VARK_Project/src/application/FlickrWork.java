@@ -41,7 +41,11 @@ public class FlickrWork extends Task<String> {
     @Override
     protected String call() throws Exception {
         // https://www.flickr.com/search/?text=_term;
+
         try {
+            if (_num == 0){
+                return "0";
+            }
             getPhotos();
         } catch (RuntimeException e){
             return "0";

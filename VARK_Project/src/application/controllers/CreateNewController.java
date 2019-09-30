@@ -165,14 +165,16 @@ public class CreateNewController {
 
         try {
             Integer num = Integer.parseInt(textFldImagesNum.getText()); /////Check for picture number error input.
-            if ( num <= 0 || num > 10 ){
+            if ( num < 0 || num > 10 ){
                 errorImg.setVisible(true);
-                errorImg.setText("Please enter between 1-10");
+                errorImg.setText("Please enter between 0-10");
+                textFldImagesNum.clear();
                 error = true;
             }
         } catch (NumberFormatException e){
             errorImg.setVisible(true);
             errorImg.setText("Enter a valid input.");
+            textFldImagesNum.clear();
             error = true;
         }
 
@@ -192,17 +194,17 @@ public class CreateNewController {
             } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
                 errorName.setVisible(true);
                 errorName.setText("Enter a-z chara name only");
+                textFieldCreationName.clear();
                 error = true;
             }
         } catch (Exception e){
             errorImg.setVisible(true);
             errorImg.setText("Enter a valid input.");
+            textFieldCreationName.clear();
             error = true;
         }
 
         if (error){ //Return if there is an error; guide user to reenter the fields.
-            textFieldCreationName.clear();
-            textFldImagesNum.clear();
             return;
         }
 
