@@ -10,19 +10,19 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.EditTextController">
    <children>
       <TextArea fx:id="textArea" layoutX="14.0" layoutY="32.0" prefHeight="352.0" prefWidth="268.0" wrapText="true" />
-      <Button layoutX="308.0" layoutY="358.0" mnemonicParsing="false" onAction="#preview" text="Preview" />
-      <Button layoutX="398.0" layoutY="358.0" mnemonicParsing="false" onAction="#save" text="Save" />
-      <Button layoutX="473.0" layoutY="358.0" mnemonicParsing="false" onAction="#backToMain" text="Exit" />
-      <Label fx:id="select" layoutX="14.0" layoutY="6.0" text="please select a readable text for male and female voice option" />
-      <Button layoutX="532.0" layoutY="358.0" mnemonicParsing="false" onAction="#readyToCombine" text="Create" />
-      <RadioButton fx:id="default_voice" layoutX="337.0" layoutY="135.0" mnemonicParsing="false" text="default voice">
+      <Button layoutX="337.0" layoutY="241.0" mnemonicParsing="false" onAction="#preview" prefHeight="29.0" prefWidth="70.0" text="Preview" />
+      <Button layoutX="415.0" layoutY="241.0" mnemonicParsing="false" onAction="#save" prefHeight="29.0" prefWidth="62.0" text="Save" />
+      <Button layoutX="551.0" layoutY="336.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="48.0" prefWidth="62.0" text="Menu" />
+      <Label fx:id="select" layoutX="14.0" layoutY="6.0" text="Select readable text to be synthesized" />
+      <Button layoutX="303.0" layoutY="336.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="48.0" prefWidth="240.0" style="-fx-background-color: #A5A8C4;" text="Create" textFill="WHITE" />
+      <RadioButton fx:id="default_voice" layoutX="337.0" layoutY="96.0" mnemonicParsing="false" text="default voice">
          <toggleGroup>
             <ToggleGroup fx:id="group" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="male_voice" layoutX="337.0" layoutY="167.0" mnemonicParsing="false" text="male voice" toggleGroup="$group" />
-      <RadioButton fx:id="female_voice" layoutX="337.0" layoutY="199.0" mnemonicParsing="false" text="female voice" toggleGroup="$group" />
-      <Label fx:id="askForVoice" layoutX="337.0" layoutY="64.0" text="please select a voice" />
-      <Label fx:id="remindLabel" layoutX="290.0" layoutY="248.0" text="switch to default voice due to limitation of other voice" />
+      <RadioButton fx:id="male_voice" layoutX="338.0" layoutY="121.0" mnemonicParsing="false" text="male voice" toggleGroup="$group" />
+      <RadioButton fx:id="female_voice" layoutX="338.0" layoutY="150.0" mnemonicParsing="false" text="female voice" toggleGroup="$group" />
+      <Label fx:id="askForVoice" layoutX="337.0" layoutY="64.0" text="Please select a voice" />
+      <Label fx:id="remindLabel" layoutX="322.0" layoutY="176.0" prefHeight="65.0" prefWidth="302.0" text="Switched to default voice due to limitation of voice selected" textFill="RED" wrapText="true" />
    </children>
 </AnchorPane>

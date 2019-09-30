@@ -133,7 +133,6 @@ public class ViewController {
                     pauseButton.setText("Pause");
                     _choice = null;
                     _player.stop();
-                    view.setMediaPlayer(null);
                 }
             });
 

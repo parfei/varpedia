@@ -13,11 +13,11 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ViewController">
    <children>
-      <Button fx:id="back" layoutX="564.0" layoutY="340.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="36.0" prefWidth="78.0" text="Back">
+      <Button fx:id="back" layoutX="564.0" layoutY="340.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="36.0" prefWidth="78.0" text="Menu">
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Button fx:id="playButton" layoutX="77.0" layoutY="340.0" mnemonicParsing="false" onAction="#playVideo" prefHeight="36.0" prefWidth="166.0" text="Play">
+      <Button fx:id="playButton" layoutX="77.0" layoutY="340.0" mnemonicParsing="false" onAction="#playVideo" prefHeight="36.0" prefWidth="166.0" style="-fx-background-color: #A5A8C4;" text="Play">
          <font>
             <Font size="16.0" />
          </font>
