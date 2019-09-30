@@ -132,7 +132,7 @@ public class ViewController {
                     view.setVisible(false);
                     pauseButton.setText("Pause");
                     _choice = null;
-                    _player.stop();
+                    _player.dispose();
                 }
             });
 
