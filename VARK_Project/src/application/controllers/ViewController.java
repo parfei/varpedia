@@ -131,6 +131,9 @@ public class ViewController {
                     playOptions.setVisible(false);
                     view.setVisible(false);
                     pauseButton.setText("Pause");
+                    _choice = null;
+                    _player.stop();
+                    view.setMediaPlayer(null);
                 }
             });
 
@@ -223,7 +226,7 @@ public class ViewController {
 
                 String path = findCreation(_choice);
 
-                String cmd= "rm \"" + path + "\"";
+                String cmd= "rm -f \"" + path + "\"";
                 System.out.println(cmd);
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
