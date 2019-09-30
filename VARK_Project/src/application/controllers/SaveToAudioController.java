@@ -299,9 +299,9 @@ public class SaveToAudioController {
     public void cancel(ActionEvent event) {
         try {
 
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/createNew.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
             Parent createViewParent = loader.load();
-            CreateNewController controller = loader.getController();
+            EditTextController controller = loader.getController();
 
             controller.initData(_term);
             Scene createViewScene = new Scene(createViewParent);

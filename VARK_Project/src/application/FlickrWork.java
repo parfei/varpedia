@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -51,8 +52,20 @@ public class FlickrWork extends Task<String> {
      * @throws IOException
      */
     private String getAPIKey(String key) throws IOException {
-        String config = PathCD.getPathInstance().getPath().substring(0, PathCD.getPathInstance().getPath().indexOf("/out"))
-                + "/src/application/config/flickr-api-key.txt";
+        String creationsDir = null;
+        try {
+            creationsDir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getAbsolutePath();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        creationsDir = creationsDir.substring(0,creationsDir.lastIndexOf("/"));
+        String config = creationsDir+ "/flickr-api-key.txt";
+
+        //String config = PathCD.getPathInstance().getPath().substring(0, PathCD.getPathInstance().getPath().indexOf("/out"))
+        //        + "/src/application/config/flickr-api-key.txt";
+
+        System.out.println(config);
+
         File file = new File(config);
 
         BufferedReader br = null;
