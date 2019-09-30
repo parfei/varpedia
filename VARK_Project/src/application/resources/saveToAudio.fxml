@@ -31,7 +31,7 @@
          <font>
             <Font size="14.0" />
          </font></RadioButton>
-      <Button layoutX="289.0" layoutY="199.0" mnemonicParsing="false" onAction="#save" text="Save" />
+      <Button layoutX="289.0" layoutY="199.0" mnemonicParsing="false" onAction="#save" prefHeight="41.0" prefWidth="63.0" text="Save" />
       <ListView fx:id="existingAudioView" layoutX="536.0" layoutY="90.0" prefHeight="200.0" prefWidth="200.0" />
       <TextField fx:id="textField" layoutX="285.0" layoutY="128.0" />
       <Label layoutX="285.0" layoutY="28.0" text="Audio name">
