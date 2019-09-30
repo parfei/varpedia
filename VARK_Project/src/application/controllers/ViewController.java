@@ -226,7 +226,7 @@ public class ViewController {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
 
-                String path = findCreation(_choice);
+                String path = findCreation(_choice); //finds the relevant creation
 
                 String cmd= "rm -f \"" + path + "\"";
                 System.out.println(cmd);
