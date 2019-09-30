@@ -48,6 +48,10 @@ public class EditTextController {
         System.out.println(_term);
     }
 
+
+    /**
+     * this method will add the search result to the text area
+     */
     @FXML
     public void initialize() {
         remindLabel.setVisible(false);
@@ -74,8 +78,9 @@ public class EditTextController {
     @FXML
     public void preview() throws IOException {
         String selectedText = textArea.getSelectedText();
+        // remove the text in brackets to make it readable
         String textWithoutBrackets = selectedText.replaceAll("[\\[\\](){}']","");
-        //System.out.println(selectedText);
+
         RadioButton selectedRadioButton = (RadioButton) group .getSelectedToggle();
 
 
@@ -98,7 +103,7 @@ public class EditTextController {
             askForVoice.setText("SELECT A VOICE PLEASE");
             return;
         }else{
-           // String textWithoutBrackets = selectedText.replaceAll("[\\[\\](){}']","");
+
             if (default_voice.isSelected()){
                 FileWriter writer=new FileWriter("default_voice");
                 writer.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+selectedText +"\"" + ")") ;
@@ -123,6 +128,7 @@ public class EditTextController {
                 try {
                     Process process = pb.start();
                     int exitStatus=process.waitFor();
+                    // if the male voice can't read the text, switch to default voice
                     if (exitStatus==255){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("voice changed to default");
@@ -135,11 +141,7 @@ public class EditTextController {
                         String useDefault="festival -b default_voice";
                         ProcessBuilder pronounce = new ProcessBuilder("bash", "-c", useDefault);
                         pronounce.start();
-                        /*Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Text selected can't be read");
-                        alert.setHeaderText("Make sure the text is readable");
-                        alert.setContentText("Sorry, the speaker can't read your selected text or uncommon word");
-                        alert.showAndWait();*/
+
                     }
                 } catch (IOException | InterruptedException ex) {
                     ex.printStackTrace();
@@ -160,6 +162,7 @@ public class EditTextController {
                 try {
                     Process process = pb.start();
                     int exitStatus=process.waitFor();
+                    // if the female voice can't read the text, switch to default voice
                     if (exitStatus==255){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("voice changed to default");
@@ -184,31 +187,26 @@ public class EditTextController {
             else {
                 //do nothing
             }
-           /* String cmd = "echo " + textWithoutBrackets + " | festival --tts";
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
-            try {
-                Process process = pb.start();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }*/
-
-
         }
     }
+
+    /**
+     * This method will check exception and go to saveToAudio interface when a save button is clicked
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void save(ActionEvent event) throws IOException {
         String selectedText=textArea.getSelectedText();
         String saveble = selectedText.replaceAll("[\\[\\](){}']","");
         int numberOfWords = countWords(selectedText);
-        if (selectedText== null ||selectedText.isEmpty()) { //TODO text may be comma, full stop
+        if (selectedText== null ||selectedText.isEmpty()) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("No selection");
             error.setHeaderText("please select a chunk");
             error.setContentText("please select a part of text ");
             error.showAndWait();
         }
-
-        //System.out.println(selectedText);
 
         else if (numberOfWords > 25) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -217,20 +215,12 @@ public class EditTextController {
             alert.setContentText("please select a smaller chunk");
             alert.showAndWait();
         }
+
+        // save the selected text to a file and switch scene to saveToAudio interface
         else {
             FileWriter writer=new FileWriter(PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt");
             writer.write(saveble);
             writer.close();
-
-
-
-            /*String cmd="echo "+textArea.getSelectedText() + " > temp1.txt";
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
-            try {
-                Process process = pb.start();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }*/
 
             try {
 
@@ -255,6 +245,12 @@ public class EditTextController {
         }
     }
 
+
+    /**
+     * THis method will remove the saved text and audios when the user want to restart a creation process
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void backToMain(ActionEvent event) throws IOException {
 
@@ -283,6 +279,11 @@ public class EditTextController {
         }
     }
 
+    /**
+     * This method will take the user to the creation of video interface when "create' button is clicked
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void readyToCombine(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/createNew.fxml"));
@@ -301,6 +302,11 @@ public class EditTextController {
 
     }
 
+    /**
+     * This method will count how many words in users' selected part
+     * @param str
+     * @return
+     */
     static int countWords(String str)
     {
         int state = OUT;

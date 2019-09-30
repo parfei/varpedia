@@ -51,6 +51,9 @@ public class SaveToAudioController {
         _term = term;
     }
 
+    /**
+     * This method will list all the existing audios in list view
+     */
     public void initialize() {
         errorName.setVisible(false);
         noneSelection.setVisible(false);
@@ -72,6 +75,11 @@ public class SaveToAudioController {
 
     }
 
+    /**
+     * This method will enable user to save their selected text to an audio file
+     * @param event
+     * @throws IOException
+     */
     public void save(ActionEvent event) throws IOException {
         String userInput = textField.getText();
         RadioButton selectedRadioButton = (RadioButton) group.getSelectedToggle();
@@ -111,6 +119,7 @@ public class SaveToAudioController {
                 }
                 String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav";
                 File file = new File(file_path);
+                // handle the case when audio is not saved successfully
                 if (file.length() == 0) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("audio not save");
@@ -124,8 +133,9 @@ public class SaveToAudioController {
                         Process delete = pb2.start();
                     } catch (IOException e) {
                         e.printStackTrace();
-                    } //catch (InterruptedException e) {
+                    }
                 }
+                // guide the user back to EditText interface to continue saving
                 try {
                     _audioExisted.clear();
                     existingAudioView.getItems().clear();
@@ -160,11 +170,14 @@ public class SaveToAudioController {
                 }
                 String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav";
                 File file = new File(file_path);
+                /*
+                ask user to save in default voice or give up saving if the male voice option can't save the audio
+                 */
                 if (file.length() == 0) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Give up or save in default voice");
                     alert.setHeaderText("Can't save the audio in this voice");
-                    alert.setContentText("Do you want to save in default voice");
+                    alert.setContentText("Do you want to save in default voice?");
                     Optional<ButtonType> result = alert.showAndWait();
                     String deleteCmd = "rm -f " + file_path;
                     System.out.println(deleteCmd);
@@ -172,7 +185,7 @@ public class SaveToAudioController {
                     try {
                         Process delete = pb2.start();
                         int exitStatus = delete.waitFor();
-                        System.out.println(exitStatus);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
@@ -231,11 +244,14 @@ public class SaveToAudioController {
                 }
                 String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav";
                 File file = new File(file_path);
+                /*
+                ask user to save in default voice or give up saving if the female voice option can't save the audio
+                 */
                 if (file.length() == 0) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Give up or save in default voice");
                     alert.setHeaderText("Can't save the audio in this voice");
-                    alert.setContentText("Do you want to save in default voice");
+                    alert.setContentText("Do you want to save in default voice?");
                     Optional<ButtonType> result = alert.showAndWait();
                     String deleteCmd = "rm -f " + file_path;
                     System.out.println(deleteCmd);
@@ -295,7 +311,10 @@ public class SaveToAudioController {
 
     }
 
-
+    /**
+     * let user go back when they don't want to save this audio
+     * @param event
+     */
     public void cancel(ActionEvent event) {
         try {
 
