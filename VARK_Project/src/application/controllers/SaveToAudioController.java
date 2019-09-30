@@ -158,7 +158,7 @@ public class SaveToAudioController {
                 }
 
             } else if (jdt.isSelected()) {
-                String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".\" \"" +
+                String createAudio  = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \""  +
                         PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval jdt.scm";
 
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
