@@ -26,6 +26,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * We create a new creation in this class. Name checking is done here. The bulk of the video creation is called from here.
+ * We call new instances of the work to be done in a background thread. Can return back to the menu from here.
+ */
 public class CreateNewController {
 
     private String _choice;
@@ -87,7 +91,7 @@ public class CreateNewController {
             e.printStackTrace();
         }
 
-
+        //List out all the existing creations!
         String command = "ls -R \"" + PathCD.getPathInstance().getPath() + "/mydir/creations\" " + " | grep .mp4 | cut -f1 -d'.' | sort";
         ProcessBuilder builder1 = new ProcessBuilder("bash", "-c", command);
         try {
@@ -106,6 +110,11 @@ public class CreateNewController {
         }
     }
 
+    /**
+     * When the button is pressed, we will return back to the menu.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void returnToStart(ActionEvent event) throws IOException {
 
@@ -120,6 +129,12 @@ public class CreateNewController {
         window.show();
     }
 
+    /***
+     * When the user hits the create button, the user will be taken back to the menu whilst the work is done in
+     * background threads. The method also checks for the validity of the name.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void EnterCreation(ActionEvent event) throws IOException {
         if (_audioExisted.isEmpty()){
@@ -129,7 +144,7 @@ public class CreateNewController {
             alert.setContentText("Make audio first");
             alert.showAndWait();
 
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml")); //Go back to the edittext menu if there is no audio to combine!
             Parent createViewParent = loader.load();
             EditTextController controller = loader.getController();
 
@@ -142,31 +157,29 @@ public class CreateNewController {
             window.show();
 
         }
-        if (textFldImagesNum.getText().isEmpty() || textFldImagesNum.getText() == null || textFieldCreationName.getText().isEmpty() || textFieldCreationName.getText() == null) {
-            errorImg.setVisible(true);
-            errorImg.setText("Complete the fields!");
-            return;
-        }
+
         errorImg.setVisible(false);
         errorName.setVisible(false);
 
         Boolean error = false;
 
         try {
-            Integer num = Integer.parseInt(textFldImagesNum.getText());
-            if ( num <= 0 || num > 10 ){
+            Integer num = Integer.parseInt(textFldImagesNum.getText()); /////Check for picture number error input.
+            if ( num < 0 || num > 10 ){
                 errorImg.setVisible(true);
-                errorImg.setText("Please enter between 1-10");
+                errorImg.setText("Please enter between 0-10");
+                textFldImagesNum.clear();
                 error = true;
             }
         } catch (NumberFormatException e){
             errorImg.setVisible(true);
             errorImg.setText("Enter a valid input.");
+            textFldImagesNum.clear();
             error = true;
         }
 
         try {
-            if (_CreationsExisted.contains(textFieldCreationName.getText())) {
+            if (_CreationsExisted.contains(textFieldCreationName.getText())) { /////Check for creation name error input.
                 errorName.setText("Duplicated name.");
                 Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
                 overwrite.setTitle("Duplicated Name");
@@ -181,25 +194,34 @@ public class CreateNewController {
             } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
                 errorName.setVisible(true);
                 errorName.setText("Enter a-z chara name only");
+                textFieldCreationName.clear();
                 error = true;
             }
         } catch (Exception e){
             errorImg.setVisible(true);
             errorImg.setText("Enter a valid input.");
+            textFieldCreationName.clear();
             error = true;
         }
 
-        if (error){
-            textFieldCreationName.clear();
-            textFldImagesNum.clear();
+        if (error){ //Return if there is an error; guide user to reenter the fields.
             return;
         }
 
-        createDirectories();
+        //Notify user of the creation wait.
+        Alert complete = new Alert(Alert.AlertType.INFORMATION);
+        complete.setHeaderText("Creating...");
+        complete.setContentText(textFieldCreationName.getText() + " is being created. Please wait, we will notify you.");
+        complete.show();
 
+        createDirectories(); //Create necessary directories if they have not existed yet.
+
+        //Send an instance of FlickrWork to the background thread to retrieve the images from Flickr.
         FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getText(), textFldImagesNum.getText());
         team.submit(getImg);
 
+        //When images have been successfully retrieved, send an instance of CreationWrok to the background thread to
+        //combine audio, slideshow and video forms into one Creation.
         getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent workerStateEvent) {
@@ -207,7 +229,7 @@ public class CreateNewController {
                 CreationWork creationWork = null;
                 try {
                     creationWork = new CreationWork(_term, textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true);
-                    System.out.println("pic: " + getImg.get());
+                    //System.out.println("pic: " + getImg.get());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -220,12 +242,12 @@ public class CreateNewController {
                     @Override
                     public void handle(WorkerStateEvent workerStateEvent) {
 
-                        cleanUp();
+                        cleanUp(); //Clean up audio files after the Creation has been made.
 
                         _CreationsExisted.clear();
                         Alert complete = new Alert(Alert.AlertType.INFORMATION);
                         complete.setHeaderText("Created");
-                        complete.setContentText(textFieldCreationName.getText() + " has been created.");
+                        complete.setContentText(textFieldCreationName.getText() + " has been created. You can now view.");
                         complete.show();
 
                         textFieldCreationName.clear();
@@ -238,7 +260,7 @@ public class CreateNewController {
 
         Parent menuParent = null;
         try {
-            menuParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
+            menuParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml")); //Return back to menu.
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -250,15 +272,22 @@ public class CreateNewController {
         window.show();
     }
 
+    /**
+     * Create required folders to store the audio, video and pictures for creating the final Creation.
+     * @throws IOException
+     */
     private void createDirectories() throws IOException {
         String path = PathCD.getPathInstance().getPath();
-        System.out.println("Creating directories for: " +_term);
+        //System.out.println("Creating directories for: " +_term);
         String command2 = "mkdir -p \"" + path + "/mydir/extra/" + _term + "/" + textFieldCreationName.getText() + "\"" +
                 " ; mkdir -p \"" + path + "/mydir/creations/" + _term + "\""; //create a creations folders
         ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
         pb2.start();
     }
 
+    /**
+     * Clean up audio files after creation.
+     */
     private void cleanUp() {
 
         //String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/" + TransportClass.getInstance().getter() + "/" + textFieldCreationName.getCharacters().toString() +
@@ -273,6 +302,10 @@ public class CreateNewController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Get the selection of the audio list.
+     */
     public void getTheSelection(){
         try{
             ObservableList selectedCreation = audioList.getSelectionModel().getSelectedItems();

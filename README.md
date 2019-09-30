@@ -2,7 +2,7 @@
 
 Group 4's prototype for VARpedia, a learning tool to help primarily NZ users to learn English terms. It combines visual and audio forms to create a "Creation" video package for you to learn a word using various VARK learning styles.
 
-Created with Scence Builder + Java OpenJDK 13, JavaFX 13
+Created with Scence Builder + Java OpenJDK 13, JavaFX 13 in Intellij
 
 # Libraries you need
 
@@ -20,11 +20,11 @@ Created with Scence Builder + Java OpenJDK 13, JavaFX 13
 
 # How to run
 
-Please use the SOFTENG 206 Virtual Box image provided to run the run.sh script file in.
+Please use the SOFTENG 206 Virtual Box image provided to run the VARK_run.sh script file in.
 
-> Place run.sh in the same folder as the assignment-3.jar file
+> Place run.sh in the same folder as the assignment-3.jar file, lib folder and api-key text file.
 
-> ./run.sh in terminal.
+> ./VARK_run.sh in terminal.
 
-Please do not change the directories around.
+Please do not change the directories/files around. Warning: prototype has print statements currently for testing.
 

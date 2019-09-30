@@ -18,8 +18,16 @@ import java.nio.file.Paths;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * This is the entry point of the application.
+ */
 public class Main extends Application {
 
+    /**
+     * Sets the stage
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
         this.initializeFolder();
@@ -69,7 +77,10 @@ public class Main extends Application {
     }
 
 
-
+    /**
+     * Run this process to clean files when the application finishes
+     * @throws Exception
+     */
     @Override //TODO check if it always works, implement for start, check if exits and nothing is blocking some process is running too.
     public void stop() throws Exception { //In case the deletion of such extra files were not successful.
         String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -"; //Clear files in extra folder.

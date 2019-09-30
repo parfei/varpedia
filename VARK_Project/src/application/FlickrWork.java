@@ -33,10 +33,19 @@ public class FlickrWork extends Task<String> {
         _num = Integer.parseInt(num);
     }
 
+    /**
+     * Main template method of the application.
+     * @return
+     * @throws Exception
+     */
     @Override
     protected String call() throws Exception {
         // https://www.flickr.com/search/?text=_term;
+
         try {
+            if (_num == 0){
+                return "0";
+            }
             getPhotos();
         } catch (RuntimeException e){
             return "0";
@@ -52,19 +61,19 @@ public class FlickrWork extends Task<String> {
      * @throws IOException
      */
     private String getAPIKey(String key) throws IOException {
-        String creationsDir = null;
+        String direct = null;
         try {
-            creationsDir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getAbsolutePath();
+            direct = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getAbsolutePath();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        creationsDir = creationsDir.substring(0,creationsDir.lastIndexOf("/"));
-        String config = creationsDir+ "/flickr-api-key.txt";
+        direct = direct.substring(0,direct.lastIndexOf("/"));
+        String config = direct + "/flickr-api-key.txt";
 
         //String config = PathCD.getPathInstance().getPath().substring(0, PathCD.getPathInstance().getPath().indexOf("/out"))
         //        + "/src/application/config/flickr-api-key.txt";
 
-        System.out.println(config);
+        //System.out.println(config);
 
         File file = new File(config);
 
@@ -72,7 +81,7 @@ public class FlickrWork extends Task<String> {
         try {
             br = new BufferedReader(new FileReader(file));
 
-            String line;
+            String line; //Read in the required string, according to the key that was specified.
             while ( (line = br.readLine()) != null ) {
                 if (line.trim().startsWith(key)) { //Read in the necessary line as requested by the type of key in the input.
                     br.close();
@@ -80,9 +89,13 @@ public class FlickrWork extends Task<String> {
                 }
             }
             br.close();
-            throw new RuntimeException("Couldn't find " + key +" in config file "+file.getName());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            //throw new RuntimeException("Couldn't find " + key +" in config file "+file.getName());
+        } catch (FileNotFoundException e) { //DEFAULT KEYS IF FILE NOT FOUND
+            if (key.equals("apikey")){
+                return "717f64bdd9d9d00bfcdb7a8871bd79b4";
+            } else if (key.equals("secret")){
+                return "db6f6b6070311dfe";
+            }
         }
         return null;
     }

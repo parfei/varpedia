@@ -131,6 +131,8 @@ public class ViewController {
                     playOptions.setVisible(false);
                     view.setVisible(false);
                     pauseButton.setText("Pause");
+                    _choice = null;
+                    _player.dispose();
                 }
             });
 
@@ -177,6 +179,9 @@ public class ViewController {
                 btn.setText("Resume");
             } else if (btnText.equals("Stop")){
                 _player.stop();
+                _player.dispose();
+                pauseButton.setText("Pause");
+                _choice = null;
                 view.setVisible(false);
             } else if (btnText.equals("<< 10")){
                 _player.seek(new Duration(_player.getCurrentTime().toMillis() - 10000));
@@ -223,7 +228,7 @@ public class ViewController {
 
                 String path = findCreation(_choice);
 
-                String cmd= "rm \"" + path + "\"";
+                String cmd= "rm -f \"" + path + "\"";
                 System.out.println(cmd);
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
