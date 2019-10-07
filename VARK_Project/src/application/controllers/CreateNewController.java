@@ -157,119 +157,121 @@ public class CreateNewController {
             window.show();
 
         }
+        else {
 
-        errorImg.setVisible(false);
-        errorName.setVisible(false);
+            errorImg.setVisible(false);
+            errorName.setVisible(false);
 
-        Boolean error = false;
+            Boolean error = false;
 
-        try {
-            Integer num = Integer.parseInt(textFldImagesNum.getText()); /////Check for picture number error input.
-            if ( num < 0 || num > 10 ){
+            try {
+                Integer num = Integer.parseInt(textFldImagesNum.getText()); /////Check for picture number error input.
+                if (num < 0 || num > 10) {
+                    errorImg.setVisible(true);
+                    errorImg.setText("Please enter between 0-10");
+                    textFldImagesNum.clear();
+                    error = true;
+                }
+            } catch (NumberFormatException e) {
                 errorImg.setVisible(true);
-                errorImg.setText("Please enter between 0-10");
+                errorImg.setText("Enter a valid input.");
                 textFldImagesNum.clear();
                 error = true;
             }
-        } catch (NumberFormatException e){
-            errorImg.setVisible(true);
-            errorImg.setText("Enter a valid input.");
-            textFldImagesNum.clear();
-            error = true;
-        }
 
-        try {
-            if (_CreationsExisted.contains(textFieldCreationName.getText())) { /////Check for creation name error input.
-                errorName.setText("Duplicated name.");
-                Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
-                overwrite.setTitle("Duplicated Name");
-                overwrite.setHeaderText("Would you like to overwrite " + textFieldCreationName.getText() + "?");
-                overwrite.setContentText("OK: overwrite. Cancel: retry your name, or you can choose to go back to the menu.");
+            try {
+                if (_CreationsExisted.contains(textFieldCreationName.getText())) { /////Check for creation name error input.
+                    errorName.setText("Duplicated name.");
+                    Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
+                    overwrite.setTitle("Duplicated Name");
+                    overwrite.setHeaderText("Would you like to overwrite " + textFieldCreationName.getText() + "?");
+                    overwrite.setContentText("OK: overwrite. Cancel: retry your name, or you can choose to go back to the menu.");
 
-                overwrite.showAndWait();
-                if (overwrite.getResult() == ButtonType.OK) {
-                }else{
-                    return;
+                    overwrite.showAndWait();
+                    if (overwrite.getResult() == ButtonType.OK) {
+                    } else {
+                        return;
+                    }
+                } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
+                    errorName.setVisible(true);
+                    errorName.setText("Enter a-z chara name only");
+                    textFieldCreationName.clear();
+                    error = true;
                 }
-            } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
-                errorName.setVisible(true);
-                errorName.setText("Enter a-z chara name only");
+            } catch (Exception e) {
+                errorImg.setVisible(true);
+                errorImg.setText("Enter a valid input.");
                 textFieldCreationName.clear();
                 error = true;
             }
-        } catch (Exception e){
-            errorImg.setVisible(true);
-            errorImg.setText("Enter a valid input.");
-            textFieldCreationName.clear();
-            error = true;
-        }
 
-        if (error){ //Return if there is an error; guide user to reenter the fields.
-            return;
-        }
-
-        //Notify user of the creation wait.
-        Alert complete = new Alert(Alert.AlertType.INFORMATION);
-        complete.setHeaderText("Creating...");
-        complete.setContentText(textFieldCreationName.getText() + " is being created. Please wait, we will notify you.");
-        complete.show();
-
-        createDirectories(); //Create necessary directories if they have not existed yet.
-
-        //Send an instance of FlickrWork to the background thread to retrieve the images from Flickr.
-        FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getText(), textFldImagesNum.getText());
-        team.submit(getImg);
-
-        //When images have been successfully retrieved, send an instance of CreationWrok to the background thread to
-        //combine audio, slideshow and video forms into one Creation.
-        getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent workerStateEvent) {
-
-                CreationWork creationWork = null;
-                try {
-                    creationWork = new CreationWork(_term, textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true);
-                    //System.out.println("pic: " + getImg.get());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-
-                team.submit(creationWork);
-
-                creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                    @Override
-                    public void handle(WorkerStateEvent workerStateEvent) {
-
-                        cleanUp(); //Clean up audio files after the Creation has been made.
-
-                        _CreationsExisted.clear();
-                        Alert complete = new Alert(Alert.AlertType.INFORMATION);
-                        complete.setHeaderText("Created");
-                        complete.setContentText(textFieldCreationName.getText() + " has been created. You can now view.");
-                        complete.show();
-
-                        textFieldCreationName.clear();
-                        textFldImagesNum.clear();
-                    }
-                });
-
+            if (error) { //Return if there is an error; guide user to reenter the fields.
+                return;
             }
-        });
 
-        Parent menuParent = null;
-        try {
-            menuParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml")); //Return back to menu.
-        } catch (IOException e) {
-            e.printStackTrace();
+            //Notify user of the creation wait.
+            Alert complete = new Alert(Alert.AlertType.INFORMATION);
+            complete.setHeaderText("Creating...");
+            complete.setContentText(textFieldCreationName.getText() + " is being created. Please wait, we will notify you.");
+            complete.show();
+
+            createDirectories(); //Create necessary directories if they have not existed yet.
+
+            //Send an instance of FlickrWork to the background thread to retrieve the images from Flickr.
+            FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getText(), textFldImagesNum.getText());
+            team.submit(getImg);
+
+            //When images have been successfully retrieved, send an instance of CreationWrok to the background thread to
+            //combine audio, slideshow and video forms into one Creation.
+            getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                @Override
+                public void handle(WorkerStateEvent workerStateEvent) {
+
+                    CreationWork creationWork = null;
+                    try {
+                        creationWork = new CreationWork(_term, textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true);
+                        //System.out.println("pic: " + getImg.get());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                    team.submit(creationWork);
+
+                    creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                        @Override
+                        public void handle(WorkerStateEvent workerStateEvent) {
+
+                            cleanUp(); //Clean up audio files after the Creation has been made.
+
+                            _CreationsExisted.clear();
+                            Alert complete = new Alert(Alert.AlertType.INFORMATION);
+                            complete.setHeaderText("Created");
+                            complete.setContentText(textFieldCreationName.getText() + " has been created. You can now view.");
+                            complete.show();
+
+                            textFieldCreationName.clear();
+                            textFldImagesNum.clear();
+                        }
+                    });
+
+                }
+            });
+
+            Parent menuParent = null;
+            try {
+                menuParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml")); //Return back to menu.
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Scene createViewScene = new Scene(menuParent);
+            // gets the Stage information
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(createViewScene);
+            window.setTitle("Main Menu");
+            window.show();
         }
-        Scene createViewScene = new Scene(menuParent);
-        // gets the Stage information
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(createViewScene);
-        window.setTitle("Main Menu");
-        window.show();
     }
 
     /**
