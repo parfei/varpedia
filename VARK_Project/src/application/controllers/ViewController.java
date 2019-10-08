@@ -39,6 +39,7 @@ public class ViewController {
     @FXML private Button playButton;
     @FXML private Button deleteButton;
     @FXML private Button pauseButton;
+    @FXML private Button muteButton;
     @FXML private Button timeBack;
     @FXML private Button timeForward;
 
@@ -70,7 +71,8 @@ public class ViewController {
         }
 
         playOptions.managedProperty().bind(playOptions.visibleProperty());
-        playOptions.setVisible(false);
+        playOptions.setVisible(false); //Manage the buttons for the video player
+        muteButton.setVisible(false);
     }
 
     /**
@@ -122,6 +124,7 @@ public class ViewController {
 
             view.setMediaPlayer(_player);
             _player.play(); //Play the video
+            muteButton.setVisible(true);
             playOptions.setVisible(true); //Show the video manipulation options.
 
             /*String cmd = "ffplay -autoexit \"" + path "\"";
@@ -164,17 +167,17 @@ public class ViewController {
         } else if (btnText.equals("Stop")){
             _player.stop();
             resetPlayer();
+        } else if (btnText.equals("Mute")){
+            _player.setMute(true);
+            muteButton.setText("Unmute");
+        } else if (btnText.equals("Unmute")){
+            _player.setMute(false);
+            muteButton.setText("Mute");
         } else if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)){ //IF VIDEO IS PLAYING
             if (btnText.equals("Pause")){ //pause
                 _player.pause();
                 pauseButton.setText("Resume");
-            }/*else if (btnText.equals("Mute")){
-                _player.setMute(true);
-                btn.setText("Unmute");
-            } else if (btnText.equals("Unmute")){
-                _player.setMute(false);
-                btn.setText("Mute");
-            }*/
+            }
         }else{ //IF VIDEO IS PAUSED
             if (btnText.equals("Resume")){ //resume
                 _player.play();
@@ -239,7 +242,9 @@ public class ViewController {
     }
 
     private void resetPlayer(){
+        muteButton.setVisible(false);
         playOptions.setVisible(false);
+        muteButton.setText("Mute");
         pauseButton.setText("Pause");
         _choice = null;
         view.setVisible(false);
