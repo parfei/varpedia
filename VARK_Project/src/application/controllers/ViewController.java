@@ -33,31 +33,19 @@ public class ViewController {
     // create an object of CreateController to use to go back to main menu method
     private CreationController creation = new CreationController();
 
-    @FXML
-    private ListView stuffCreated;
+    @FXML private ListView stuffCreated;
+    @FXML private MediaView view;
+    @FXML private ButtonBar playOptions;
+    @FXML private Button playButton;
+    @FXML private Button deleteButton;
+    @FXML private Button pauseButton;
+    @FXML private Button timeBack;
+    @FXML private Button timeForward;
 
-    @FXML
-    private ButtonBar playOptions;
-    @FXML
-    private Button playButton;
-    @FXML
-    private Button deleteButton;
-    @FXML
-    private Text errorText;
+    @FXML private Text errorText;
 
-    @FXML
-    private MediaView view;
-    @FXML
-    private Button pauseButton;
-    @FXML
-    private Button timeBack;
-    @FXML
-    private Button timeForward;
-
-    @FXML
-    private URL location;
-    @FXML
-    private ResourceBundle resources;
+    @FXML private URL location;
+    @FXML private ResourceBundle resources;
 
     /**
      * This method will add the existing creation to the ListView
@@ -118,29 +106,23 @@ public class ViewController {
     public void playVideo(ActionEvent event)throws IOException{
         view.setVisible(true);
 
-        if(_choice!=null) {
-            String path = findCreation(_choice);
-            System.out.println(path);
+        if(_choice!=null) { //If the user selected something to play
+            String path = findCreation(_choice); //Find the creation of the user's choice
+
             File file = new File(path);
             _player = new MediaPlayer(new Media(file.toURI().toString()));
             _player.setAutoPlay(true);
 
-            _player.setOnEndOfMedia(new Runnable() {
+            _player.setOnEndOfMedia(new Runnable() { //When the player ends...
                 @Override
                 public void run() {
-                    playOptions.setVisible(false);
-                    view.setVisible(false);
-                    pauseButton.setText("Pause");
-                    _choice = null;
-                    _player.dispose();
+                    resetPlayer();
                 }
             });
 
             view.setMediaPlayer(_player);
-            _player.play();
-            view.setVisible(true);
-
-            playOptions.setVisible(true);
+            _player.play(); //Play the video
+            playOptions.setVisible(true); //Show the video manipulation options.
 
             /*String cmd = "ffplay -autoexit \"" + path "\"";
             System.out.println(cmd);
@@ -171,39 +153,32 @@ public class ViewController {
      */
     @FXML
     public void videoPlay(ActionEvent event){
-        Button btn = (Button)event.getSource();
-        String btnText = btn.getText();
-        if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)){
-            if (btnText.equals("Pause")){
+        String btnText = ((Button)event.getSource()).getText(); //Get button pressed's text
+
+        if (btnText.equals("<< 10")){ //Regardless if playing status or not...
+            _player.play();
+            _player.seek(new Duration(_player.getCurrentTime().toMillis() - 10000));
+        } else if (btnText.equals("10 >>")){
+            _player.play();
+            _player.seek(new Duration(_player.getCurrentTime().toMillis() + 10000));
+        } else if (btnText.equals("Stop")){
+            _player.stop();
+            resetPlayer();
+        } else if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)){ //IF VIDEO IS PLAYING
+            if (btnText.equals("Pause")){ //pause
                 _player.pause();
-                btn.setText("Resume");
-            } else if (btnText.equals("Stop")){
-                _player.stop();
-                _player.dispose();
-                pauseButton.setText("Pause");
-                _choice = null;
-                view.setVisible(false);
-            } else if (btnText.equals("<< 10")){
-                _player.seek(new Duration(_player.getCurrentTime().toMillis() - 10000));
-            } else if (btnText.equals("10 >>")){
-                _player.seek(new Duration(_player.getCurrentTime().toMillis() + 10000));
-            } /*else if (btnText.equals("Mute")){
+                pauseButton.setText("Resume");
+            }/*else if (btnText.equals("Mute")){
                 _player.setMute(true);
                 btn.setText("Unmute");
             } else if (btnText.equals("Unmute")){
                 _player.setMute(false);
                 btn.setText("Mute");
             }*/
-        }else{
-            if (btnText.equals("Resume")){
+        }else{ //IF VIDEO IS PAUSED
+            if (btnText.equals("Resume")){ //resume
                 _player.play();
-                btn.setText("Pause");
-            } else if (btnText.equals("Stop")) {
-                _player.stop();
-                view.setVisible(false);
-            }else {
-                errorText.setVisible(true);
-                errorText.setText("There is nothing playing at the moment.");
+                pauseButton.setText("Pause");
             }
         }
     }
@@ -261,6 +236,14 @@ public class ViewController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void resetPlayer(){
+        playOptions.setVisible(false);
+        pauseButton.setText("Pause");
+        _choice = null;
+        view.setVisible(false);
+        _player.dispose();
     }
 
 }
