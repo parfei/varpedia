@@ -9,7 +9,7 @@
 #Files from development
 .idea/*.xml
 default_voice
-female_voice
+female_voice.scm
 male_voice
 
 # User-specific stuff
