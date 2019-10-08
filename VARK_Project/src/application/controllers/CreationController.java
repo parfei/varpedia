@@ -1,4 +1,5 @@
 package application.controllers;
+import application.ChangeScene;
 import application.Main;
 import application.PathCD;
 import javafx.application.Platform;
@@ -34,6 +35,7 @@ public class CreationController {
     private Button enterButton;
     @FXML
     private Button goingBack;
+    private ChangeScene _changeSceneObject=new ChangeScene();
 
     @FXML
     public void initialize() {
@@ -47,13 +49,14 @@ public class CreationController {
 
     @FXML
     public void backToMain(ActionEvent event) throws IOException {
-        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
+        _changeSceneObject.changeScene(event, "resources/menu.fxml", "Main Menu");
+        /*Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setTitle("Main Menu");
         window.setScene(createViewScene);
-        window.show();
+        window.show();*/
 
 
     }
@@ -107,7 +110,7 @@ public class CreationController {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 _line = reader.readLine();
 
-                //_line = _line.replace(". ", "\n");
+                //_line = _line.replace(". ", ".\n");
 
             } catch (
                     IOException ex) {

@@ -320,7 +320,7 @@ public class SaveToAudioController {
      * @param event
      */
     public void cancel(ActionEvent event) {
-        _changeSceneObject.changeScene(event, "resource/EditText.fxml", "Edit text Menu");
+        _changeSceneObject.changeScene(event, "resources/EditText.fxml", "Edit text Menu");
     }
 
 

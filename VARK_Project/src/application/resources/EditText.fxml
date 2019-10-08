@@ -14,7 +14,7 @@
       <Button layoutX="415.0" layoutY="241.0" mnemonicParsing="false" onAction="#save" prefHeight="29.0" prefWidth="62.0" text="Save" />
       <Button layoutX="551.0" layoutY="336.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="48.0" prefWidth="62.0" text="Menu" />
       <Label fx:id="select" layoutX="14.0" layoutY="6.0" text="Select readable text to be synthesized" />
-      <Button layoutX="324.0" layoutY="336.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="48.0" prefWidth="219.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Create" textFill="WHITE" />
+      <Button fx:id="create" layoutX="324.0" layoutY="336.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="48.0" prefWidth="219.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Create" textFill="WHITE" />
       <RadioButton fx:id="default_voice" layoutX="337.0" layoutY="96.0" mnemonicParsing="false" text="default voice">
          <toggleGroup>
             <ToggleGroup fx:id="group" />
