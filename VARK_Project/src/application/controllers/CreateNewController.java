@@ -58,6 +58,10 @@ public class CreateNewController {
     private List<String> _CreationsExisted = new ArrayList<String>();
     private ExecutorService team;
     private String _term;
+    private ChangeScene _changeSceneObject=new ChangeScene();
+
+
+
 
 
     public void initData(String term){
@@ -119,14 +123,17 @@ public class CreateNewController {
     public void returnToStart(ActionEvent event) throws IOException {
 
         _CreationsExisted.clear();
+        _changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
 
-        Parent createView = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
+
+
+        /*Parent createView = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
         Scene createViewScene = new Scene(createView);
         // gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setTitle("Main Menu");
         window.setScene(createViewScene);
-        window.show();
+        window.show();*/
     }
 
     /***

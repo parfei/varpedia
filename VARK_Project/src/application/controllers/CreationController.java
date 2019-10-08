@@ -55,7 +55,6 @@ public class CreationController {
         window.setScene(createViewScene);
         window.show();
 
-        //text2wave -o some.wav some.txt -eval slow.scm
 
     }
 

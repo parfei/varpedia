@@ -1,5 +1,6 @@
 package application.controllers;
 
+import application.ChangeScene;
 import application.Main;
 import application.PathCD;
 import javafx.event.ActionEvent;
@@ -27,6 +28,10 @@ public class EditTextController {
     @FXML
     private Label select;
 
+    @FXML
+    private Button create;
+
+
     private StringBuffer _stringBuffer = new StringBuffer();
 
     @FXML
@@ -40,6 +45,7 @@ public class EditTextController {
 
     private String _term;
 
+
     static final int OUT = 0;
     static final int IN = 1;
 
@@ -47,6 +53,7 @@ public class EditTextController {
         _term = term;
         System.out.println(_term);
     }
+    private ChangeScene _changeSceneObject=new ChangeScene();
 
 
     /**
@@ -54,6 +61,7 @@ public class EditTextController {
      */
     @FXML
     public void initialize() {
+
         remindLabel.setVisible(false);
 
         String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
@@ -222,13 +230,17 @@ public class EditTextController {
             writer.write(saveble);
             writer.close();
 
+
+
             try {
+
 
                 FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/saveToAudio.fxml"));
                 Parent createViewParent = loader.load();
                 SaveToAudioController controller = loader.getController();
 
                 controller.initData(_term);
+
 
                 Scene createViewScene = new Scene(createViewParent);
                 // gets the Stage information
@@ -263,14 +275,15 @@ public class EditTextController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        _changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
 
-        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
+        /*Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setTitle("Main Menu");
         window.setScene(createViewScene);
-        window.show();
+        window.show();*/
     }
 
     private static boolean isDirEmpty(final Path directory) throws IOException {
@@ -287,10 +300,11 @@ public class EditTextController {
     @FXML
     public void readyToCombine(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/createNew.fxml"));
-        Parent createViewParent = loader.load();
+        Parent createViewParent=loader.load();
         CreateNewController controller = loader.getController();
 
         controller.initData(_term);
+
 
         Scene createViewScene = new Scene(createViewParent);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -298,8 +312,6 @@ public class EditTextController {
         // gets the Stage information
         window.setTitle("Creation Menu");
         window.show();
-
-
     }
 
     /**

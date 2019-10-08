@@ -1,5 +1,6 @@
 package application.controllers;
 
+import application.ChangeScene;
 import application.Main;
 import javafx.fxml.FXML;
 
@@ -15,6 +16,8 @@ import java.io.IOException;
 
 public class MainController {
 
+    private ChangeScene _changeSceneObject=new ChangeScene();
+
 
     //private MainController controller = new MainController();
 
@@ -26,25 +29,21 @@ public class MainController {
 
     @FXML
     public void create(ActionEvent event) throws IOException {
+        _changeSceneObject.changeScene(event,"resources/Creation.fxml","Creation");
 
-        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/Creation.fxml"));
+       /* Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/Creation.fxml"));
         Scene createViewScene = new Scene(createViewParent);
         // gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setTitle("Creation");
         window.setScene(createViewScene);
-        window.show();
+        window.show();*/
 
     }
     @FXML
     public void view(ActionEvent event)throws IOException{
-        Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/View.fxml"));
-        Scene createViewScene = new Scene(createViewParent);
-        // gets the Stage information
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setTitle("View Menu");
-        window.setScene(createViewScene);
-        window.show();
+        _changeSceneObject.changeScene(event,"resources/View.fxml","View Menu");
+
     }
     /*@FXML
     public void play(ActionEvent event)throws IOException{
