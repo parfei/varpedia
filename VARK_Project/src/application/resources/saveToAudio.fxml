@@ -43,7 +43,7 @@
          <font>
             <Font size="16.0" />
          </font></Label>
-      <Button layoutX="290.0" layoutY="261.0" mnemonicParsing="false" onAction="#cancel" onMouseClicked="#cancel" text="Cancel" />
+      <Button layoutX="290.0" layoutY="261.0" mnemonicParsing="false" onAction="#cancel" onMouseClicked="#cancel" prefHeight="41.0" prefWidth="63.0" text="Cancel" />
       <Label fx:id="errorName" layoutX="285.0" layoutY="62.0" text="Label" textFill="RED">
          <font>
             <Font size="16.0" />
