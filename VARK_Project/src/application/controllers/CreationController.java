@@ -50,13 +50,7 @@ public class CreationController {
     @FXML
     public void backToMain(ActionEvent event) throws IOException {
         _changeSceneObject.changeScene(event, "resources/menu.fxml", "Main Menu");
-        /*Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
-        Scene createViewScene = new Scene(createViewParent);
-        // gets the Stage information
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("Main Menu");
-        window.setScene(createViewScene);
-        window.show();*/
+
 
 
     }
