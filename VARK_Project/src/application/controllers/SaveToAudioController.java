@@ -115,25 +115,7 @@ public class SaveToAudioController {
             return;
         } else {
 
-            /*class DoingJob extends Task<Void> {
-                private boolean resultOut;
-                private ActionEvent _event;
-
-                public DoingJob(ActionEvent event) {
-                    _event = event;
-                }
-
-                @Override
-                protected Void call() throws Exception {
-                    progressBar.setVisible(true);
-                    enterButton.setVisible(true);
-                    goingBack.setVisible(true);
-                    yourKeyWord.setVisible(true);
-
-                    Platform.runLater(() -> {
-                        progressBar.progressProperty().bind(this.progressProperty());
-                    });*/
-
+            
 
             if (kal.isSelected()) {
 
