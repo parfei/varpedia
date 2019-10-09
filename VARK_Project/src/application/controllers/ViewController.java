@@ -230,6 +230,7 @@ public class ViewController {
     private String findCreation(String name){
         String command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/\"*\"/" + name + ".mp4\"";
 
+
         ProcessBuilder find = new ProcessBuilder("bash", "-c", command);
         try {
             Process process = find.start();

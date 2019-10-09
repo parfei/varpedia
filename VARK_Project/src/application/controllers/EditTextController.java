@@ -3,6 +3,7 @@ package application.controllers;
 import application.ChangeScene;
 import application.Main;
 import application.PathCD;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,13 +11,15 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.*;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +38,10 @@ public class EditTextController {
     private Button create;
 
 
+
+    private String _choice;
+
+
     private StringBuffer _stringBuffer = new StringBuffer();
     private List<String> _audioExisted= new ArrayList<>();
 
@@ -46,8 +53,7 @@ public class EditTextController {
     private RadioButton female_voice;
     @FXML
     private Label remindLabel;
-    @FXML
-    private Label errorName;
+
 
     private String _term;
     private String _selectedText;
@@ -73,8 +79,8 @@ public class EditTextController {
     @FXML
     public void initialize() {
 
+
         remindLabel.setVisible(false);
-        errorName.setVisible(false);
 
         String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
         //String cmd="cat temp.txt";
@@ -111,6 +117,12 @@ public class EditTextController {
         }
 
 
+
+    }
+
+    public int countNumberOfAudioFileInAudioPiece() {
+        String path= PathCD.getPathInstance().getPath()+"/mydir/extra/audioPiece";
+       return new File(path).listFiles().length;
 
     }
     @FXML
@@ -264,30 +276,13 @@ public class EditTextController {
             FileWriter writer = new FileWriter(PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt");
             writer.write(saveble);
             writer.close();
-            String userInput = textField.getText();
 
-            if (userInput.trim().isEmpty() || userInput == null) {
-                errorName.setVisible(true);
-                errorName.setText("Complete the fields!");
-                return;
-            } else if (_audioExisted.contains(textField.getText())) {
-                errorName.setText("Duplicated name.");
-                Alert error = new Alert(Alert.AlertType.ERROR);
-                error.setTitle("Duplicated Name");
-                error.setHeaderText("please enter another name");
-                error.setContentText("come up with another name");
-                error.showAndWait();
-
-            } else if (!textField.getText().matches("[a-zA-Z0-9_-]*")) {
-                errorName.setVisible(true);
-                errorName.setText("Invalid name. Please enter again.");
-                return;
-            } else {
 
 
                 if (default_voice.isSelected()) {
-
-                    String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
+                    int numberOfAudio=countNumberOfAudioFileInAudioPiece();
+                    String number=Integer.toString(numberOfAudio);
+                    String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term + "-"+ number+ ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
                     System.out.println(createAudio);
 
                     ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
@@ -297,7 +292,7 @@ public class EditTextController {
                     } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
                     }
-                    String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav";
+                    String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term + "-"+number+ ".wav";
                     File file = new File(file_path);
                     // handle the case when audio is not saved successfully
                     if (file.length() == 0) {
@@ -315,6 +310,8 @@ public class EditTextController {
                             e.printStackTrace();
                         }
                     }
+                    _audioExisted.clear();
+                    existingAudioView.getItems().clear();
                     String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
                     System.out.println(PathCD.getPathInstance().getPath());
                     ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
@@ -330,30 +327,12 @@ public class EditTextController {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    // guide the user back to EditText interface to continue saving
-                    /*try {
-                        _audioExisted.clear();
-                        existingAudioView.getItems().clear();
 
-                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
-                        Parent createViewParent = loader.load();
-                        EditTextController controller = loader.getController();
-
-                        controller.initData(_term);
-                        Scene createViewScene = new Scene(createViewParent);
-                        // gets the Stage information
-                        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-                        window.setTitle("Edit text Menu");
-                        window.setScene(createViewScene);
-                        window.show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-
-                    }*/
 
                 } else if (male_voice.isSelected()) {
-                    String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" +
+                    int numberOfAudio=countNumberOfAudioFileInAudioPiece();
+                    String number=Integer.toString(numberOfAudio);
+                    String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number + ".wav\" \"" +
                             PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval jdt.scm";
 
                     ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
@@ -363,7 +342,7 @@ public class EditTextController {
                     } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
                     }
-                    String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav";
+                    String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number + ".wav";
                     File file = new File(file_path);
                 /*
                 ask user to save in default voice or give up saving if the male voice option can't save the audio
@@ -388,22 +367,29 @@ public class EditTextController {
                         }
 
                         if (result.get() == ButtonType.OK) {
-                            String createDefaultAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" +
+                            int numberOfAudio2=countNumberOfAudioFileInAudioPiece();
+                            String number2=Integer.toString(numberOfAudio2);
+                            String createDefaultAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number2  + ".wav\" \"" +
                                     PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
 
                             ProcessBuilder pb3 = new ProcessBuilder("bash", "-c", createDefaultAudio);
                             try {
                                 Process process = pb3.start();
+                                process.waitFor();
 
-                            } catch (IOException e) {
+                            } catch (IOException | InterruptedException e) {
                                 e.printStackTrace();
                             }
+
+
                         } else {
                             //do nothing
                         }
 
 
                     }
+                    _audioExisted.clear();
+                    existingAudioView.getItems().clear();
                     String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
                     System.out.println(PathCD.getPathInstance().getPath());
                     ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
@@ -419,28 +405,12 @@ public class EditTextController {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    /*try {
-                        _audioExisted.clear();
-                        existingAudioView.getItems().clear();
 
-                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
-                        Parent createViewParent = loader.load();
-                        EditTextController controller = loader.getController();
-
-                        controller.initData(_term);
-                        Scene createViewScene = new Scene(createViewParent);
-                        // gets the Stage information
-                        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-                        window.setTitle("Edit text Menu");
-                        window.setScene(createViewScene);
-                        window.show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
 
                 }else if (female_voice.isSelected()) {
-                    String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" +
+                    int numberOfAudio=countNumberOfAudioFileInAudioPiece();
+                    String number=Integer.toString(numberOfAudio);
+                    String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number + ".wav\" \"" +
                             PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval cw.scm";
                     System.out.println(createAudio);
 
@@ -451,7 +421,7 @@ public class EditTextController {
                     } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
                     }
-                    String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav";
+                    String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number  + ".wav";
                     File file = new File(file_path);
                 /*
                 ask user to save in default voice or give up saving if the female voice option can't save the audio
@@ -476,14 +446,18 @@ public class EditTextController {
                         }
 
                         if (result.get() == ButtonType.OK) {
-                            String createDefaultAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" +
+                            int numberOfAudio2=countNumberOfAudioFileInAudioPiece();
+                            String number2=Integer.toString(numberOfAudio2);
+
+                            String createDefaultAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number2  + ".wav\" \"" +
                                     PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
 
                             ProcessBuilder pb3 = new ProcessBuilder("bash", "-c", createDefaultAudio);
                             try {
                                 Process process = pb3.start();
+                                process.waitFor();
 
-                            } catch (IOException e) {
+                            } catch (IOException | InterruptedException e) {
                                 e.printStackTrace();
                             }
                         } else {
@@ -492,6 +466,8 @@ public class EditTextController {
 
 
                     }
+                    _audioExisted.clear();
+                    existingAudioView.getItems().clear();
                     String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
                     System.out.println(PathCD.getPathInstance().getPath());
                     ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
@@ -506,63 +482,19 @@ public class EditTextController {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }/*
-                    try {
-                        _audioExisted.clear();
-                        existingAudioView.getItems().clear();
-
-                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
-                        Parent createViewParent = loader.load();
-                        EditTextController controller = loader.getController();
-
-                        controller.initData(_term);
-                        Scene createViewScene = new Scene(createViewParent);
-                        // gets the Stage information
-                        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-                        window.setTitle("Edit text Menu");
-                        window.setScene(createViewScene);
-                        window.show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
+                    }
 
                 } else {//do nothing
                 }
             }
         }
-    }
 
 
 
 
 
 
-        /*try {
 
-
-
-                FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/saveToAudio.fxml"));
-                Parent createViewParent = loader.load();
-                SaveToAudioController controller = loader.getController();
-
-                controller.initData(_term);
-
-
-                Scene createViewScene = new Scene(createViewParent);
-                // gets the Stage information
-                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                window.setTitle("Save to Audio Menu");
-                window.setScene(createViewScene);
-                window.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-
-            }
-
-
-        }
-    }
 
 
     /**
@@ -584,13 +516,7 @@ public class EditTextController {
         }
         _changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
 
-        /*Parent createViewParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
-        Scene createViewScene = new Scene(createViewParent);
-        // gets the Stage information
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("Main Menu");
-        window.setScene(createViewScene);
-        window.show();*/
+
     }
 
     private static boolean isDirEmpty(final Path directory) throws IOException {
@@ -620,6 +546,8 @@ public class EditTextController {
         window.setTitle("Creation Menu");
         window.show();
     }
+
+
 
     /**
      * This method will count how many words in users' selected part
@@ -656,6 +584,8 @@ public class EditTextController {
         }
         return wc;
     }
+
+
 
 
 

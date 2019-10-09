@@ -174,7 +174,8 @@ public class CreationController {
                         window.setScene(createViewScene);
                         window.show();
                         window.setTitle("Edit text Menu");
-                    } catch (IOException e) { //TODO error?
+                    } catch (IOException e) {
+                        e.printStackTrace();//TODO error?
                     }
 
                 });

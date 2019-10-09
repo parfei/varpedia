@@ -5,18 +5,17 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="986.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.EditTextController">
+<AnchorPane prefHeight="400.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.EditTextController">
    <children>
       <TextArea fx:id="textArea" layoutX="14.0" layoutY="32.0" prefHeight="352.0" prefWidth="268.0" wrapText="true" />
-      <Button layoutX="337.0" layoutY="241.0" mnemonicParsing="false" onAction="#preview" prefHeight="29.0" prefWidth="70.0" text="Preview" />
-      <Button layoutX="557.0" layoutY="243.0" mnemonicParsing="false" onAction="#save" prefHeight="26.0" prefWidth="62.0" text="Save" />
-      <Button layoutX="720.0" layoutY="359.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="26.0" prefWidth="62.0" text="Menu" />
+      <Button layoutX="337.0" layoutY="242.0" mnemonicParsing="false" onAction="#preview" prefHeight="26.0" prefWidth="70.0" text="Preview" />
+      <Button layoutX="433.0" layoutY="243.0" mnemonicParsing="false" onAction="#save" prefHeight="26.0" prefWidth="62.0" text="Save" />
+      <Button layoutX="341.0" layoutY="297.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="26.0" prefWidth="62.0" text="Menu" />
       <Label fx:id="select" layoutX="14.0" layoutY="6.0" text="Select readable text to be synthesized" />
-      <Button fx:id="create" layoutX="832.0" layoutY="357.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="29.0" prefWidth="70.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Create" textFill="WHITE" />
+      <Button fx:id="create" layoutX="429.0" layoutY="296.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="29.0" prefWidth="70.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Create" textFill="WHITE" />
       <RadioButton fx:id="default_voice" layoutX="337.0" layoutY="96.0" mnemonicParsing="false" text="default voice">
          <toggleGroup>
             <ToggleGroup fx:id="group" />
@@ -26,12 +25,7 @@
       <RadioButton fx:id="female_voice" layoutX="338.0" layoutY="150.0" mnemonicParsing="false" text="female voice" toggleGroup="$group" />
       <Label fx:id="askForVoice" layoutX="337.0" layoutY="64.0" text="Please select a voice" />
       <Label fx:id="remindLabel" layoutX="285.0" layoutY="176.0" prefHeight="65.0" prefWidth="219.0" text="Switched to default voice due to limitation of voice selected" textFill="RED" wrapText="true" />
-      <Label layoutX="549.0" layoutY="64.0" text="Audio name" />
-      <ListView fx:id="existingAudioView" layoutX="718.0" layoutY="87.0" prefHeight="200.0" prefWidth="200.0" />
-      <TextField fx:id="textField" layoutX="511.0" layoutY="126.0" />
-      <Label layoutX="751.0" layoutY="64.0" text="exist audios" />
-      <Label fx:id="errorName" layoutX="537.0" layoutY="97.0" text="label" />
-      <Button layoutX="736.0" layoutY="308.0" mnemonicParsing="false" text="play" />
-      <Button layoutX="837.0" layoutY="308.0" mnemonicParsing="false" text="delete" />
+      <ListView fx:id="existingAudioView" layoutX="523.0" layoutY="30.0" prefHeight="352.0" prefWidth="200.0" />
+      <Label layoutX="523.0" layoutY="6.0" text="exist audios" />
    </children>
 </AnchorPane>
