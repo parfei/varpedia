@@ -1,7 +1,10 @@
 package application.controllers;
 
+import application.ChangeScene;
 import application.Main;
 import application.PathCD;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +34,9 @@ public class SaveToAudioController {
     @FXML
     private ListView existingAudioView;
 
+
+    @FXML
+    private ProgressBar progressBar;
     @FXML
     private Toggle kal;
     @FXML
@@ -46,10 +52,12 @@ public class SaveToAudioController {
 
     private List<String> _audioExisted = new ArrayList<String>();
     private String _term;
+    private ChangeScene _changeSceneObject=new ChangeScene();
 
     public void initData(String term){
         _term = term;
     }
+
 
     /**
      * This method will list all the existing audios in list view
@@ -106,7 +114,11 @@ public class SaveToAudioController {
             errorName.setText("Invalid name. Please enter again.");
             return;
         } else {
+
+            
+
             if (kal.isSelected()) {
+
                 String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
                 System.out.println(createAudio);
 
@@ -234,6 +246,7 @@ public class SaveToAudioController {
             else if (cw.isSelected()) {
                 String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" +
                         PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval cw.scm";
+                System.out.println(createAudio);
 
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
                 try {
@@ -316,22 +329,7 @@ public class SaveToAudioController {
      * @param event
      */
     public void cancel(ActionEvent event) {
-        try {
-
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
-            Parent createViewParent = loader.load();
-            EditTextController controller = loader.getController();
-
-            controller.initData(_term);
-            Scene createViewScene = new Scene(createViewParent);
-            // gets the Stage information
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setTitle("Edit text Menu");
-            window.setScene(createViewScene);
-            window.show();
-        } catch (IOException e) {
-
-        }
+        _changeSceneObject.changeScene(event, "resources/EditText.fxml", "Edit text Menu");
     }
 
 

@@ -13,24 +13,24 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ViewController">
    <children>
-      <Button fx:id="back" layoutX="470.0" layoutY="344.0" mnemonicParsing="false" onAction="#backToMain" text="Back">
+      <Button fx:id="back" layoutX="564.0" layoutY="340.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="36.0" prefWidth="78.0" text="Menu">
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Button fx:id="playButton" layoutX="77.0" layoutY="344.0" mnemonicParsing="false" onAction="#playVideo" text="Play">
+      <Button fx:id="playButton" layoutX="77.0" layoutY="340.0" mnemonicParsing="false" onAction="#playVideo" prefHeight="36.0" prefWidth="166.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Play" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <Button fx:id="deleteButton" layoutX="270.0" layoutY="344.0" mnemonicParsing="false" onAction="#deleteVideo" text="Delete">
+      <Button fx:id="deleteButton" layoutX="270.0" layoutY="340.0" mnemonicParsing="false" onAction="#deleteVideo" prefHeight="36.0" prefWidth="166.0" text="Delete">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
       <ListView fx:id="stuffCreated" layoutX="12.0" layoutY="64.0" onMouseClicked="#getTheSelection" prefHeight="234.0" prefWidth="281.0" />
-      <Label layoutX="14.0" layoutY="12.0" prefHeight="36.0" prefWidth="264.0" text="Here is your creation">
+      <Label layoutX="14.0" layoutY="12.0" prefHeight="36.0" prefWidth="264.0" text="CREATIONS LIST">
          <font>
-            <Font size="18.0" />
+            <Font size="24.0" />
          </font>
       </Label>
       <Pane fx:id="videoPlayer" layoutX="306.0" layoutY="64.0" prefHeight="195.0" prefWidth="364.0">

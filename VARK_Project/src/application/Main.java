@@ -34,7 +34,7 @@ public class Main extends Application {
         this.writeScheme();
         Parent root = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
         primaryStage.setTitle("Main Menu");
-        primaryStage.setScene(new Scene(root, 450, 300));
+        primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
 
         /*TransportClass.getInstance().setter("apple"); //testing

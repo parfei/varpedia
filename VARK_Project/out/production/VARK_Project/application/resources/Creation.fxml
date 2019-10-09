@@ -7,15 +7,28 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="365.0" prefWidth="828.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreationController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreationController">
    <children>
-      <Button fx:id="enterButton" layoutX="653.0" layoutY="153.0" mnemonicParsing="false" onAction="#search" text="search" />
-      <TextField fx:id="yourKeyWord" layoutX="247.0" layoutY="153.0" prefHeight="26.0" prefWidth="356.0" promptText="Your Keyword" />
-      <Button fx:id="goingBack" layoutX="778.0" layoutY="339.0" mnemonicParsing="false" onAction="#backToMain" text="Back" />
-      <ProgressBar fx:id="progress" layoutX="328.0" layoutY="244.0" prefWidth="200.0" progress="0.0" AnchorPane.bottomAnchor="101.0" AnchorPane.leftAnchor="328.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="244.0" />
-      <Label fx:id="whatDoYouWant" layoutX="334.0" layoutY="98.0" text="Enter your key word">
+      <Label fx:id="whatDoYouWant" layoutX="152.0" layoutY="71.0" prefHeight="20.0" prefWidth="296.0" text="Hi, what do you want to learn today?">
          <font>
             <Font size="16.0" />
-         </font></Label>
+         </font>
+      </Label>
+      <TextField fx:id="yourKeyWord" layoutX="194.0" layoutY="156.0" prefHeight="26.0" prefWidth="212.0" promptText="Your Keyword">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+      <Button fx:id="enterButton" layoutX="448.0" layoutY="156.0" mnemonicParsing="false" onAction="#search" text="search">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <ProgressBar fx:id="progress" layoutX="200.0" layoutY="239.0" prefWidth="200.0" progress="0.0" />
+      <Button fx:id="goingBack" layoutX="422.0" layoutY="332.0" mnemonicParsing="false" onAction="#backToMain" text="back to main">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
