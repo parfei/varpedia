@@ -44,6 +44,7 @@ public class EditTextController {
     private Label remindLabel;
 
     private String _term;
+    private String _selectedText;
 
 
     static final int OUT = 0;
@@ -85,14 +86,14 @@ public class EditTextController {
     }
     @FXML
     public void preview() throws IOException {
-        String selectedText = textArea.getSelectedText();
+        _selectedText = textArea.getSelectedText();
         // remove the text in brackets to make it readable
-        String textWithoutBrackets = selectedText.replaceAll("[\\[\\](){}']","");
+        String textWithoutBrackets = _selectedText.replaceAll("[\\[\\](){}']","");
 
         RadioButton selectedRadioButton = (RadioButton) group .getSelectedToggle();
 
 
-        int numberOfWords = countWords(selectedText);
+        int numberOfWords = countWords(_selectedText);
         if (numberOfWords==0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("No chunk selected");
@@ -114,7 +115,7 @@ public class EditTextController {
 
             if (default_voice.isSelected()){
                 FileWriter writer=new FileWriter("default_voice");
-                writer.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+selectedText +"\"" + ")") ;
+                writer.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+_selectedText +"\"" + ")") ;
                 writer.close();
                 String cmd="festival -b default_voice";
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
@@ -128,6 +129,8 @@ public class EditTextController {
 
             }
             else if (male_voice.isSelected()){
+                //concurrency
+
                 FileWriter writer=new FileWriter("male_voice");
                 writer.write("(voice_akl_nz_jdt_diphone)"+"\n"+"(SayText" + " "+"\""+textWithoutBrackets+"\"" + ")") ;
                 writer.close();
@@ -144,7 +147,7 @@ public class EditTextController {
                         alert.setContentText("Sorry for the inconvenience");
                         alert.showAndWait();
                         FileWriter newWriter=new FileWriter("default_voice");
-                        newWriter.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+selectedText +"\"" + ")") ;
+                        newWriter.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+_selectedText +"\"" + ")") ;
                         newWriter.close();
                         String useDefault="festival -b default_voice";
                         ProcessBuilder pronounce = new ProcessBuilder("bash", "-c", useDefault);
@@ -180,7 +183,7 @@ public class EditTextController {
 
 
                         FileWriter newWriter=new FileWriter("default_voice");
-                        newWriter.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+selectedText +"\"" + ")") ;
+                        newWriter.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+_selectedText +"\"" + ")") ;
                         newWriter.close();
                         String useDefault="festival -b default_voice";
                         ProcessBuilder pronounce = new ProcessBuilder("bash", "-c", useDefault);
@@ -349,6 +352,8 @@ public class EditTextController {
         }
         return wc;
     }
+
+
 
 
 }
