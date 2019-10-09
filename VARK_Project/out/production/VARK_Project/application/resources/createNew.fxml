@@ -63,5 +63,7 @@
          <font>
             <Font size="16.0" />
          </font></Label>
+      <Button fx:id="playButton" layoutX="11.0" layoutY="433.0" mnemonicParsing="false" onAction="#playAudio" text="play" />
+      <Button fx:id="deleteButton" layoutX="114.0" layoutY="433.0" mnemonicParsing="false" onAction="#deleteAudio" text="delete" />
    </children>
 </AnchorPane>
