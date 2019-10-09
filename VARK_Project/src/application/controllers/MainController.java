@@ -28,6 +28,7 @@ public class MainController {
 
     @FXML
     public void create(ActionEvent event) throws IOException {
+
         _changeSceneObject.changeScene(event,"resources/Creation.fxml","Creation");
     }
     @FXML
