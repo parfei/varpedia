@@ -49,5 +49,6 @@
         </buttons>
       </ButtonBar>
       <Text fx:id="errorText" layoutX="12.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="281.0" />
+      <Button fx:id="muteButton" layoutX="293.0" layoutY="30.0" mnemonicParsing="false" onAction="#videoPlay" prefHeight="26.0" prefWidth="78.0" text="Mute" />
    </children>
 </AnchorPane>
