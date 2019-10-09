@@ -17,6 +17,9 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class EditTextController {
     @FXML
@@ -33,6 +36,7 @@ public class EditTextController {
 
 
     private StringBuffer _stringBuffer = new StringBuffer();
+    private List<String> _audioExisted= new ArrayList<>();
 
     @FXML
     private RadioButton default_voice;
@@ -42,9 +46,15 @@ public class EditTextController {
     private RadioButton female_voice;
     @FXML
     private Label remindLabel;
+    @FXML
+    private Label errorName;
 
     private String _term;
     private String _selectedText;
+    @FXML
+    private ListView existingAudioView;
+    @FXML
+    private TextField textField;
 
 
     static final int OUT = 0;
@@ -64,6 +74,7 @@ public class EditTextController {
     public void initialize() {
 
         remindLabel.setVisible(false);
+        errorName.setVisible(false);
 
         String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
         //String cmd="cat temp.txt";
@@ -82,6 +93,24 @@ public class EditTextController {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
+        System.out.println(PathCD.getPathInstance().getPath());
+        ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
+        try {
+            String line;
+            Process process = builder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            while ((line = reader.readLine()) != null) {
+                _audioExisted.add(line);
+            }
+            existingAudioView.getItems().addAll(_audioExisted);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
     }
     @FXML
@@ -208,34 +237,309 @@ public class EditTextController {
      */
     @FXML
     public void save(ActionEvent event) throws IOException {
-        String selectedText=textArea.getSelectedText();
-        String saveble = selectedText.replaceAll("[\\[\\](){}']","");
+        RadioButton selectedRadioButton = (RadioButton) group .getSelectedToggle();
+        String selectedText = textArea.getSelectedText();
+        String saveble = selectedText.replaceAll("[\\[\\](){}']", "");
         int numberOfWords = countWords(selectedText);
-        if (selectedText== null ||selectedText.isEmpty()) {
+        if (selectedText == null || selectedText.isEmpty()) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("No selection");
             error.setHeaderText("please select a chunk");
             error.setContentText("please select a part of text ");
             error.showAndWait();
-        }
-
-        else if (numberOfWords > 25) {
+        } else if (numberOfWords > 25) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("select a smaller chunk");
             alert.setHeaderText("too much words");
             alert.setContentText("please select a smaller chunk");
             alert.showAndWait();
+        }else if (selectedRadioButton==null){
+            askForVoice.setText("SELECT A VOICE PLEASE");
+            return;
+
         }
 
         // save the selected text to a file and switch scene to saveToAudio interface
         else {
-            FileWriter writer=new FileWriter(PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt");
+            FileWriter writer = new FileWriter(PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt");
             writer.write(saveble);
             writer.close();
+            String userInput = textField.getText();
+
+            if (userInput.trim().isEmpty() || userInput == null) {
+                errorName.setVisible(true);
+                errorName.setText("Complete the fields!");
+                return;
+            } else if (_audioExisted.contains(textField.getText())) {
+                errorName.setText("Duplicated name.");
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Duplicated Name");
+                error.setHeaderText("please enter another name");
+                error.setContentText("come up with another name");
+                error.showAndWait();
+
+            } else if (!textField.getText().matches("[a-zA-Z0-9_-]*")) {
+                errorName.setVisible(true);
+                errorName.setText("Invalid name. Please enter again.");
+                return;
+            } else {
+
+
+                if (default_voice.isSelected()) {
+
+                    String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
+                    System.out.println(createAudio);
+
+                    ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
+                    try {
+                        Process process = pb.start();
+                        process.waitFor();
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav";
+                    File file = new File(file_path);
+                    // handle the case when audio is not saved successfully
+                    if (file.length() == 0) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("audio not save");
+                        alert.setHeaderText("part not readable");
+                        alert.setContentText("check the part that you select is readable");
+                        alert.showAndWait();
+                        String deleteCmd = "rm -f " + file_path;
+                        System.out.println(deleteCmd);
+                        ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", deleteCmd);
+                        try {
+                            Process delete = pb2.start();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
+                    System.out.println(PathCD.getPathInstance().getPath());
+                    ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
+                    try {
+                        String line;
+                        Process process = builder.start();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                        while ((line = reader.readLine()) != null) {
+                            _audioExisted.add(line);
+                        }
+                        existingAudioView.getItems().addAll(_audioExisted);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    // guide the user back to EditText interface to continue saving
+                    /*try {
+                        _audioExisted.clear();
+                        existingAudioView.getItems().clear();
+
+                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
+                        Parent createViewParent = loader.load();
+                        EditTextController controller = loader.getController();
+
+                        controller.initData(_term);
+                        Scene createViewScene = new Scene(createViewParent);
+                        // gets the Stage information
+                        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                        window.setTitle("Edit text Menu");
+                        window.setScene(createViewScene);
+                        window.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+
+                    }*/
+
+                } else if (male_voice.isSelected()) {
+                    String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" +
+                            PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval jdt.scm";
+
+                    ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
+                    try {
+                        Process process = pb.start();
+                        process.waitFor();
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav";
+                    File file = new File(file_path);
+                /*
+                ask user to save in default voice or give up saving if the male voice option can't save the audio
+                 */
+                    if (file.length() == 0) {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Give up or save in default voice");
+                        alert.setHeaderText("Can't save the audio in this voice");
+                        alert.setContentText("Do you want to save in default voice?");
+                        Optional<ButtonType> result = alert.showAndWait();
+                        String deleteCmd = "rm -f " + file_path;
+                        System.out.println(deleteCmd);
+                        ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", deleteCmd);
+                        try {
+                            Process delete = pb2.start();
+                            int exitStatus = delete.waitFor();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (result.get() == ButtonType.OK) {
+                            String createDefaultAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" +
+                                    PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
+
+                            ProcessBuilder pb3 = new ProcessBuilder("bash", "-c", createDefaultAudio);
+                            try {
+                                Process process = pb3.start();
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            //do nothing
+                        }
+
+
+                    }
+                    String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
+                    System.out.println(PathCD.getPathInstance().getPath());
+                    ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
+                    try {
+                        String line;
+                        Process process = builder.start();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                        while ((line = reader.readLine()) != null) {
+                            _audioExisted.add(line);
+                        }
+                        existingAudioView.getItems().addAll(_audioExisted);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    /*try {
+                        _audioExisted.clear();
+                        existingAudioView.getItems().clear();
+
+                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
+                        Parent createViewParent = loader.load();
+                        EditTextController controller = loader.getController();
+
+                        controller.initData(_term);
+                        Scene createViewScene = new Scene(createViewParent);
+                        // gets the Stage information
+                        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                        window.setTitle("Edit text Menu");
+                        window.setScene(createViewScene);
+                        window.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+
+                }else if (female_voice.isSelected()) {
+                    String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" +
+                            PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval cw.scm";
+                    System.out.println(createAudio);
+
+                    ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
+                    try {
+                        Process process = pb.start();
+                        process.waitFor();
+                    } catch (IOException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav";
+                    File file = new File(file_path);
+                /*
+                ask user to save in default voice or give up saving if the female voice option can't save the audio
+                 */
+                    if (file.length() == 0) {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Give up or save in default voice");
+                        alert.setHeaderText("Can't save the audio in this voice");
+                        alert.setContentText("Do you want to save in default voice?");
+                        Optional<ButtonType> result = alert.showAndWait();
+                        String deleteCmd = "rm -f " + file_path;
+                        System.out.println(deleteCmd);
+                        ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", deleteCmd);
+                        try {
+                            Process delete = pb2.start();
+                            int exitStatus = delete.waitFor();
+                            System.out.println(exitStatus);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (result.get() == ButtonType.OK) {
+                            String createDefaultAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" +
+                                    PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
+
+                            ProcessBuilder pb3 = new ProcessBuilder("bash", "-c", createDefaultAudio);
+                            try {
+                                Process process = pb3.start();
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            //do nothing
+                        }
+
+
+                    }
+                    String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
+                    System.out.println(PathCD.getPathInstance().getPath());
+                    ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
+                    try {
+                        String line;
+                        Process process = builder.start();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                        while ((line = reader.readLine()) != null) {
+                            _audioExisted.add(line);
+                        }
+                        existingAudioView.getItems().addAll(_audioExisted);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }/*
+                    try {
+                        _audioExisted.clear();
+                        existingAudioView.getItems().clear();
+
+                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
+                        Parent createViewParent = loader.load();
+                        EditTextController controller = loader.getController();
+
+                        controller.initData(_term);
+                        Scene createViewScene = new Scene(createViewParent);
+                        // gets the Stage information
+                        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                        window.setTitle("Edit text Menu");
+                        window.setScene(createViewScene);
+                        window.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+
+                } else {//do nothing
+                }
+            }
+        }
+    }
 
 
 
-            try {
+
+
+
+        /*try {
+
 
 
                 FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/saveToAudio.fxml"));
