@@ -38,7 +38,13 @@ public class CreationController {
     private ChangeScene _changeSceneObject=new ChangeScene();
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
+        String path = PathCD.getPathInstance().getPath();
+        String command2 = "mkdir -p \"" + path + "/mydir/extra/audioPiece\"";
+        ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
+        pb2.start();
+
+
 
         progress.setVisible(false);
         enterButton.setDisable(false);
@@ -60,6 +66,7 @@ public class CreationController {
      */
     @FXML
     public void search(ActionEvent event) throws IOException {
+
         _InputFromUser = yourKeyWord.getText();
         if (_InputFromUser.trim().isEmpty() || _InputFromUser == null) {
             whatDoYouWant.setText("Invalid input, please enter again");
