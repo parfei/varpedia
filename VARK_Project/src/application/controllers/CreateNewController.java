@@ -14,6 +14,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -21,6 +23,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -51,6 +54,11 @@ public class CreateNewController {
     private ListView listViewExistCreation;
 
     @FXML
+    private Button playButton;
+    @FXML
+    private Button deleteButton;
+
+    @FXML
     private URL location;
     @FXML
     private ResourceBundle resources;
@@ -73,7 +81,8 @@ public class CreateNewController {
      */
     public void initialize() throws IOException {
 
-
+        playButton.setDisable(true);
+        deleteButton.setDisable(true);
         errorName.setVisible(false);
         errorImg.setVisible(false);
         team = Executors.newSingleThreadExecutor();
@@ -321,6 +330,61 @@ public class CreateNewController {
             _choice = selectedCreation.get(0).toString();
         }catch (Exception e){
         }
+        if (_choice!=null){
+            playButton.setDisable(false);
+            deleteButton.setDisable(false);
+        }
+    }
+
+    @FXML
+    public void playAudio(ActionEvent event){
+        String wavFile = findAudio(_choice);
+        // String musicFile = "StayTheNight.mp3";     // For example
+
+        Media sound = new Media(new File(wavFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+    }
+    @FXML
+    public void deleteAudio(ActionEvent event) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Delete");
+        alert.setHeaderText("Check again!");
+        alert.setContentText("Are you sure to delete this?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            System.out.println(findAudio(_choice));
+            String path = findAudio(_choice); //finds the relevant creation
+
+            String cmd = "rm -f \"" + path + "\"";
+            System.out.println(cmd);
+            ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
+            try {
+                Process process = pb.start();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            _audioExisted.clear();
+            audioList.getItems().clear();
+            this.initialize();
+        }else{
+            return;
+        }
+    }
+
+    private String findAudio(String name){
+        String command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + name + ".wav\"";
+        System.out.println(command);
+        ProcessBuilder find = new ProcessBuilder("bash", "-c", command);
+        try {
+            Process process = find.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            return reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
