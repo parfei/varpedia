@@ -3,6 +3,8 @@ package application.controllers;
 import application.ChangeScene;
 import application.Main;
 import application.PathCD;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +34,9 @@ public class SaveToAudioController {
     @FXML
     private ListView existingAudioView;
 
+
+    @FXML
+    private ProgressBar progressBar;
     @FXML
     private Toggle kal;
     @FXML
@@ -109,7 +114,29 @@ public class SaveToAudioController {
             errorName.setText("Invalid name. Please enter again.");
             return;
         } else {
+
+            /*class DoingJob extends Task<Void> {
+                private boolean resultOut;
+                private ActionEvent _event;
+
+                public DoingJob(ActionEvent event) {
+                    _event = event;
+                }
+
+                @Override
+                protected Void call() throws Exception {
+                    progressBar.setVisible(true);
+                    enterButton.setVisible(true);
+                    goingBack.setVisible(true);
+                    yourKeyWord.setVisible(true);
+
+                    Platform.runLater(() -> {
+                        progressBar.progressProperty().bind(this.progressProperty());
+                    });*/
+
+
             if (kal.isSelected()) {
+
                 String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + userInput + ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
                 System.out.println(createAudio);
 
