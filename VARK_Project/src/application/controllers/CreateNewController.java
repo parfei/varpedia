@@ -3,6 +3,7 @@ package application.controllers;
 import application.*;
 import com.sun.jdi.connect.Transport;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -35,8 +36,10 @@ import java.util.concurrent.Executors;
  */
 public class CreateNewController {
 
+
     private String _choice;
     private List<String> _audioExisted = new ArrayList<String>();
+
     @FXML
     private ListView audioList;
     @FXML
@@ -52,11 +55,15 @@ public class CreateNewController {
 
     @FXML
     private ListView listViewExistCreation;
+    @FXML
+    private Label remindLabel;
 
     @FXML
     private Button playButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button enterCreationButton;
 
     @FXML
     private URL location;
@@ -67,7 +74,8 @@ public class CreateNewController {
     private ExecutorService team;
     private String _term;
     private ChangeScene _changeSceneObject=new ChangeScene();
-
+    @FXML
+    private ChoiceBox<String> choiceBox;
 
 
 
@@ -81,10 +89,16 @@ public class CreateNewController {
      */
     public void initialize() throws IOException {
 
+
+
+        ObservableList list=FXCollections.observableArrayList();
+        list.addAll("Yes","No");
+        choiceBox.getItems().addAll(list);
         playButton.setDisable(true);
         deleteButton.setDisable(true);
         errorName.setVisible(false);
         errorImg.setVisible(false);
+
         team = Executors.newSingleThreadExecutor();
 
         String listAudio = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
@@ -145,6 +159,8 @@ public class CreateNewController {
         window.show();*/
     }
 
+
+
     /***
      * When the user hits the create button, the user will be taken back to the menu whilst the work is done in
      * background threads. The method also checks for the validity of the name.
@@ -153,7 +169,11 @@ public class CreateNewController {
      */
     @FXML
     public void EnterCreation(ActionEvent event) throws IOException {
-        if (_audioExisted.isEmpty()){
+        if (choiceBox.getValue()==null){
+            remindLabel.setText("DO YOU WANT TO INCLUDE MUSIC?");
+        }
+
+        else if (_audioExisted.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("No audio to combine");
             alert.setHeaderText("Go back and make audios ");
@@ -196,6 +216,8 @@ public class CreateNewController {
             }
 
             try {
+
+
                 if (_CreationsExisted.contains(textFieldCreationName.getText())) { /////Check for creation name error input.
                     errorName.setText("Duplicated name.");
                     Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
@@ -208,6 +230,9 @@ public class CreateNewController {
                     } else {
                         return;
                     }
+
+                } else if (textFieldCreationName.getText().trim().isEmpty()||textFieldCreationName.getText()==null){
+                    errorName.setText("please enter a name");
                 } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
                     errorName.setVisible(true);
                     errorName.setText("Enter a-z chara name only");
@@ -233,47 +258,48 @@ public class CreateNewController {
 
             createDirectories(); //Create necessary directories if they have not existed yet.
 
-            //Send an instance of FlickrWork to the background thread to retrieve the images from Flickr.
-            FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getText(), textFldImagesNum.getText());
-            team.submit(getImg);
+                //Send an instance of FlickrWork to the background thread to retrieve the images from Flickr.
+                FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getText(), textFldImagesNum.getText());
+                team.submit(getImg);
 
-            //When images have been successfully retrieved, send an instance of CreationWrok to the background thread to
-            //combine audio, slideshow and video forms into one Creation.
-            getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                @Override
-                public void handle(WorkerStateEvent workerStateEvent) {
+                //When images have been successfully retrieved, send an instance of CreationWrok to the background thread to
+                //combine audio, slideshow and video forms into one Creation.
+                getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                    @Override
+                    public void handle(WorkerStateEvent workerStateEvent) {
 
-                    CreationWork creationWork = null;
-                    try {
-                        creationWork = new CreationWork(_term, textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true);
-                        //System.out.println("pic: " + getImg.get());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-
-                    team.submit(creationWork);
-
-                    creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                        @Override
-                        public void handle(WorkerStateEvent workerStateEvent) {
-
-                            cleanUp(); //Clean up audio files after the Creation has been made.
-
-                            _CreationsExisted.clear();
-                            Alert complete = new Alert(Alert.AlertType.INFORMATION);
-                            complete.setHeaderText("Created");
-                            complete.setContentText(textFieldCreationName.getText() + " has been created. You can now view.");
-                            complete.show();
-
-                            textFieldCreationName.clear();
-                            textFldImagesNum.clear();
+                        CreationWork creationWork = null;
+                        try {
+                            creationWork = new CreationWork(_term, textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true);
+                            //System.out.println("pic: " + getImg.get());
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
                         }
-                    });
 
-                }
-            });
+                        team.submit(creationWork);
+
+                        creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                            @Override
+                            public void handle(WorkerStateEvent workerStateEvent) {
+
+                                cleanUp(); //Clean up audio files after the Creation has been made.
+
+                                _CreationsExisted.clear();
+                                Alert complete = new Alert(Alert.AlertType.INFORMATION);
+                                complete.setHeaderText("Created");
+                                complete.setContentText(textFieldCreationName.getText() + " has been created. You can now view.");
+                                complete.show();
+
+                                textFieldCreationName.clear();
+                                textFldImagesNum.clear();
+                            }
+                        });
+
+                    }
+                });
+
 
             Parent menuParent = null;
             try {
@@ -336,6 +362,8 @@ public class CreateNewController {
         }
     }
 
+
+
     @FXML
     public void playAudio(ActionEvent event){
         String wavFile = findAudio(_choice);
@@ -386,6 +414,25 @@ public class CreateNewController {
         }
         return null;
     }
+
+    /*public int getIndexOfItemInListView(){
+
+
+
+        return 1;
+    }
+
+    /*public void moveUp(){
+        foreach (ListViewItem lvi in audioList.SelectedItems)
+        {
+            if (lvi.Index > 0)
+            {
+                int index = lvi.Index - 1;
+                sourceListView.Items.RemoveAt(lvi.Index);
+                sourceListView.Items.Insert(index, lvi);
+            }
+        }
+    }*/
 
 
 }
