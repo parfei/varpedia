@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="362.0" prefWidth="664.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainController">
+   <children>
+      <Label fx:id="greeting" alignment="CENTER" layoutX="169.0" layoutY="132.0" prefHeight="59.0" prefWidth="327.0" text="VARpedia">
+         <font>
+            <Font name="SansSerif Regular" size="49.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="0.009615384615384606" endY="0.966346153846154">
+               <stops>
+                  <Stop color="BLACK" />
+                  <Stop color="#141313ed" offset="0.19333333333333333" />
+                  <Stop color="#3c3c3ced" offset="0.4096296296296296" />
+                  <Stop color="BLACK" offset="0.4703703703703704" />
+                  <Stop color="#000000ed" offset="0.9407407407407408" />
+                  <Stop color="#000000ed" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Label layoutX="365.0" layoutY="192.0" text="PROTOTYPE" />
+   </children>
+</AnchorPane>
