@@ -25,10 +25,8 @@ public class MainController {
 
     @FXML
     public void initialize() throws IOException {
-        Parent node;
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/MainMenu.fxml"));
-        node = loader.load();
-        TOPVIEW.getChildren().setAll(node);
+        this.setTOPVIEW("resources/MainMenu.fxml");
+        this.setBOTTOMVIEW("resources/DefaultBottom.fxml");
     }
 
 
@@ -48,7 +46,26 @@ public class MainController {
         _changeSceneObject.changeScene(event,"resources/View.fxml","View Menu");
     }
 
+    public void setTOPVIEW(String layout) throws IOException {
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource(layout));
+        Parent node = loader.load();
+        TOPVIEW.getChildren().setAll(node);
+    }
 
+    public void setBOTTOMVIEW(String layout) throws IOException {
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource(layout));
+        Parent node = loader.load();
+        BOTTOMVIEW.getChildren().setAll(node);
+    }
+
+    public AnchorPane getVIEW(String view){
+        if (view.equals("TOP")){
+            return TOPVIEW;
+        } else if (view.equals("BOTTOM")){
+            return BOTTOMVIEW;
+        }
+        return null;
+    }
 
 
 }
