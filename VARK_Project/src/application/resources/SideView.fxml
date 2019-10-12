@@ -9,7 +9,7 @@
 
 <AnchorPane minWidth="664.0" prefHeight="362.0" prefWidth="664.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ViewController">
    <children>
-      <TableView layoutY="-2.0" prefHeight="341.0" prefWidth="220.0">
+      <TableView fx:id="stuffCreated" layoutY="-2.0" prefHeight="341.0" prefWidth="220.0">
         <columns>
           <TableColumn prefWidth="154.0" text="CREATIONS" />
           <TableColumn prefWidth="30.0" text="★" />

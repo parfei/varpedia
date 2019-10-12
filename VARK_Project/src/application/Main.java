@@ -32,8 +32,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         this.initializeFolder();
         this.writeScheme();
-        Parent root = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
-        primaryStage.setTitle("Main Menu");
+        Parent root = FXMLLoader.load(Main.class.getResource("resources/MainWindow.fxml"));
+        primaryStage.setTitle("VARpedia");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
 

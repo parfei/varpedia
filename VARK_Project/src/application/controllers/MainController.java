@@ -10,14 +10,26 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Collection;
 
 public class MainController {
 
     private ChangeScene _changeSceneObject=new ChangeScene();
+    @FXML private AnchorPane TOPVIEW;
+    @FXML private AnchorPane BOTTOMVIEW;
 
+    @FXML
+    public void initialize() throws IOException {
+        Parent node;
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/MainMenu.fxml"));
+        node = loader.load();
+        TOPVIEW.getChildren().setAll(node);
+    }
 
 
     /**
