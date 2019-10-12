@@ -13,5 +13,5 @@ public class DefaultController {
         progressBar.setVisible(false);
         addFav.setVisible(false);
     }
-    
+
 }

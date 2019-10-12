@@ -44,8 +44,6 @@ public class CreationController {
         ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
         pb2.start();
 
-
-
         progress.setVisible(false);
         enterButton.setDisable(false);
         goingBack.setDisable(false);
@@ -55,10 +53,8 @@ public class CreationController {
 
     @FXML
     public void backToMain(ActionEvent event) throws IOException {
-        _changeSceneObject.changeScene(event, "resources/menu.fxml", "Main Menu");
-
-
-
+        //_changeSceneObject.changeScene(event, "resources/menu.fxml", "Main Menu");
+        Main.getController().setBOTTOMVIEW("resources/MainMenu.fxml");
     }
 
     /**
@@ -70,7 +66,7 @@ public class CreationController {
         _InputFromUser = yourKeyWord.getText();
         if (_InputFromUser.trim().isEmpty() || _InputFromUser == null) {
             whatDoYouWant.setText("Invalid input, please enter again");
-            yourKeyWord.clear(); //TODO check
+            yourKeyWord.clear();
         } else {
 
             //TransportClass transport = TransportClass.getInstance();
@@ -163,17 +159,15 @@ public class CreationController {
                             e.printStackTrace();
                         }
 
-                        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
-                        Parent createViewParent = loader.load();
-                        EditTextController controller = loader.getController();
+                        EditTextController controller = (EditTextController) Main.getController().setBOTTOMVIEW("resources/CreateAudio.fxml");
                         controller.initData(_InputFromUser);
 
-                        Scene createViewScene = new Scene(createViewParent);
-                        // gets the Stage information
-                        Stage window = (Stage) ((Node) _event.getSource()).getScene().getWindow();
-                        window.setScene(createViewScene);
-                        window.show();
-                        window.setTitle("Edit text Menu");
+                        //FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
+                        //Parent createViewParent = loader.load();
+                        //EditTextController controller = loader.getController();
+                        //controller.initData(_InputFromUser);
+
+
                     } catch (IOException e) {
                         e.printStackTrace();//TODO error?
                     }

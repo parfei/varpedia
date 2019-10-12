@@ -13,7 +13,7 @@
                <font>
                   <Font size="17.0" />
                </font></Button>
-            <Button mnemonicParsing="false" onAction="#create" prefHeight="97.0" prefWidth="150.0" text="INFO">
+            <Button mnemonicParsing="false" onAction="#info" prefHeight="97.0" prefWidth="150.0" text="INFO">
                <font>
                   <Font size="17.0" />
                </font>
@@ -23,7 +23,7 @@
                   <Font size="17.0" />
                </font>
             </Button>
-            <Button layoutX="10.0" layoutY="204.0" mnemonicParsing="false" onAction="#create" prefHeight="97.0" prefWidth="150.0" text="HELP">
+            <Button layoutX="10.0" layoutY="204.0" mnemonicParsing="false" onAction="#help" prefHeight="97.0" prefWidth="150.0" text="HELP">
                <font>
                   <Font size="17.0" />
                </font>

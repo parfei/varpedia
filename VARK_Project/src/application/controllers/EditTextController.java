@@ -100,7 +100,7 @@ public class EditTextController {
             ex.printStackTrace();
         }
 
-        String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
+        /*String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
         System.out.println(PathCD.getPathInstance().getPath());
         ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
         try {
@@ -114,7 +114,7 @@ public class EditTextController {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
 

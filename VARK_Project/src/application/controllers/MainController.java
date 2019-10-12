@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -38,35 +39,43 @@ public class MainController {
 
     @FXML
     public void create(ActionEvent event) throws IOException {
-
-        _changeSceneObject.changeScene(event,"resources/Creation.fxml","Creation");
+        //_changeSceneObject.changeScene(event,"resources/Creation.fxml","Creation");
+        this.setBOTTOMVIEW("resources/SearchTerm.fxml");
     }
     @FXML
     public void view(ActionEvent event)throws IOException{
-        _changeSceneObject.changeScene(event,"resources/View.fxml","View Menu");
+        //_changeSceneObject.changeScene(event,"resources/View.fxml","View Menu");
+        this.setTOPVIEW("resources/SideView.fxml");
     }
 
-    public void setTOPVIEW(String layout) throws IOException {
+    @FXML
+    public void info(ActionEvent event) throws IOException {
+        this.setTOPVIEW("resources/SideView.fxml");
+
+    }
+
+    @FXML
+    public void help(ActionEvent event){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("Help sheet will be included soon.");
+        alert.showAndWait();
+    }
+
+    public Object setTOPVIEW(String layout) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(layout));
         Parent node = loader.load();
         TOPVIEW.getChildren().setAll(node);
+
+        return loader.getController();
     }
 
-    public void setBOTTOMVIEW(String layout) throws IOException {
+    public Object setBOTTOMVIEW(String layout) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(layout));
         Parent node = loader.load();
         BOTTOMVIEW.getChildren().setAll(node);
-    }
 
-    public AnchorPane getVIEW(String view){
-        if (view.equals("TOP")){
-            return TOPVIEW;
-        } else if (view.equals("BOTTOM")){
-            return BOTTOMVIEW;
-        }
-        return null;
+        return loader.getController();
     }
-
 
 }
 
