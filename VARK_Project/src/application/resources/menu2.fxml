@@ -31,6 +31,6 @@
          </children>
       </VBox>
       <AnchorPane fx:id="TOPVIEW" layoutX="136.0" layoutY="-7.0" prefHeight="362.0" prefWidth="664.0" />
-      <AnchorPane fx:id="BOTTOMVIEW" layoutY="361.0" prefHeight="238.0" prefWidth="801.0" />
+      <AnchorPane fx:id="BOTTOMVIEW" layoutY="354.0" prefHeight="245.0" prefWidth="801.0" />
    </children>
 </AnchorPane>
