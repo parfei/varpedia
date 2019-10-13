@@ -169,11 +169,12 @@ public class CreateNewController {
      */
     @FXML
     public void EnterCreation(ActionEvent event) throws IOException {
-        if (choiceBox.getValue()==null){
+        /*if (choiceBox.getValue()==null){
             remindLabel.setText("DO YOU WANT TO INCLUDE MUSIC?");
-        }
+        }*/
 
-        else if (_audioExisted.isEmpty()){
+        //else
+            if (_audioExisted.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("No audio to combine");
             alert.setHeaderText("Go back and make audios ");

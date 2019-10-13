@@ -10,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,7 +19,7 @@ import java.io.IOException;
 public class MainController {
 
     private ChangeScene _changeSceneObject=new ChangeScene();
-
+    @FXML private Button help;
 
 
     /**
@@ -36,7 +38,14 @@ public class MainController {
         _changeSceneObject.changeScene(event,"resources/View.fxml","View Menu");
     }
 
-
+    @FXML
+    public void help(ActionEvent event){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("PROTOTYPE FOR THE APPLICATION.\nMain target audience: young children (7-12 users)\n\n" +
+                "Please enjoy our prototype. :).\n\nNOTE: background music feature does not work currently. Disabled for now.");
+        alert.setTitle("VARpedia - Help");
+        alert.showAndWait();
+    }
 
 
 }

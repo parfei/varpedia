@@ -7,25 +7,25 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreationController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreationController">
    <children>
-      <Label fx:id="whatDoYouWant" layoutX="152.0" layoutY="71.0" prefHeight="20.0" prefWidth="296.0" text="Hi, what do you want to learn today?">
+      <Label fx:id="whatDoYouWant" layoutX="279.0" layoutY="196.0" prefHeight="20.0" prefWidth="296.0" text="Hi, what do you want to learn today?">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="yourKeyWord" layoutX="194.0" layoutY="156.0" prefHeight="26.0" prefWidth="212.0" promptText="Your Keyword">
+      <TextField fx:id="yourKeyWord" layoutX="238.0" layoutY="268.0" prefHeight="32.0" prefWidth="270.0" promptText="Your keyword">
          <font>
             <Font size="16.0" />
          </font>
       </TextField>
-      <Button fx:id="enterButton" layoutX="448.0" layoutY="156.0" mnemonicParsing="false" onAction="#search" text="search">
+      <Button fx:id="enterButton" layoutX="525.0" layoutY="268.0" mnemonicParsing="false" onAction="#search" text="Search">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <ProgressBar fx:id="progress" layoutX="200.0" layoutY="239.0" prefWidth="200.0" progress="0.0" />
-      <Button fx:id="goingBack" layoutX="422.0" layoutY="332.0" mnemonicParsing="false" onAction="#backToMain" text="back to main">
+      <ProgressBar fx:id="progress" layoutX="247.0" layoutY="333.0" prefHeight="20.0" prefWidth="344.0" progress="0.0" />
+      <Button fx:id="goingBack" layoutX="648.0" layoutY="536.0" mnemonicParsing="false" onAction="#backToMain" text="Main Menu">
          <font>
             <Font size="16.0" />
          </font>
