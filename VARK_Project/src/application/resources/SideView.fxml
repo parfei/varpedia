@@ -59,6 +59,6 @@
          </font>
       </Button>
       <Label fx:id="errorText" layoutX="5.0" layoutY="336.0" prefHeight="28.0" prefWidth="95.0" text="Select item" textFill="RED" />
-      <CheckBox fx:id="favOption" layoutX="83.0" layoutY="5.0" mnemonicParsing="false" onAction="#tickFav" text="Favourites Only" />
+      <CheckBox fx:id="favOption" layoutX="116.0" layoutY="5.0" mnemonicParsing="false" onAction="#tickFav" text="Favourites" />
    </children>
 </AnchorPane>

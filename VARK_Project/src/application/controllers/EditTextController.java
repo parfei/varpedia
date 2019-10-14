@@ -4,7 +4,10 @@ import application.ChangeScene;
 import application.Main;
 import application.PathCD;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -23,55 +26,40 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class EditTextController {
-    @FXML
-    private TextArea textArea;
-    @FXML
-    private Label askForVoice;
-    @FXML
-    private ToggleGroup group;
-    @FXML
-    private Label select;
+    @FXML private TextArea textArea;
+    @FXML private Label askForVoice;
+    @FXML private ToggleGroup group;
+    @FXML private Label select;
 
-    @FXML
-    private Button create;
-
-
-
-    private String _choice;
-
+    @FXML private Button create;
 
     private StringBuffer _stringBuffer = new StringBuffer();
     private List<String> _audioExisted= new ArrayList<>();
 
-    @FXML
-    private RadioButton default_voice;
-    @FXML
-    private RadioButton male_voice;
-    @FXML
-    private RadioButton female_voice;
-    @FXML
-    private Label remindLabel;
+    @FXML private RadioButton default_voice;
+    @FXML private RadioButton male_voice;
+    @FXML private RadioButton female_voice;
+    @FXML private Label remindLabel;
 
-
+    @FXML private ListView existingAudioView;
+    @FXML private TextField textField;
     private String _term;
     private String _selectedText;
-    @FXML
-    private ListView existingAudioView;
-    @FXML
-    private TextField textField;
-
 
     static final int OUT = 0;
     static final int IN = 1;
+
+    private ExecutorService team = Executors.newSingleThreadExecutor();
 
     public void initData(String term){
         _term = term;
         System.out.println(_term);
     }
-    private ChangeScene _changeSceneObject=new ChangeScene();
-
 
     /**
      * this method will add the search result to the text area
@@ -79,17 +67,15 @@ public class EditTextController {
     @FXML
     public void initialize() {
 
-
         remindLabel.setVisible(false);
 
         String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
-        //String cmd="cat temp.txt";
+
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
         try {
             Process process = pb.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
-
 
             while ((line = reader.readLine()) != null) {
                 _stringBuffer.append(line);
@@ -105,8 +91,47 @@ public class EditTextController {
     public int countNumberOfAudioFileInAudioPiece() {
         String path= PathCD.getPathInstance().getPath()+"/mydir/extra/audioPiece";
        return new File(path).listFiles().length;
-
     }
+
+    private class PreviewHelper extends Task<Integer> {
+        private String _voice;
+        private String _textWithoutBrackets;
+
+        public PreviewHelper(String voice){
+            _selectedText = textArea.getSelectedText();
+            _textWithoutBrackets = _selectedText.replaceAll("[\\[\\](){}']",""); // remove the text in brackets to make it readable
+            _voice = voice;
+        }
+
+        @Override
+        protected Integer call() throws Exception {
+            FileWriter writer=new FileWriter(_voice);
+            String cmd = "";
+
+            if (_voice.equals("default_voice")){
+                writer.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+_selectedText +"\"" + ")");
+                cmd = "festival -b default_voice";
+            } else if (_voice.equals("male_voice")){
+                writer.write("(voice_akl_nz_jdt_diphone)"+"\n"+"(SayText" + " "+"\""+_textWithoutBrackets+"\"" + ")");
+                cmd = "festival -b male_voice";
+            } else if (_voice.equals("female_voice")){
+                writer.write("(voice_akl_nz_cw_cg_cg)"+"\n"+"(SayText" + " "+"\""+_textWithoutBrackets+"\"" + ")");
+                cmd = "festival -b female_voice.scm";
+            }
+            writer.close();
+
+            Process process = null;
+            ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
+            try {
+                process = pb.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return process.waitFor();
+        }
+    }
+
     @FXML
     public void preview() throws IOException {
         _selectedText = textArea.getSelectedText();
@@ -152,10 +177,39 @@ public class EditTextController {
 
             }
             else if (male_voice.isSelected()){
-                //concurrency
+                PreviewHelper preview = new PreviewHelper("male_voice");
+                team.submit(preview);
 
-                FileWriter writer=new FileWriter("male_voice");
-                writer.write("(voice_akl_nz_jdt_diphone)"+"\n"+"(SayText" + " "+"\""+textWithoutBrackets+"\"" + ")") ;
+                preview.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+                    @Override
+                    public void handle(WorkerStateEvent workerStateEvent) {
+                        try {
+                            if (preview.get().intValue() == 255){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setTitle("voice changed to default");
+                                alert.setHeaderText("switch voice to the default due to limitation of other voice options");
+                                alert.setContentText("Sorry for the inconvenience");
+                                alert.showAndWait();
+
+                                team.submit(new PreviewHelper("default_voice"));
+                                /*FileWriter newWriter=new FileWriter("default_voice");
+                                newWriter.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+_selectedText +"\"" + ")") ;
+                                newWriter.close();
+                                String useDefault="festival -b default_voice";
+                                ProcessBuilder pronounce = new ProcessBuilder("bash", "-c", useDefault);
+                                pronounce.start();*/
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
+                /*FileWriter writer=new FileWriter("male_voice");
+                writer.write("(voice_akl_nz_jdt_diphone)"+"\n"+"(SayText" + " "+"\""+textWithoutBrackets+"\"" + ")");
                 writer.close();
                 String cmd="festival -b male_voice";
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
@@ -179,17 +233,13 @@ public class EditTextController {
                     }
                 } catch (IOException | InterruptedException ex) {
                     ex.printStackTrace();
-                }
-
-
-
-
+                }*/
 
 
             }
             else if (female_voice.isSelected()){
                 FileWriter writer=new FileWriter("female_voice.scm");
-                writer.write("(voice_akl_nz_cw_cg_cg)"+"\n"+"(SayText" + " "+"\""+textWithoutBrackets+"\"" + ")") ;
+                writer.write("(voice_akl_nz_cw_cg_cg)"+"\n"+"(SayText" + " "+"\""+textWithoutBrackets+"\"" + ")");
                 writer.close();
                 String cmd="festival -b female_voice.scm";
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);

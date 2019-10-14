@@ -233,12 +233,12 @@ public class ViewController {
     }
 
     @FXML
-    public void favourite(ActionEvent event) throws IOException {
+    public void favourite(ActionEvent event) throws IOException { //TODO implement remove favourites, button changes when this option is ticked.
         if (_choice != null){
             errorText.setVisible(false);
 
             String file = "\"" + findCreation(_choice) + "\"";
-            String file2 = "\"" + PathCD.getPathInstance().getPath() + "/mydir/creations/favourites/" + _choice + ".mp4\"";
+            String file2 = "\"" + PathCD.getPathInstance().getPath() + "/mydir/favourites/" + _choice + ".mp4\"";
 
             resetPlayer();
             String command = "mv " + file + " " + file2;
@@ -261,7 +261,7 @@ public class ViewController {
     public void tickFav(ActionEvent event){
         List<String> list = null;
         if (favOption.isSelected()){
-            list = getCreations("creations/favourites");
+            list = getCreations("favourites");
         } else {
             list = getCreations("creations");
             stuffCreated.getItems().clear();
@@ -271,7 +271,7 @@ public class ViewController {
         stuffCreated.getItems().setAll(list);
     }
 
-    private List<String> getCreations(String path){
+    public static List<String> getCreations(String path){ //TODO USE THIS!
         ArrayList<String> innovation = new ArrayList<String>();
 
         String cmd = "ls -R"+ " \""+ PathCD.getPathInstance().getPath() + "/mydir/" + path + "\""+ " | grep .mp4 | cut -f1 -d'.' | sort";
