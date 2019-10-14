@@ -93,6 +93,29 @@ public class EditTextController {
         return new File(path).listFiles().length;
     }
 
+    private Boolean checkValidSelection(String selectedText){
+        RadioButton selectedRadioButton = (RadioButton) group .getSelectedToggle();
+        int numberOfWords = countWords(selectedText);
+
+        if (selectedText == null || selectedText.isEmpty()) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("No selection");
+            error.setHeaderText("please select a chunk");
+            error.setContentText("please select a part of text ");
+            error.showAndWait();
+        } else if (numberOfWords > 25) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("select a smaller chunk");
+            alert.setHeaderText("too much words");
+            alert.setContentText("please select a smaller chunk");
+            alert.showAndWait();
+        }else if (selectedRadioButton==null){
+            askForVoice.setText("SELECT A VOICE PLEASE");
+            return false;
+        }
+        return true;
+    }
+
     private class PreviewHelper extends Task<Integer> {
         private String _voice;
         private String _textWithoutBrackets;
@@ -263,7 +286,13 @@ public class EditTextController {
         }
     }
 
+    private class SaveHelper extends Task<Void>{
 
+        @Override
+        protected Void call() throws Exception {
+            return null;
+        }
+    }
 
     /**
      * This method will check exception and go to saveToAudio interface when a save button is clicked
@@ -272,39 +301,23 @@ public class EditTextController {
      */
     @FXML
     public void save(ActionEvent event) throws IOException {
-        RadioButton selectedRadioButton = (RadioButton) group .getSelectedToggle();
+        //RadioButton selectedRadioButton = (RadioButton) group.getSelectedToggle();
         String selectedText = textArea.getSelectedText();
-        String saveble = selectedText.replaceAll("[\\[\\](){}']", "");
-        int numberOfWords = countWords(selectedText);
-        if (selectedText == null || selectedText.isEmpty()) {
-            Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setTitle("No selection");
-            error.setHeaderText("please select a chunk");
-            error.setContentText("please select a part of text ");
-            error.showAndWait();
-        } else if (numberOfWords > 25) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("select a smaller chunk");
-            alert.setHeaderText("too much words");
-            alert.setContentText("please select a smaller chunk");
-            alert.showAndWait();
-        }else if (selectedRadioButton==null){
-            askForVoice.setText("SELECT A VOICE PLEASE");
+
+        if (!checkValidSelection(textArea.getSelectedText())) {
             return;
+        } else { // save the selected text to a file and switch scene to saveToAudio interface
+            String saveble = selectedText.replaceAll("[\\[\\](){}']", "");
+            int numberOfAudio=countNumberOfAudioFileInAudioPiece();
+            String number=Integer.toString(numberOfAudio);
 
-        }
-
-        // save the selected text to a file and switch scene to saveToAudio interface
-        else {
-            FileWriter writer = new FileWriter(PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt");
+            FileWriter writer = new FileWriter(PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt"); //TODO combine text so we can read as description of file.
             writer.write(saveble);
             writer.close();
 
 
 
             if (default_voice.isSelected()) {
-                int numberOfAudio=countNumberOfAudioFileInAudioPiece();
-                String number=Integer.toString(numberOfAudio);
                 String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term + "-"+ number+ ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
                 System.out.println(createAudio);
 
@@ -353,8 +366,6 @@ public class EditTextController {
 
 
             } else if (male_voice.isSelected()) {
-                int numberOfAudio=countNumberOfAudioFileInAudioPiece();
-                String number=Integer.toString(numberOfAudio);
                 String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number + ".wav\" \"" +
                         PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval jdt.scm";
 
@@ -431,8 +442,6 @@ public class EditTextController {
 
 
             }else if (female_voice.isSelected()) {
-                int numberOfAudio=countNumberOfAudioFileInAudioPiece();
-                String number=Integer.toString(numberOfAudio);
                 String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number + ".wav\" \"" +
                         PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval cw.scm";
                 System.out.println(createAudio);
