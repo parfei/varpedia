@@ -54,7 +54,7 @@ public class CreationController {
     @FXML
     public void backToMain(ActionEvent event) throws IOException {
         //_changeSceneObject.changeScene(event, "resources/menu.fxml", "Main Menu");
-        Main.getController().setBOTTOMVIEW("resources/MainMenu.fxml");
+        Main.getController().setBOTTOMVIEW("resources/DefaultBottom.fxml");
     }
 
     /**

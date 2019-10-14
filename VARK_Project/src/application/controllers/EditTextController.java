@@ -489,14 +489,6 @@ public class EditTextController {
             }
         }
 
-
-
-
-
-
-
-
-
     /**
      * THis method will remove the saved text and audios when the user want to restart a creation process
      * @param event

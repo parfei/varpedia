@@ -10,8 +10,16 @@ public class DefaultController {
 
     @FXML
     public void initialize(){
+        //TODO bind visibility of progress bar and addfav to managed state
         progressBar.setVisible(false);
         addFav.setVisible(false);
     }
+
+    public void startCreationProgress(){
+        progressBar.setVisible(true);
+        addFav.setVisible(true);
+    }
+
+    //TODO update the progress bar.
 
 }
