@@ -206,6 +206,7 @@ public class ViewController {
             if (result.get() == ButtonType.OK){
 
                 String path = findCreation(_choice); //finds the relevant creation
+                resetPlayer();
 
                 String cmd= "rm -f \"" + path + "\"";
                 System.out.println(cmd);
@@ -246,11 +247,11 @@ public class ViewController {
     public void favourite(ActionEvent event) throws IOException {
         if (_choice != null){
             errorText.setVisible(false);
-            resetPlayer();
 
             String file = "\"" + findCreation(_choice) + "\"";
             String file2 = "\"" + PathCD.getPathInstance().getPath() + "/mydir/creations/favourites/" + _choice + ".mp4\"";
 
+            resetPlayer();
             String command = "mv " + file + " " + file2;
 
             System.out.println(command);
@@ -258,10 +259,10 @@ public class ViewController {
             ProcessBuilder move = new ProcessBuilder("bash", "-c", command);
             try {
                 Process process = move.start();
-            } catch (IOException e) {
+                process.waitFor();
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
-
 
 
             //File file = new File("\"" + findCreation(_choice) + "\"");
@@ -280,7 +281,7 @@ public class ViewController {
         muteButton.setText("Mute");
         playButton.setText("Play");
         _choice = null;
-        view.setDisable(true); //TODO FIX DELETION AND FAVOURITING...TEXT FILE BUSY
+        view.setDisable(true);
         _player.dispose();
 
         stuffCreated.setDisable(false);
