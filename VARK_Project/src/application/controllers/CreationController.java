@@ -159,14 +159,8 @@ public class CreationController {
                             e.printStackTrace();
                         }
 
-                        EditTextController controller = (EditTextController) Main.getController().setBOTTOMVIEW("resources/CreateAudio.fxml");
+                        EditTextController controller = (EditTextController) Main.getController().setBOTTOMVIEW("resources/EditText.fxml");
                         controller.initData(_InputFromUser);
-
-                        //FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml"));
-                        //Parent createViewParent = loader.load();
-                        //EditTextController controller = loader.getController();
-                        //controller.initData(_InputFromUser);
-
 
                     } catch (IOException e) {
                         e.printStackTrace();//TODO error?

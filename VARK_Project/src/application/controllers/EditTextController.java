@@ -100,24 +100,6 @@ public class EditTextController {
             ex.printStackTrace();
         }
 
-        /*String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
-        System.out.println(PathCD.getPathInstance().getPath());
-        ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
-        try {
-            String line;
-            Process process = builder.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            while ((line = reader.readLine()) != null) {
-                _audioExisted.add(line);
-            }
-            existingAudioView.getItems().addAll(_audioExisted);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
-
     }
 
     public int countNumberOfAudioFileInAudioPiece() {
@@ -495,10 +477,10 @@ public class EditTextController {
      * @throws IOException
      */
     @FXML
-    public void backToMain(ActionEvent event) throws IOException {
+    public void backToMain(ActionEvent event) throws IOException { //TODO set up back to search term functionality, change backto main to a little x button at the top?
 
         String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/extra/audioPiece\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
-        //String cmd2="rm -r"+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
+        //String cmd2="rm -r"+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt"; //TODO make static method
 
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd1);
         try {
@@ -506,8 +488,8 @@ public class EditTextController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        _changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
-
+        //_changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
+        Main.getController().setBOTTOMVIEW("resources/DefaultBottom.fxml");
 
     }
 
@@ -524,19 +506,8 @@ public class EditTextController {
      */
     @FXML
     public void readyToCombine(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/createNew.fxml"));
-        Parent createViewParent=loader.load();
-        CreateNewController controller = loader.getController();
-
+        CreateNewController controller = (CreateNewController) Main.getController().setBOTTOMVIEW("resources/CreateNew.fxml");
         controller.initData(_term);
-
-
-        Scene createViewScene = new Scene(createViewParent);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(createViewScene);
-        // gets the Stage information
-        window.setTitle("Creation Menu");
-        window.show();
     }
 
 

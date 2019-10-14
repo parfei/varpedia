@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -13,11 +14,12 @@
       <TextArea fx:id="textArea" prefHeight="245.0" prefWidth="319.0" wrapText="true" />
       <Button layoutX="343.0" layoutY="176.0" mnemonicParsing="false" onAction="#preview" prefHeight="26.0" prefWidth="70.0" text="Preview" />
       <Button layoutX="440.0" layoutY="176.0" mnemonicParsing="false" onAction="#save" prefHeight="26.0" prefWidth="62.0" text="Save" />
-      <Button layoutX="582.0" layoutY="123.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="47.0" prefWidth="70.0" text="Back" />
-      <Button fx:id="create" layoutX="666.0" layoutY="123.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="47.0" prefWidth="95.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Create" textFill="WHITE" />
+      <Button layoutX="760.0" layoutY="7.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="18.0" prefWidth="33.0" text="x" />
+      <Button fx:id="create" layoutX="675.0" layoutY="166.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="47.0" prefWidth="95.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Create" textFill="WHITE" />
       <Label fx:id="askForVoice" layoutX="343.0" layoutY="64.0" text="Please select a voice" />
       <Label fx:id="remindLabel" layoutX="333.0" layoutY="7.0" prefHeight="65.0" prefWidth="219.0" text="Switched to default voice due to voice limitations" textFill="RED" wrapText="true" />
-      <Label layoutX="588.0" layoutY="56.0" text="Number of existing audio: " />
+      <Label layoutX="582.0" layoutY="14.0" text="Existing Audio" />
+      <ListView fx:id="existingAudioView" layoutX="582.0" layoutY="40.0" prefHeight="117.0" prefWidth="200.0" />
       <VBox layoutX="351.0" layoutY="92.0" prefHeight="84.0" prefWidth="120.0" spacing="10.0">
          <children>
             <RadioButton fx:id="default_voice" mnemonicParsing="false" text="default voice">
