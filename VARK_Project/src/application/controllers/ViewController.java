@@ -31,7 +31,6 @@ import javafx.util.Duration;
  * Controller for the view window of the application.
  */
 public class ViewController {
-    private List <String > innovation = new ArrayList<String>();
     private String _choice;
     private MediaPlayer _player;
 
@@ -51,6 +50,8 @@ public class ViewController {
     @FXML private Button timeBack;
     @FXML private Button timeForward;
 
+    @FXML private CheckBox favOption;
+
     @FXML private URL location;
     @FXML private ResourceBundle resources;
 
@@ -59,22 +60,11 @@ public class ViewController {
      */
     public void initialize() //TODO concurrency for this??
     {
-        String path = PathCD.getPathInstance().getPath();
 
-        String cmd = "ls -R"+ " \""+ path + "/mydir/creations\""+ " | grep .mp4 | cut -f1 -d'.' | sort";
-        ProcessBuilder initializing = new ProcessBuilder("bash","-c",cmd);
-        try{
-            Process process = initializing.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
+        List<String> list = getCreations("creations");
 
-            while ((line = reader.readLine()) != null) {
-                innovation.add(line);
-            }
-            stuffCreated.getItems().addAll(innovation);
-        }catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        stuffCreated.getItems().addAll(list);
+
         errorText.setVisible(false);
         playButton.setDisable(true);
         playOptions.setDisable(true);
@@ -204,19 +194,19 @@ public class ViewController {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
-
-                String path = findCreation(_choice); //finds the relevant creation
                 resetPlayer();
 
-                String cmd= "rm -f \"" + path + "\"";
+                String path = findCreation(_choice); //finds the relevant creation
+
+                String cmd= "rm -f \"" + path + "\""; //TODO check...
                 System.out.println(cmd);
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
                     Process process = pb.start();
-                } catch (IOException ex) {
+                    process.waitFor();
+                } catch (IOException | InterruptedException ex) {
                     ex.printStackTrace();
                 }
-                innovation.clear();
                 stuffCreated.getItems().clear();
                 this.initialize();
 
@@ -230,7 +220,6 @@ public class ViewController {
 
     private String findCreation(String name){
         String command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/\"*\"/" + name + ".mp4\"";
-
 
         ProcessBuilder find = new ProcessBuilder("bash", "-c", command);
         try {
@@ -263,16 +252,42 @@ public class ViewController {
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
-
-
-            //File file = new File("\"" + findCreation(_choice) + "\"");
-            //File file2 = new File("\"" + PathCD.getPathInstance().getPath() + "/mydir/creations/favourites/" + _choice +".mp4\"");
-            //Files.move(Paths.get(file.toURI()), Paths.get(file2.toURI()));
-            //Files.move(file.toPath(), new File("\"" + PathCD.getPathInstance().getPath() + "/mydir/creations/favourites/" + _choice +".mp4\"").toPath());
-            //file.renameTo(new File("\"" + PathCD.getPathInstance().getPath() + "/mydir/creations/favourites/" + _choice + ".mp4\""));
         } else {
             errorText.setVisible(true);
         }
+    }
+
+    @FXML
+    public void tickFav(ActionEvent event){
+        List<String> list = null;
+        if (favOption.isSelected()){
+            list = getCreations("creations/favourites");
+        } else {
+            list = getCreations("creations");
+            stuffCreated.getItems().clear();
+            stuffCreated.getItems().setAll(list);
+        }
+        stuffCreated.getItems().clear();
+        stuffCreated.getItems().setAll(list);
+    }
+
+    private List<String> getCreations(String path){
+        ArrayList<String> innovation = new ArrayList<String>();
+
+        String cmd = "ls -R"+ " \""+ PathCD.getPathInstance().getPath() + "/mydir/" + path + "\""+ " | grep .mp4 | cut -f1 -d'.' | sort";
+        ProcessBuilder initializing = new ProcessBuilder("bash","-c",cmd);
+        try{
+            Process process = initializing.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                innovation.add(line);
+            }
+        }catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return innovation;
     }
 
     private void resetPlayer(){
