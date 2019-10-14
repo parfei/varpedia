@@ -51,6 +51,7 @@ public class ViewController {
     @FXML private Button timeForward;
 
     @FXML private CheckBox favOption;
+    @FXML private ChoiceBox confidence;
 
     @FXML private URL location;
     @FXML private ResourceBundle resources;
@@ -230,6 +231,11 @@ public class ViewController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @FXML
+    public void changeConfidence(ActionEvent event){
+        //TODO change confidence rating of creation
     }
 
     @FXML
