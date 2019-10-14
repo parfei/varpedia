@@ -109,8 +109,7 @@ public class CreationController {
 
                 //_line = _line.replace(". ", ".\n");
 
-            } catch (
-                    IOException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
             return null;
@@ -126,7 +125,7 @@ public class CreationController {
 
             if (_line.contains(_InputFromUser + " not found :^(")) {
                 Platform.runLater(() -> {
-                        whatDoYouWant.setText("Your input name is invalid, please enter again");
+                        whatDoYouWant.setText("Your input name is invalid, please enter again"); //TODO timeout result
                         //clear the searched text in the wikipedia
                         yourKeyWord.clear();
                 });

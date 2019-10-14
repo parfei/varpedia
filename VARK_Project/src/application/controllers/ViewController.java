@@ -18,6 +18,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -221,7 +224,6 @@ public class ViewController {
             }
         } else {
             errorText.setVisible(true);
-            errorText.setText("Select something to delete.");
         }
     }
 
@@ -240,13 +242,45 @@ public class ViewController {
         return null;
     }
 
+    @FXML
+    public void favourite(ActionEvent event) throws IOException {
+        if (_choice != null){
+            errorText.setVisible(false);
+            resetPlayer();
+
+            String file = "\"" + findCreation(_choice) + "\"";
+            String file2 = "\"" + PathCD.getPathInstance().getPath() + "/mydir/creations/favourites/" + _choice + ".mp4\"";
+
+            String command = "mv " + file + " " + file2;
+
+            System.out.println(command);
+
+            ProcessBuilder move = new ProcessBuilder("bash", "-c", command);
+            try {
+                Process process = move.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
+            //File file = new File("\"" + findCreation(_choice) + "\"");
+            //File file2 = new File("\"" + PathCD.getPathInstance().getPath() + "/mydir/creations/favourites/" + _choice +".mp4\"");
+            //Files.move(Paths.get(file.toURI()), Paths.get(file2.toURI()));
+            //Files.move(file.toPath(), new File("\"" + PathCD.getPathInstance().getPath() + "/mydir/creations/favourites/" + _choice +".mp4\"").toPath());
+            //file.renameTo(new File("\"" + PathCD.getPathInstance().getPath() + "/mydir/creations/favourites/" + _choice + ".mp4\""));
+        } else {
+            errorText.setVisible(true);
+        }
+    }
+
     private void resetPlayer(){
         muteButton.setDisable(true);
         playOptions.setDisable(true);
         muteButton.setText("Mute");
         playButton.setText("Play");
         _choice = null;
-        view.setDisable(true);
+        view.setDisable(true); //TODO FIX DELETION AND FAVOURITING...TEXT FILE BUSY
         _player.dispose();
 
         stuffCreated.setDisable(false);

@@ -26,7 +26,7 @@
       </TableView>
       <HBox layoutX="110.0" layoutY="341.0" prefHeight="28.0" prefWidth="104.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="34.0" text="★" />
+            <Button mnemonicParsing="false" onAction="#favourite" prefHeight="26.0" prefWidth="34.0" text="★" />
             <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteVideo" prefHeight="11.0" prefWidth="78.0" text="Delete">
                <font>
                   <Font size="14.0" />
