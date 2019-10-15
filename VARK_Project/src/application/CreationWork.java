@@ -3,6 +3,10 @@ package application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.*;
 import java.nio.file.Path;
 
@@ -16,30 +20,35 @@ public class CreationWork extends Task<String> {
     private String _name;
     private String _term;
     private String _path;
+    private String _musicChoice;
     private int _picNum;
     private Boolean _combine;
 
-    public CreationWork(String term, String name, int picNum, Boolean combine){
+    public CreationWork(String term, String name, int picNum, Boolean combine, String musicChoice) {
         _name = name;
         _term = term;
         _picNum = picNum;
         _path = PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name + "/";
+        System.out.println(_path);
         _combine = combine;
+        _musicChoice = musicChoice;
     }
 
     /**
      * Main template method of the task class.
+     *
      * @return
      * @throws Exception
      */
     @Override
     protected String call() throws Exception {
-        if (_combine){ //If user specifies to combine audio, we generate combined audio.
+        if (_combine) { //If user specifies to combine audio, we generate combined audio.
             generateCombinedAudio();
+            addBackgroundMusic();
         } else {
             generateAudio();
         }
-        if (_picNum == 0){ //If failed to get Flickr images or there are no Flickr images available then generate blue video.
+        if (_picNum == 0) { //If failed to get Flickr images or there are no Flickr images available then generate blue video.
             generateBlueVideo();
         } else {
             generatePicVideo();
@@ -54,8 +63,8 @@ public class CreationWork extends Task<String> {
     /**
      * Generate combined audio of all the audio pieces we have.
      */
-    private void generateCombinedAudio(){
-        String combine= "cd \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\" ; sox $(ls -tcr | grep wav) \"" +
+    private void generateCombinedAudio() {
+        String combine = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\" ; sox $(ls -tcr | grep wav) \"" +
                 PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name + "/sound.wav\"";
         System.out.println(combine);
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", combine);
@@ -71,7 +80,7 @@ public class CreationWork extends Task<String> {
     /**
      * Generate audio of specified number of lines. NOT USED FOR THIS ASSIGNMENT.
      */
-    private void generateAudio(){
+    private void generateAudio() {
         String soundCommand = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/lines.txt\" | text2wave -o \"" + _path + "sound.wav\"";
         System.out.println(soundCommand);
         ProcessBuilder sound = new ProcessBuilder("bash", "-c", soundCommand);
@@ -86,9 +95,9 @@ public class CreationWork extends Task<String> {
     /**
      * Generate empty video, blue background, if no images.
      */
-    private void generateBlueVideo(){
+    private void generateBlueVideo() {
         //video
-        String videoCommand = "duration=`soxi -D \"" + _path + "sound.wav\"` ; ffmpeg -f lavfi -i color=c=blue:s=320x240:d=\"$duration\" "
+        String videoCommand = "duration=`soxi -D \"" + _path + "combinedSound.wav\"` ; ffmpeg -f lavfi -i color=c=blue:s=320x240:d=\"$duration\" "
                 + "-vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text=" + "'" + _term + "'" + "\" \"" + _path + "video.mp4\"";
         ProcessBuilder video = new ProcessBuilder("bash", "-c", videoCommand);
         Process vid = null;
@@ -103,10 +112,10 @@ public class CreationWork extends Task<String> {
     /**
      * Generate slideshow video of all the images related to the term.
      */
-    private void generatePicVideo(){
+    private void generatePicVideo() {
 
         //video
-        try{
+        try {
             generateFilesTxt();
 
             //String command2 = "ffmpeg -framerate " + _picNum + "/\"$duration\" -f image2 -s 800x600 -i \"" + _path + "img%01d.jpg\" -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -r 25 \"" + _path + "slideshow.mp4\"";
@@ -130,9 +139,9 @@ public class CreationWork extends Task<String> {
     /**
      * Create the combined verison of sound.wav and video.mp4.
      */
-    private void combineForms(){
+    private void combineForms() {
 
-        String combineCommand = "ffmpeg -y -i \"" + _path + "sound.wav\" -i \"" + _path + "video.mp4\" -c:v copy -c:a aac -strict experimental \"" +
+        String combineCommand = "ffmpeg -y -i \"" + _path + "combinedSound.wav\" -i \"" + _path + "video.mp4\" -c:v copy -c:a aac -strict experimental \"" +
                 PathCD.getPathInstance().getPath() + "/mydir/creations/" + _term + "/" + _name + ".mp4\" 2>/dev/null";
         System.out.println(combineCommand);
         ProcessBuilder getTogether = new ProcessBuilder("bash", "-c", combineCommand);
@@ -149,10 +158,10 @@ public class CreationWork extends Task<String> {
     /**
      * Helper function to generate the required text file to specify duration and files needed for the slideshow.
      */
-    private void generateFilesTxt(){
+    private void generateFilesTxt() {
         double duration = 0;
 
-        String command1 = "soxi -D \"" + _path + "sound.wav\"";
+        String command1 = "soxi -D \"" + _path + "combinedSound.wav\"";
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", command1);
         try {
             Process process = pb.start();
@@ -162,20 +171,93 @@ public class CreationWork extends Task<String> {
             e.printStackTrace();
         }
 
-        double dura = duration/_picNum; //Calculate duration of each picture.
+        double dura = duration / _picNum; //Calculate duration of each picture.
 
         try {
             PrintWriter writer = new PrintWriter(_path + "imgs.txt", "UTF-8");
-            for (int i=0;i<_picNum;i++){
+            for (int i = 0; i < _picNum; i++) {
                 writer.println("file '" + _path + "img" + i + ".jpg'"); //Write file name for each image to be included.
                 writer.println("duration " + dura); //Write duration for each image to be included.
             }
-            writer.println("file '" + _path + "img" + Integer.toString(_picNum-1) + ".jpg'");
+            writer.println("file '" + _path + "img" + Integer.toString(_picNum - 1) + ".jpg'");
             writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void addBackgroundMusic() throws InterruptedException, IOException {
+        System.out.println("start adding background music");
+
+
+        //measure the length of audio working
+       // String pathOfSoundWithoutMusic=PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name;
+        //String command = "soxi -D ./myaudio/sound.wav";
+        String command= "soxi -D "+_path+"sound.wav";
+        ProcessBuilder measureLength = new ProcessBuilder("/bin/bash", "-c", command);
+        Process process = measureLength.start();
+        BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        int exitStatus = process.waitFor();
+        int seconds = 0;
+        if (exitStatus == 0) {
+            double duration = Double.parseDouble(stdout.readLine());
+            seconds = (int) Math.ceil(duration);
+
+
+        }
+
+        //change mp3 file to wav file
+        String createMusicFile = null;
+        String path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece";
+
+        if (_musicChoice==null||_musicChoice.equals("No music")){
+            createMusicFile = "";
+        }
+        else if (_musicChoice.equals("Clouds")) {
+            createMusicFile = "ffmpeg -i ./src/songs/clouds.mp3 -acodec pcm_u8 -ar 16000 "+ path+"/song.wav";
+        } else if (_musicChoice.equals("Fingers")) {
+            createMusicFile = "ffmpeg -i ./src/songs/fingers.mp3 -acodec pcm_u8 -ar 16000 " + path + "/song.wav";
+        } else if (_musicChoice.equals("Sun")) {
+            createMusicFile = "ffmpeg -i ./src/songs/sun.mp3 -acodec pcm_u8 -ar 16000 " + path + "/song.wav";
+        }
+        else {
+            System.out.println("Bug");
+        }
+        if (!(createMusicFile == "")) {
+            ProcessBuilder builder = new ProcessBuilder("bash", "-c", createMusicFile);
+            Process createMusic = builder.start();
+            int exit = createMusic.waitFor();
+            if (exit == 0) {
+                System.out.println("convert the music to wav file");
+            }
+
+
+
+            //"sox -m ./myaudio/sound.wav ./myaudio/song.wav ./myaudio/out.wav trim 0 "+seconds;
+
+            String combineAudiocommand="sox -m " + _path + "sound.wav "+ path+"/song.wav "+ _path + "combinedSound.wav trim 0 "+seconds;
+            System.out.println(combineAudiocommand);
+            ProcessBuilder builder1 = new ProcessBuilder("bash", "-c", combineAudiocommand);
+            Process combineMusic = builder1.start();
+            int exit1=combineMusic.waitFor();
+            if (exit1==0){
+                System.out.println("combine music completed");
+            }
+
+        }
+        else {
+            String renameCommand="mv "+_path+"sound.wav "+_path+"combinedSound.wav";
+            ProcessBuilder builder = new ProcessBuilder("bash", "-c", renameCommand);
+            Process rename = builder.start();
+            int exit2=rename.waitFor();
+            if (exit2==0){
+                System.out.println("rename completed");
+            }
+
+        }
+
     }
 }

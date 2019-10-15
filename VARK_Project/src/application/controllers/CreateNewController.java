@@ -19,6 +19,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -39,6 +40,7 @@ public class CreateNewController {
 
     private String _choice;
     private List<String> _audioExisted = new ArrayList<String>();
+    private String _musicChoice;
 
     @FXML
     private ListView audioList;
@@ -92,7 +94,7 @@ public class CreateNewController {
 
 
         ObservableList list=FXCollections.observableArrayList();
-        list.addAll("Yes","No");
+        list.addAll("Clouds","Fingers", "Sun", "No music");
         choiceBox.getItems().addAll(list);
         playButton.setDisable(true);
         deleteButton.setDisable(true);
@@ -101,6 +103,8 @@ public class CreateNewController {
 
         team = Executors.newSingleThreadExecutor();
 
+
+        // list audios presented
         String listAudio = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
         ProcessBuilder builder = new ProcessBuilder("bash", "-c", listAudio);
         try {
@@ -148,15 +152,6 @@ public class CreateNewController {
         _CreationsExisted.clear();
         _changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
 
-
-
-        /*Parent createView = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
-        Scene createViewScene = new Scene(createView);
-        // gets the Stage information
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("Main Menu");
-        window.setScene(createViewScene);
-        window.show();*/
     }
 
 
@@ -169,11 +164,11 @@ public class CreateNewController {
      */
     @FXML
     public void EnterCreation(ActionEvent event) throws IOException {
-        if (choiceBox.getValue()==null){
-            remindLabel.setText("DO YOU WANT TO INCLUDE MUSIC?");
-        }
+       // if (choiceBox.getValue()==null){
+           // remindLabel.setText("Select your options of music");
+        //}
 
-        else if (_audioExisted.isEmpty()){
+         if (_audioExisted.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("No audio to combine");
             alert.setHeaderText("Go back and make audios ");
@@ -270,7 +265,7 @@ public class CreateNewController {
 
                         CreationWork creationWork = null;
                         try {
-                            creationWork = new CreationWork(_term, textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true);
+                            creationWork = new CreationWork(_term, textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true,choiceBox.getValue());
                             //System.out.println("pic: " + getImg.get());
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -415,14 +410,18 @@ public class CreateNewController {
         return null;
     }
 
-    /*public int getIndexOfItemInListView(){
+
+    //String createMusicCommand="ffmpeg -i ./src/music/groovy-music.mp3 -acodec pcm_u8 -ar 16000 ./myaudio/song.wav";
+    //String combineBackGroundMusic="sox -m ./myaudio/sound.wav ./myaudio/song.wav ./myaudio/out.wav trim 0 "+seconds
 
 
 
-        return 1;
-    }
 
-    /*public void moveUp(){
+
+
+
+
+    /*public void moveUp()
         foreach (ListViewItem lvi in audioList.SelectedItems)
         {
             if (lvi.Index > 0)
