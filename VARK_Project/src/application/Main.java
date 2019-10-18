@@ -1,8 +1,10 @@
 package application;
 
+import application.bashwork.BashCommand;
 import application.bashwork.ManageFolder;
 import application.controllers.MainController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -56,7 +58,6 @@ public class Main extends Application {
             }
         });*/
 
-
     }
 
     /**
@@ -86,15 +87,10 @@ public class Main extends Application {
      * Run this process to clean files when the application finishes
      * @throws Exception
      */
-    @Override //TODO check if it always works, implement for start, check if exits and nothing is blocking some process is running too.
+    @Override
     public void stop() throws Exception { //In case the deletion of such extra files were not successful.
-        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -"; //Clear files in extra folder.
-        ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
-        try {
-            Process end = pb.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -"); //Clear files in extra folder.);
+        Platform.exit();
     }
 
     public void writeScheme() throws IOException {
