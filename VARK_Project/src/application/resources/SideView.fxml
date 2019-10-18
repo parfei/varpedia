@@ -16,7 +16,7 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minWidth="664.0" prefHeight="362.0" prefWidth="664.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ViewController">
+<AnchorPane minWidth="664.0" prefHeight="362.0" prefWidth="664.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.old.ViewController">
    <children>
       <ListView fx:id="stuffCreated" layoutX="4.0" layoutY="27.0" onMouseClicked="#getTheSelection" prefHeight="308.0" prefWidth="214.0" />
       <TableView fx:id="list" layoutY="-2.0" prefHeight="341.0" prefWidth="220.0" visible="false">
