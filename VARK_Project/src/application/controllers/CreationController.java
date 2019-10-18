@@ -54,7 +54,7 @@ public class CreationController {
     @FXML
     public void backToMain(ActionEvent event) throws IOException {
         //_changeSceneObject.changeScene(event, "resources/menu.fxml", "Main Menu");
-        Main.getController().setBOTTOMVIEW("resources/DefaultBottom.fxml");
+        Main.getController().setTOPVIEW("resources/MainMenu.fxml");
     }
 
     /**
@@ -158,7 +158,7 @@ public class CreationController {
                             e.printStackTrace();
                         }
 
-                        EditTextController controller = (EditTextController) Main.getController().setBOTTOMVIEW("resources/EditText.fxml");
+                        EditTextController controller = (EditTextController) Main.getController().setTOPVIEW("resources/EditText.fxml");
                         controller.initData(_InputFromUser);
 
                     } catch (IOException e) {

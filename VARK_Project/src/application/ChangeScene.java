@@ -12,7 +12,6 @@ import java.io.IOException;
 
 public class ChangeScene {
 
-
     public void changeScene(ActionEvent event, String scene, String title){
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource(scene));

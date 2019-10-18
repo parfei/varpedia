@@ -539,7 +539,7 @@ public class EditTextController {
             e.printStackTrace();
         }
         //_changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
-        Main.getController().setBOTTOMVIEW("resources/DefaultBottom.fxml");
+        Main.getController().setTOPVIEW("resources/MainMenu.fxml");
 
     }
 
@@ -556,7 +556,7 @@ public class EditTextController {
      */
     @FXML
     public void readyToCombine(ActionEvent event) throws IOException {
-        CreateNewController controller = (CreateNewController) Main.getController().setBOTTOMVIEW("resources/CreateNew.fxml");
+        CreateNewController controller = (CreateNewController) Main.getController().setTOPVIEW("resources/CreateNew.fxml");
         controller.initData(_term);
     }
 

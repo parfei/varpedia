@@ -147,7 +147,7 @@ public class CreateNewController {
 
         _CreationsExisted.clear();
         //_changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
-        Main.getController().setBOTTOMVIEW("resources/DefaultBottom");
+        Main.getController().setTOPVIEW("resources/MainMenu.fxml");
     }
 
 
@@ -171,7 +171,7 @@ public class CreateNewController {
             alert.setContentText("Make audio first");
             alert.showAndWait();
 
-            EditTextController controller = (EditTextController) Main.getController().setBOTTOMVIEW("resources/EditText.fxml");
+            EditTextController controller = (EditTextController) Main.getController().setTOPVIEW("resources/EditText.fxml");
             controller.initData(_term);
 
         }
@@ -282,7 +282,7 @@ public class CreateNewController {
                     }
                 });
 
-            Main.getController().setBOTTOMVIEW("resources/DefaultBottom.fxml");
+            Main.getController().setTOPVIEW("resources/MainMenu.fxml");
         }
     }
 
