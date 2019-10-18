@@ -1,4 +1,4 @@
-package application.controllers.old;
+package application.controllers;
 import application.PathCD;
 import application.bashwork.BashCommand;
 import javafx.application.Platform;
@@ -38,7 +38,7 @@ public class ViewController {
     @FXML private Button playButton;
     @FXML private Button muteButton;
     @FXML private CheckBox favOption;
-    @FXML private ChoiceBox confidence;
+    @FXML private Slider confidence;
 
     /**
      * This method will add the existing creation to the ListView
