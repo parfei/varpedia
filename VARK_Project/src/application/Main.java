@@ -2,25 +2,16 @@ package application;
 
 import application.bashwork.BashCommand;
 import application.bashwork.ManageFolder;
+import application.values.SceneFXML;
 import application.controllers.MainController;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * This is the entry point of the application.
@@ -38,7 +29,7 @@ public class Main extends Application {
         this.initializeFolder();
         this.writeScheme();
 
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/MainWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.WINDOW.toString()));
         Parent root = loader.load();
         _controller = (MainController) loader.getController();
 
@@ -93,7 +84,7 @@ public class Main extends Application {
         Platform.exit();
     }
 
-    public void writeScheme() throws IOException {
+    public void writeScheme() throws IOException{
         FileWriter writer1=new FileWriter("kal.scm");
         writer1.write("(voice_kal_diphone)");
         writer1.close();
