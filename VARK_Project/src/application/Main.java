@@ -1,5 +1,6 @@
 package application;
 
+import application.bashwork.ManageFolder;
 import application.controllers.MainController;
 import javafx.application.Application;
 import javafx.concurrent.WorkerStateEvent;
@@ -61,11 +62,9 @@ public class Main extends Application {
     /**
      * This method will create a folder
      */
-    private void initializeFolder(){
-        String path = PathCD.getPathInstance().getPath();
-
-
-        try {
+    private void initializeFolder() throws Exception {
+        ManageFolder.initializeFolders();
+        /*try {
             String command = "[ -e \"" + path + "/mydir\" ]"; //check if there is a creations folder.
             ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
 
@@ -80,7 +79,7 @@ public class Main extends Application {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 

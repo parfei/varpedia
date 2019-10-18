@@ -27,7 +27,6 @@ public class MainController {
     @FXML
     public void initialize() throws IOException {
         this.setTOPVIEW("resources/MainMenu.fxml");
-        this.setBOTTOMVIEW("resources/DefaultBottom.fxml");
     }
 
 
