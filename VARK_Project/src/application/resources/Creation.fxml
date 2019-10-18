@@ -5,30 +5,35 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreationController">
+<AnchorPane prefHeight="596.0" prefWidth="1065.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreationController">
    <children>
-      <Label fx:id="whatDoYouWant" layoutX="152.0" layoutY="71.0" prefHeight="20.0" prefWidth="296.0" text="Hi, what do you want to learn today?">
+      <Label fx:id="whatDoYouWant" layoutX="371.0" layoutY="192.0" prefHeight="20.0" prefWidth="296.0" text="Hi, what do you want to learn today?">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="yourKeyWord" layoutX="194.0" layoutY="156.0" prefHeight="26.0" prefWidth="212.0" promptText="Your Keyword">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </TextField>
-      <Button fx:id="enterButton" layoutX="448.0" layoutY="156.0" mnemonicParsing="false" onAction="#search" text="search">
+      <ProgressBar fx:id="progress" layoutX="314.0" layoutY="326.0" prefHeight="20.0" prefWidth="321.0" progress="0.0" />
+      <Button fx:id="goingBack" layoutX="887.0" layoutY="535.0" mnemonicParsing="false" onAction="#backToMain" text="back to main">
          <font>
             <Font size="16.0" />
          </font>
       </Button>
-      <ProgressBar fx:id="progress" layoutX="200.0" layoutY="239.0" prefWidth="200.0" progress="0.0" />
-      <Button fx:id="goingBack" layoutX="422.0" layoutY="332.0" mnemonicParsing="false" onAction="#backToMain" text="back to main">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Button>
+      <HBox layoutX="298.0" layoutY="264.0" prefHeight="47.0" prefWidth="428.0">
+         <children>
+            <TextField fx:id="yourKeyWord" prefHeight="32.0" prefWidth="351.0" promptText="Your Keyword">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextField>
+            <Button fx:id="enterButton" mnemonicParsing="false" onAction="#search" text="search">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
