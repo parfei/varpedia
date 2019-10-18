@@ -333,8 +333,6 @@ public class CreateNewController {
         }
     }
 
-
-
     @FXML
     public void playAudio(ActionEvent event){
         String wavFile = findAudio(_choice);
