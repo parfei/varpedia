@@ -16,7 +16,7 @@ public enum SceneFXML {
     VIEW{
         @Override
         public String toString() {
-            return "resources/View.fxml";
+            return "resources/SideView.fxml";
         }
     },
     SEARCH{

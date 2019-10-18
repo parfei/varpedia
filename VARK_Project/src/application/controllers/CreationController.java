@@ -2,6 +2,7 @@ package application.controllers;
 import application.ChangeScene;
 import application.Main;
 import application.PathCD;
+import application.values.SceneFXML;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -54,7 +55,7 @@ public class CreationController {
     @FXML
     public void backToMain(ActionEvent event) throws IOException {
         //_changeSceneObject.changeScene(event, "resources/menu.fxml", "Main Menu");
-        Main.getController().setTOPVIEW("resources/MainMenu.fxml");
+        Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
 
     /**
@@ -158,11 +159,11 @@ public class CreationController {
                             e.printStackTrace();
                         }
 
-                        EditTextController controller = (EditTextController) Main.getController().setTOPVIEW("resources/EditText.fxml");
+                        EditTextController controller = (EditTextController) Main.getController().setTOPVIEW(SceneFXML.AUDIO.toString());
                         controller.initData(_InputFromUser);
 
                     } catch (IOException e) {
-                        e.printStackTrace();//TODO error?
+                        e.printStackTrace();
                     }
 
                 });

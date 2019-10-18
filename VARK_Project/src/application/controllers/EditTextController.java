@@ -3,6 +3,7 @@ package application.controllers;
 import application.ChangeScene;
 import application.Main;
 import application.PathCD;
+import application.values.SceneFXML;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -539,7 +540,7 @@ public class EditTextController {
             e.printStackTrace();
         }
         //_changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
-        Main.getController().setTOPVIEW("resources/MainMenu.fxml");
+        Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
 
     }
 
@@ -556,7 +557,7 @@ public class EditTextController {
      */
     @FXML
     public void readyToCombine(ActionEvent event) throws IOException {
-        CreateNewController controller = (CreateNewController) Main.getController().setTOPVIEW("resources/CreateNew.fxml");
+        CreateNewController controller = (CreateNewController) Main.getController().setTOPVIEW(SceneFXML.CREATE.toString());
         controller.initData(_term);
     }
 

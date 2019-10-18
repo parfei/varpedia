@@ -1,6 +1,7 @@
 package application.controllers;
 
 import application.*;
+import application.values.SceneFXML;
 import com.sun.jdi.connect.Transport;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -147,7 +148,7 @@ public class CreateNewController {
 
         _CreationsExisted.clear();
         //_changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
-        Main.getController().setTOPVIEW("resources/MainMenu.fxml");
+        Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
 
 
@@ -171,7 +172,7 @@ public class CreateNewController {
             alert.setContentText("Make audio first");
             alert.showAndWait();
 
-            EditTextController controller = (EditTextController) Main.getController().setTOPVIEW("resources/EditText.fxml");
+            EditTextController controller = (EditTextController) Main.getController().setTOPVIEW(SceneFXML.AUDIO.toString());
             controller.initData(_term);
 
         }
@@ -282,7 +283,7 @@ public class CreateNewController {
                     }
                 });
 
-            Main.getController().setTOPVIEW("resources/MainMenu.fxml");
+            Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
         }
     }
 

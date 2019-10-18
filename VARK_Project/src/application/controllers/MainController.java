@@ -2,6 +2,7 @@ package application.controllers;
 
 import application.ChangeScene;
 import application.Main;
+import application.values.SceneFXML;
 import javafx.fxml.FXML;
 
 
@@ -25,7 +26,7 @@ public class MainController {
 
     @FXML
     public void initialize() throws IOException {
-        this.setTOPVIEW("resources/MainMenu.fxml");
+        this.setTOPVIEW(SceneFXML.MENU.toString());
     }
 
     /**
@@ -37,13 +38,13 @@ public class MainController {
     @FXML
     public void create(ActionEvent event) throws IOException {
         //_changeSceneObject.changeScene(event,"resources/Creation.fxml","Creation");
-        this.setTOPVIEW("resources/SearchTerm.fxml");
+        this.setTOPVIEW(SceneFXML.SEARCH.toString());
     }
 
     @FXML
     public void view(ActionEvent event)throws IOException{
         //_changeSceneObject.changeScene(event,"resources/View.fxml","View Menu");
-        this.setTOPVIEW("resources/SideView.fxml");
+        this.setTOPVIEW(SceneFXML.VIEW.toString());
     }
 
     @FXML
