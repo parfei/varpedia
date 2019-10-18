@@ -40,7 +40,7 @@ public class Main extends Application {
         _controller = (MainController) loader.getController();
 
         primaryStage.setTitle("VARpedia");
-        primaryStage.setScene(new Scene(root, 1200, 650));
+        primaryStage.setScene(new Scene(root, 1200, 600));
         primaryStage.setResizable(false);
         primaryStage.show();
 
