@@ -1,31 +1,26 @@
 package application.controllers.old;
-import application.Main;
 import application.PathCD;
-import application.controllers.CreationController;
+import application.bashwork.BashCommand;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.scene.text.Text;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import javafx.util.Duration;
 
 /**
@@ -34,38 +29,23 @@ import javafx.util.Duration;
 public class ViewController {
     private String _choice;
     private MediaPlayer _player;
-
-    // create an object of CreateController to use to go back to main menu method
-    private CreationController creation = new CreationController();
-
-    @FXML private TableView list;
+    private ExecutorService team = Executors.newSingleThreadExecutor();
 
     @FXML private ListView stuffCreated;
     @FXML private Label errorText;
-
     @FXML private MediaView view;
     @FXML private ButtonBar playOptions;
     @FXML private Button playButton;
-    @FXML private Button deleteButton;
     @FXML private Button muteButton;
-    @FXML private Button timeBack;
-    @FXML private Button timeForward;
-
     @FXML private CheckBox favOption;
     @FXML private ChoiceBox confidence;
-
-    @FXML private URL location;
-    @FXML private ResourceBundle resources;
 
     /**
      * This method will add the existing creation to the ListView
      */
-    public void initialize() //TODO concurrency for this??
+    public void initialize() throws Exception //TODO concurrency for this??
     {
-
-        List<String> list = getCreations("creations");
-
-        stuffCreated.getItems().addAll(list);
+        getCreations("creations");
 
         errorText.setVisible(false);
         playButton.setDisable(true);
@@ -185,7 +165,7 @@ public class ViewController {
      * @throws IOException
      */
     @FXML
-    public void deleteVideo(ActionEvent event)throws IOException{
+    public void deleteVideo(ActionEvent event) throws Exception {
 
         if(_choice!=null){
 
@@ -209,8 +189,7 @@ public class ViewController {
                 } catch (IOException | InterruptedException ex) {
                     ex.printStackTrace();
                 }
-                stuffCreated.getItems().clear();
-                this.initialize();
+                tickFav(new ActionEvent());
 
             } else if (result.get() == ButtonType.CANCEL){
                 return;
@@ -265,36 +244,31 @@ public class ViewController {
     }
 
     @FXML
-    public void tickFav(ActionEvent event){
+    public void tickFav(ActionEvent event) throws Exception {
         List<String> list = null;
         if (favOption.isSelected()){
-            list = getCreations("favourites");
+            getCreations("favourites");
         } else {
-            list = getCreations("creations");
-            stuffCreated.getItems().clear();
-            stuffCreated.getItems().setAll(list);
+            getCreations("creations");
         }
-        stuffCreated.getItems().clear();
-        stuffCreated.getItems().setAll(list);
     }
 
-    public static List<String> getCreations(String path){ //TODO USE THIS!
-        ArrayList<String> innovation = new ArrayList<String>();
-
-        String cmd = "ls -R"+ " \""+ PathCD.getPathInstance().getPath() + "/mydir/" + path + "\""+ " | grep .mp4 | cut -f1 -d'.' | sort";
-        ProcessBuilder initializing = new ProcessBuilder("bash","-c",cmd);
-        try{
-            Process process = initializing.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                innovation.add(line);
+    private void getCreations(String path) throws Exception { //TODO USE THIS!
+        team.submit(new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                BashCommand list = new BashCommand();
+                ArrayList<String> creations = list.bash("ls -R"+ " \""+ PathCD.getPathInstance().getPath() + "/mydir/" + path + "\""+ " | grep .mp4 | cut -f1 -d'.' | sort");
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        stuffCreated.getItems().clear();
+                        stuffCreated.getItems().setAll(creations);
+                    }
+                });
+                return null;
             }
-        }catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return innovation;
+        });
     }
 
     private void resetPlayer(){

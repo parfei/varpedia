@@ -29,9 +29,6 @@ public class BashCommand{
             output.add(line);
         }
 
-        if (output.isEmpty()){
-            output.add("0");
-        }
         return output;
     }
 }
