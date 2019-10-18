@@ -28,6 +28,6 @@
             </Button>
          </children>
       </VBox>
-      <AnchorPane fx:id="TOPVIEW" layoutX="133.0" layoutY="-2.0" prefHeight="600.0" prefWidth="1069.0" />
+      <AnchorPane fx:id="TOPVIEW" layoutX="133.0" layoutY="2.0" prefHeight="596.0" prefWidth="1065.0" />
    </children>
 </AnchorPane>

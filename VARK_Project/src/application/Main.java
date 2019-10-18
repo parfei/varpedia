@@ -84,7 +84,7 @@ public class Main extends Application {
         Platform.exit();
     }
 
-    public void writeScheme() throws IOException{
+    public void writeScheme() throws IOException{ //TODO reorganise files
         FileWriter writer1=new FileWriter("kal.scm");
         writer1.write("(voice_kal_diphone)");
         writer1.close();
