@@ -60,7 +60,7 @@ public class Main extends Application {
     }
 
     /**
-     * This method will create a folder
+     * Creates necessary folders.
      */
     private void initializeFolder() throws Exception {
         ManageFolder.initializeFolders();
@@ -81,7 +81,6 @@ public class Main extends Application {
             e.printStackTrace();
         }*/
     }
-
 
     /**
      * Run this process to clean files when the application finishes

@@ -15,17 +15,11 @@ public class ChangeScene {
 
     public void changeScene(ActionEvent event, String scene, String title){
         try {
-
-
-
-
             FXMLLoader loader = new FXMLLoader(Main.class.getResource(scene));
             Parent createViewParent = loader.load();
-           // SaveToAudioController controller = loader.getController();
-
-            //controller.initData(_term);
 
             Scene createViewScene = new Scene(createViewParent);
+
             // gets the Stage information
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setTitle(title);
