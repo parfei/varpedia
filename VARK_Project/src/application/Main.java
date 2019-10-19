@@ -12,12 +12,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * This is the entry point of the application.
  */
 public class Main extends Application {
     private static MainController _controller;
+    private static CreationsList _list;
 
     /**
      * Sets the stage
@@ -28,6 +30,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         this.initializeFolder();
         this.writeScheme();
+        _list = new CreationsList();
 
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.WINDOW.toString()));
         Parent root = loader.load();
@@ -49,6 +52,10 @@ public class Main extends Application {
             }
         });*/
 
+    }
+
+    public static CreationsList getCreationsList(){
+        return _list;
     }
 
     /**

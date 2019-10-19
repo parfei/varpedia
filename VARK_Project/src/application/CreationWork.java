@@ -133,7 +133,7 @@ public class CreationWork extends Task<String> {
     private void combineForms(){
 
         String combineCommand = "ffmpeg -y -i \"" + _path + "sound.wav\" -i \"" + _path + "video.mp4\" -c:v copy -c:a aac -strict experimental \"" +
-                PathCD.getPathInstance().getPath() + "/mydir/creations/" + _term + "/" + _name + ".mp4\" 2>/dev/null";
+                PathCD.getPathInstance().getPath() + "/mydir/creations/creations/" + _term + "/" + _name + ".mp4\" 2>/dev/null";
         System.out.println(combineCommand);
         ProcessBuilder getTogether = new ProcessBuilder("bash", "-c", combineCommand);
 

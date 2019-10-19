@@ -529,9 +529,7 @@ public class EditTextController {
      */
     @FXML
     public void backToMain(ActionEvent event) throws IOException { //TODO set up back to search term functionality, change backto main to a little x button at the top?
-
         String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/extra/audioPiece\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
-        //String cmd2="rm -r"+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt"; //TODO make static method
 
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd1);
         try {
@@ -539,9 +537,7 @@ public class EditTextController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //_changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
-
     }
 
     private static boolean isDirEmpty(final Path directory) throws IOException {
@@ -561,15 +557,12 @@ public class EditTextController {
         controller.initData(_term);
     }
 
-
-
     /**
      * This method will count how many words in users' selected part
      * @param str
      * @return
      */
-    static int countWords(String str)
-    {
+    public static int countWords(String str) {
         int state = OUT;
         int wc = 0;  // word count
         int i = 0;
@@ -582,8 +575,6 @@ public class EditTextController {
             if (str.charAt(i) == ' ' || str.charAt(i) == '\n'
                     || str.charAt(i) == '\t')
                 state = OUT;
-
-
                 // If next character is not a word separator
                 // and state is OUT, then set the state as IN
                 // and increment word count
@@ -592,17 +583,11 @@ public class EditTextController {
                 state = IN;
                 ++wc;
             }
-
             // Move to next character
             ++i;
         }
         return wc;
     }
-
-
-
-
-
 
 }
 

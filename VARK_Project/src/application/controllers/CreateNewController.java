@@ -1,6 +1,7 @@
 package application.controllers;
 
 import application.*;
+import application.bashwork.BashCommand;
 import application.values.SceneFXML;
 import com.sun.jdi.connect.Transport;
 import javafx.application.Platform;
@@ -37,49 +38,27 @@ import java.util.concurrent.Executors;
  */
 public class CreateNewController {
 
-
     private String _choice;
     private List<String> _audioExisted = new ArrayList<String>();
 
-    @FXML
-    private ListView audioList;
-    @FXML
-    private Label labelMessage;
-    @FXML
-    private TextField textFieldCreationName;
-    @FXML
-    private TextField textFldImagesNum;
-    @FXML
-    private Label errorName;
-    @FXML
-    private Label errorImg;
+    @FXML private ListView audioList;
+    @FXML private Label labelMessage;
+    @FXML private TextField textFieldCreationName;
+    @FXML private TextField textFldImagesNum;
+    @FXML private Label errorName;
+    @FXML private Label errorImg;
 
-    @FXML
-    private ListView listViewExistCreation;
-    @FXML
-    private Label remindLabel;
+    @FXML private ListView listViewExistCreation;
+    @FXML private Label remindLabel;
 
-    @FXML
-    private Button playButton;
-    @FXML
-    private Button deleteButton;
-    @FXML
-    private Button enterCreationButton;
-
-    @FXML
-    private URL location;
-    @FXML
-    private ResourceBundle resources;
+    @FXML private Button playButton;
+    @FXML private Button deleteButton;
 
     private List<String> _CreationsExisted = new ArrayList<String>();
     private ExecutorService team;
     private String _term;
     private ChangeScene _changeSceneObject=new ChangeScene();
-    @FXML
-    private ChoiceBox<String> choiceBox;
-
-
-
+    @FXML private ChoiceBox<String> choiceBox;
 
     public void initData(String term){
         _term = term;
@@ -145,13 +124,10 @@ public class CreateNewController {
      */
     @FXML
     public void returnToStart(ActionEvent event) throws IOException {
-
         _CreationsExisted.clear();
         //_changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
-
-
 
     /***
      * When the user hits the create button, the user will be taken back to the menu whilst the work is done in
@@ -160,12 +136,10 @@ public class CreateNewController {
      * @throws IOException
      */
     @FXML
-    public void EnterCreation(ActionEvent event) throws IOException {
+    public void EnterCreation(ActionEvent event) throws Exception {
         if (choiceBox.getValue()==null){
             remindLabel.setText("DO YOU WANT TO INCLUDE MUSIC?");
-        }
-
-        else if (_audioExisted.isEmpty()){
+        } else if (_audioExisted.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("No audio to combine");
             alert.setHeaderText("Go back and make audios ");
@@ -175,9 +149,7 @@ public class CreateNewController {
             EditTextController controller = (EditTextController) Main.getController().setTOPVIEW(SceneFXML.AUDIO.toString());
             controller.initData(_term);
 
-        }
-        else {
-
+        } else {
             errorImg.setVisible(false);
             errorName.setVisible(false);
 
@@ -196,11 +168,7 @@ public class CreateNewController {
                 errorImg.setText("Enter a valid input.");
                 textFldImagesNum.clear();
                 error = true;
-            }
-
-            try {
-
-
+            }try {
                 if (_CreationsExisted.contains(textFieldCreationName.getText())) { /////Check for creation name error input.
                     errorName.setText("Duplicated name.");
                     Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
@@ -245,8 +213,7 @@ public class CreateNewController {
                 FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getText(), textFldImagesNum.getText());
                 team.submit(getImg);
 
-                //When images have been successfully retrieved, send an instance of CreationWrok to the background thread to
-                //combine audio, slideshow and video forms into one Creation.
+                //When images have been successfully retrieved, send an instance of CreationWrok to the background thread to combine audio, slideshow and video forms into one Creation.
                 getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                     @Override
                     public void handle(WorkerStateEvent workerStateEvent) {
@@ -266,7 +233,7 @@ public class CreateNewController {
                         creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                             @Override
                             public void handle(WorkerStateEvent workerStateEvent) {
-
+                                //TODO CREATION Main.getCreationsList().addCreation(new Creation(_term, textFieldCreationName.getText()));
                                 cleanUp(); //Clean up audio files after the Creation has been made.
 
                                 _CreationsExisted.clear();
@@ -279,7 +246,6 @@ public class CreateNewController {
                                 textFldImagesNum.clear();
                             }
                         });
-
                     }
                 });
 
@@ -291,13 +257,11 @@ public class CreateNewController {
      * Create required folders to store the audio, video and pictures for creating the final Creation.
      * @throws IOException
      */
-    private void createDirectories() throws IOException {
+    private void createDirectories() throws Exception {
         String path = PathCD.getPathInstance().getPath();
-        //System.out.println("Creating directories for: " +_term);
-        String command2 = "mkdir -p \"" + path + "/mydir/extra/" + _term + "/" + textFieldCreationName.getText() + "\"" +
-                " ; mkdir -p \"" + path + "/mydir/creations/" + _term + "\""; //create a creations folders
-        ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
-        pb2.start();
+
+        new BashCommand().bash("mkdir -p \"" + path + "/mydir/extra/" + _term + "/" + textFieldCreationName.getText() + "\"" +
+                " ; mkdir -p \"" + path + "/mydir/creations/creations" + _term + "\""); //create a creations folders
     }
 
     /**
@@ -342,6 +306,7 @@ public class CreateNewController {
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
     }
+
     @FXML
     public void deleteAudio(ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

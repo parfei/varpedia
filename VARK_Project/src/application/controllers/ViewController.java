@@ -11,10 +11,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,10 +40,8 @@ public class ViewController {
     /**
      * This method will add the existing creation to the ListView
      */
-    public void initialize() throws Exception //TODO concurrency for this??
-    {
+    public void initialize() throws Exception {//TODO concurrency for this??
         getCreations("creations");
-
         errorText.setVisible(false);
         playButton.setDisable(true);
         playOptions.setDisable(true);
@@ -214,8 +209,12 @@ public class ViewController {
     }
 
     @FXML
-    public void changeConfidence(ActionEvent event){
-        //TODO change confidence rating of creation
+    public void changeConfidence(ActionEvent event) throws IOException {
+        int rating = (int) confidence.getValue();
+
+        /*FileWriter writer1=new FileWriter(PathCD.getPathInstance().getPath() + "/mydir/extra/" + );
+        writer1.write("(voice_kal_diphone)");
+        writer1.close();*/
     }
 
     @FXML

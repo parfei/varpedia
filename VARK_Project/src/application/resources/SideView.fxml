@@ -62,6 +62,6 @@
       <Label fx:id="errorText" layoutX="18.0" layoutY="553.0" prefHeight="28.0" prefWidth="95.0" text="Select item" textFill="RED" />
       <CheckBox fx:id="favOption" layoutX="116.0" layoutY="5.0" mnemonicParsing="false" onAction="#tickFav" text="Favourites" />
       <Label layoutX="865.0" layoutY="538.0" text="Confidence Rating" />
-      <Slider fx:id="confidence" blockIncrement="0.0" layoutX="280.0" layoutY="530.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" onDragDetected="#changeConfidence" prefHeight="26.0" prefWidth="548.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Slider fx:id="confidence" blockIncrement="0.0" layoutX="280.0" layoutY="530.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" onMouseReleased="#changeConfidence" prefHeight="26.0" prefWidth="548.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
    </children>
 </AnchorPane>
