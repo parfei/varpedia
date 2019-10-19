@@ -70,19 +70,17 @@ public class ViewController {
                 playButton.setDisable(false);
 
                 File file = new File(ManageFolder.findPath(_choice, true));
-                _player = new MediaPlayer(new Media(file.toURI().toString()));
-                //_player.setAutoPlay(true);
+                _player = new MediaPlayer(new Media(file.toURI().toString())); //Set up player to be played.
+                confidence.setValue(Double.parseDouble(ManageFolder.readFile(ManageFolder.findPath(_choice, false) + "/confidence.txt"))); //Set up confidence for viewing.
 
-                _player.setOnEndOfMedia(new Runnable() { //When the player ends...
-                    @Override
-                    public void run() {
-                        try {
-                            team.submit(new Play(_choice));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        resetPlayer();
+                //When the player ends...
+                _player.setOnEndOfMedia(() -> {
+                    try {
+                        team.submit(new Play(_choice));
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+                    resetPlayer();
                 });
 
                 view.setDisable(false);
@@ -150,8 +148,8 @@ public class ViewController {
             resetPlayer();
         } else if (btnText.equals("Mute")){
             _player.setMute(true);
-            muteButton.setText("!Mute");
-        } else if (btnText.equals("!Mute")){
+            muteButton.setText("Unmute");
+        } else if (btnText.equals("Unmute")){
             _player.setMute(false);
             muteButton.setText("Mute");
         }

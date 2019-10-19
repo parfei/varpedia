@@ -14,7 +14,7 @@ public class Confidence extends Task<Boolean> {
         _rateFilePath = ManageFolder.findPath(creation, false);
         /*File file = new File(ManageFolder.findPath(creation, false));
         _rateFilePath = file.getAbsoluteFile().getParent();
-        _rateFilePath = _rateFilePath.substring(_rateFilePath.lastIndexOf("/"));*/ //TODO term
+        _rateFilePath = _rateFilePath.substring(_rateFilePath.lastIndexOf("/"));*/ //TODO finding term code.
     }
 
     @Override
