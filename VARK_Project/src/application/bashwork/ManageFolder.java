@@ -2,12 +2,16 @@ package application.bashwork;
 
 import application.PathCD;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class ManageFolder {
+
+    public static ArrayList<String> getCreations(String path) throws Exception {
+        BashCommand list = new BashCommand();
+        ArrayList<String> creations = list.bash("ls -R"+ " \""+ PathCD.getPathInstance().getPath() + "/mydir/creations/" + path + "/\""+ " | grep .mp4 | cut -f1 -d'.' | sort");
+        return creations;
+    }
 
     public static void initializeFolders() throws Exception {
         String path = PathCD.getPathInstance().getPath();
@@ -29,7 +33,37 @@ public class ManageFolder {
         }
         BashCommand cmd = new BashCommand();
         return cmd.bash(command).get(0);
+    }
 
+    public static void writeToFile(String path, String content){
+        try{
+            File file = new File(path);
+
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(content);
+            bw.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static String readFile(String path){
+        String output = "";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(path));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                output += line;
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return output;
     }
 
 }

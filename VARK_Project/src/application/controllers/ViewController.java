@@ -1,5 +1,7 @@
 package application.controllers;
+import application.Confidence;
 import application.PathCD;
+import application.Play;
 import application.bashwork.BashCommand;
 import application.bashwork.ManageFolder;
 import javafx.application.Platform;
@@ -42,22 +44,18 @@ public class ViewController {
      * This method will add the existing creation to the ListView
      */
     public void initialize() throws Exception {//TODO concurrency for this??
-        getCreations("creations");
+        team.submit(() -> {
+            try {
+                setCreations("creations");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         errorText.setVisible(false);
         playButton.setDisable(true);
         playOptions.setDisable(true);
         muteButton.setDisable(true);
     }
-
-    /**
-     * When click this button, it will go back to the main menu
-     * @param event
-     * @throws IOException
-     */
-    /*@FXML
-    public void backToMain(ActionEvent event) throws IOException {
-        creation.backToMain(event);
-    }*/
 
     /**
      * Retrieve the user selection of the ListView.
@@ -78,6 +76,11 @@ public class ViewController {
                 _player.setOnEndOfMedia(new Runnable() { //When the player ends...
                     @Override
                     public void run() {
+                        try {
+                            team.submit(new Play(_choice));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         resetPlayer();
                     }
                 });
@@ -113,7 +116,6 @@ public class ViewController {
         }
 
         stuffCreated.setDisable(true);
-
         errorText.setVisible(false);
         muteButton.setDisable(false);
         playOptions.setDisable(false); //Show the video manipulation options.
@@ -162,9 +164,7 @@ public class ViewController {
      */
     @FXML
     public void deleteVideo(ActionEvent event) throws Exception {
-
         if(_choice!=null){
-
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Delete");
             alert.setHeaderText("Check again!");
@@ -174,9 +174,22 @@ public class ViewController {
             if (result.get() == ButtonType.OK){
                 resetPlayer();
 
-                String path = ManageFolder.findPath(_choice, true); //finds the relevant creation
+                team.submit(new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        String path = ManageFolder.findPath(_choice, true); //finds the relevant creation
+                        String command = "rm -f \"" + path + "\"";
+                        new BashCommand().bash(command);
 
-                String cmd= "rm -f \"" + path + "\""; //TODO check...
+                        path = ManageFolder.findPath(_choice, false);
+                        command = "rm -rf \"" + path + "\"";
+                        new BashCommand().bash(command);
+                        return null;
+                    }
+                });
+                /*String path = ManageFolder.findPath(_choice, true); //finds the relevant creation
+
+                String cmd= "rm -f \"" + path + "\"";
                 System.out.println(cmd);
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
@@ -184,9 +197,8 @@ public class ViewController {
                     process.waitFor();
                 } catch (IOException | InterruptedException ex) {
                     ex.printStackTrace();
-                }
-                tickFav(new ActionEvent());
-
+                }*/
+                tickFav(new ActionEvent()); //get the list of creations for currently ticked option.
             } else if (result.get() == ButtonType.CANCEL){
                 return;
             }
@@ -196,9 +208,9 @@ public class ViewController {
     }
 
     @FXML
-    public void changeConfidence(ActionEvent event) throws IOException {
+    public void changeConfidence(ActionEvent event) throws Exception {
         int rating = (int) confidence.getValue();
-
+        team.submit(new Confidence(_choice, rating));
     }
 
     @FXML
@@ -212,15 +224,7 @@ public class ViewController {
             resetPlayer();
             String command = "mv " + file + " " + file2;
 
-            System.out.println(command);
-
-            ProcessBuilder move = new ProcessBuilder("bash", "-c", command);
-            try {
-                Process process = move.start();
-                process.waitFor();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
+            new BashCommand().bash(command);
         } else {
             errorText.setVisible(true);
         }
@@ -230,28 +234,21 @@ public class ViewController {
     public void tickFav(ActionEvent event) throws Exception {
         List<String> list = null;
         if (favOption.isSelected()){
-            getCreations("favourites");
+            setCreations("favourites");
         } else {
-            getCreations("creations");
+            setCreations("creations");
         }
     }
 
-    private void getCreations(String path) throws Exception { //TODO USE THIS!
-        team.submit(new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                BashCommand list = new BashCommand();
-                ArrayList<String> creations = list.bash("ls -R"+ " \""+ PathCD.getPathInstance().getPath() + "/mydir/creations" + path + "\""+ " | grep .mp4 | cut -f1 -d'.' | sort");
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        stuffCreated.getItems().clear();
-                        stuffCreated.getItems().setAll(creations);
-                    }
-                });
-                return null;
-            }
-        });
+    private void setCreations(String path) throws Exception { //TODO USE THIS!
+        ArrayList<String> creations = null;
+        try {
+            creations = ManageFolder.getCreations(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        stuffCreated.getItems().clear();
+        stuffCreated.getItems().setAll(creations);
     }
 
     private void resetPlayer(){
