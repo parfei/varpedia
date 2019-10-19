@@ -23,9 +23,9 @@ public class ManageFolder {
     public static String findPath(String name, Boolean isVideo) throws Exception {
         String command;
         if (isVideo){
-            command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/creations/" + name + ".mp4\"";
+            command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/\"*\"/" + name + ".mp4\""; //Video is in favourites or creations folder.
         } else {
-            command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/extra/\"*\"/" + name + ".mp4\"";
+            command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/extra/\"*\"/" + name + "\""; //Find the path of the folder that contains the extra files of the creation.
         }
         BashCommand cmd = new BashCommand();
         return cmd.bash(command).get(0);

@@ -1,6 +1,7 @@
 package application.controllers;
 import application.PathCD;
 import application.bashwork.BashCommand;
+import application.bashwork.ManageFolder;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -70,7 +71,7 @@ public class ViewController {
             if (_choice != null){
                 playButton.setDisable(false);
 
-                File file = new File(findCreation(_choice));
+                File file = new File(ManageFolder.findPath(_choice, true));
                 _player = new MediaPlayer(new Media(file.toURI().toString()));
                 //_player.setAutoPlay(true);
 
@@ -173,7 +174,7 @@ public class ViewController {
             if (result.get() == ButtonType.OK){
                 resetPlayer();
 
-                String path = findCreation(_choice); //finds the relevant creation
+                String path = ManageFolder.findPath(_choice, true); //finds the relevant creation
 
                 String cmd= "rm -f \"" + path + "\""; //TODO check...
                 System.out.println(cmd);
@@ -194,20 +195,6 @@ public class ViewController {
         }
     }
 
-    private String findCreation(String name){
-        String command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/\"*\"/\"*\"/" + name + ".mp4\"";
-
-        ProcessBuilder find = new ProcessBuilder("bash", "-c", command);
-        try {
-            Process process = find.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            return reader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     @FXML
     public void changeConfidence(ActionEvent event) throws IOException {
         int rating = (int) confidence.getValue();
@@ -215,11 +202,11 @@ public class ViewController {
     }
 
     @FXML
-    public void favourite(ActionEvent event) throws IOException { //TODO implement remove favourites, button changes when this option is ticked.
+    public void favourite(ActionEvent event) throws Exception { //TODO implement remove favourites, button changes when this option is ticked.
         if (_choice != null){
             errorText.setVisible(false);
 
-            String file = "\"" + findCreation(_choice) + "\"";
+            String file = "\"" + ManageFolder.findPath(_choice, true) + "\"";
             String file2 = "\"" + PathCD.getPathInstance().getPath() + "/mydir/creations/favourites/" + _choice + ".mp4\"";
 
             resetPlayer();
