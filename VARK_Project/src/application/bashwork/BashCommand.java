@@ -13,6 +13,7 @@ public class BashCommand{
 
     public ArrayList<String> bash(String command) throws Exception {
         ArrayList<String> output = new ArrayList<String>();
+        System.out.println(command);
 
         ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
         Process process = pb.start();

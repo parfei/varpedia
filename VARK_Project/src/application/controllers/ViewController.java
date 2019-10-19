@@ -195,7 +195,7 @@ public class ViewController {
     }
 
     private String findCreation(String name){
-        String command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/\"*\"/" + name + ".mp4\"";
+        String command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/\"*\"/\"*\"/" + name + ".mp4\"";
 
         ProcessBuilder find = new ProcessBuilder("bash", "-c", command);
         try {
@@ -212,9 +212,6 @@ public class ViewController {
     public void changeConfidence(ActionEvent event) throws IOException {
         int rating = (int) confidence.getValue();
 
-        /*FileWriter writer1=new FileWriter(PathCD.getPathInstance().getPath() + "/mydir/extra/" + );
-        writer1.write("(voice_kal_diphone)");
-        writer1.close();*/
     }
 
     @FXML
@@ -223,7 +220,7 @@ public class ViewController {
             errorText.setVisible(false);
 
             String file = "\"" + findCreation(_choice) + "\"";
-            String file2 = "\"" + PathCD.getPathInstance().getPath() + "/mydir/favourites/" + _choice + ".mp4\"";
+            String file2 = "\"" + PathCD.getPathInstance().getPath() + "/mydir/creations/favourites/" + _choice + ".mp4\"";
 
             resetPlayer();
             String command = "mv " + file + " " + file2;
@@ -257,7 +254,7 @@ public class ViewController {
             @Override
             protected Void call() throws Exception {
                 BashCommand list = new BashCommand();
-                ArrayList<String> creations = list.bash("ls -R"+ " \""+ PathCD.getPathInstance().getPath() + "/mydir/" + path + "\""+ " | grep .mp4 | cut -f1 -d'.' | sort");
+                ArrayList<String> creations = list.bash("ls -R"+ " \""+ PathCD.getPathInstance().getPath() + "/mydir/creations" + path + "\""+ " | grep .mp4 | cut -f1 -d'.' | sort");
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {

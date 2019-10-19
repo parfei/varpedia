@@ -19,7 +19,6 @@ import java.util.ArrayList;
  */
 public class Main extends Application {
     private static MainController _controller;
-    private static CreationsList _list;
 
     /**
      * Sets the stage
@@ -28,9 +27,9 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception{
+        System.out.println(ManageFolder.findPath("apple", true));
         this.initializeFolder();
         this.writeScheme();
-        _list = new CreationsList();
 
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.WINDOW.toString()));
         Parent root = loader.load();
@@ -52,10 +51,6 @@ public class Main extends Application {
             }
         });*/
 
-    }
-
-    public static CreationsList getCreationsList(){
-        return _list;
     }
 
     /**
