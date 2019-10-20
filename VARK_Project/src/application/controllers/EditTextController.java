@@ -4,6 +4,7 @@ import application.ChangeScene;
 import application.Main;
 import application.PathCD;
 import application.bashwork.BashCommand;
+import application.bashwork.ManageFolder;
 import application.values.SceneFXML;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -65,6 +66,14 @@ public class EditTextController {
         String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
         ArrayList<String> output = audio.bash(cmd);
         textArea.setText(output.toString()); //Put all current audio pieces list view.
+    }
+
+    private void updateExistingAudio() throws Exception {
+        String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
+        BashCommand update = new BashCommand();
+        ArrayList<String> items = update.bash(command);
+
+        existingAudioView.getItems().setAll(items);
     }
 
     public int countNumberOfAudioFileInAudioPiece() {
@@ -140,30 +149,11 @@ public class EditTextController {
     @FXML
     public void preview() throws IOException {
         _selectedText = textArea.getSelectedText();
-        String textWithoutBrackets = _selectedText.replaceAll("[\\[\\](){}']",""); // remove the text in brackets to make it readable
 
-        RadioButton selectedRadioButton = (RadioButton) group .getSelectedToggle();
-
-        int numberOfWords = countWords(_selectedText);
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-
-        if (numberOfWords==0) { //TODO merge into one error?
-            alert.setTitle("No chunk selected");
-            alert.setHeaderText("Please select a chunk");
-            alert.setContentText("select a chunk so we can carry on");
-            alert.showAndWait();
-        } else if (numberOfWords > 25) {
-            alert.setTitle("select a smaller chunk");
-            alert.setHeaderText("too many words");
-            alert.setContentText("please select a smaller chunk");
-            alert.showAndWait();
-
-        } else if (selectedRadioButton==null) {
-            askForVoice.setText("SELECT A VOICE PLEASE");
+        if (!checkValidSelection(textArea.getSelectedText())) {
             return;
-
         } else {
-
+            //String textWithoutBrackets = _selectedText.replaceAll("[\\[\\](){}']",""); // remove the text in brackets to make it readable
             if (default_voice.isSelected()){
                 team.submit(new PreviewHelper("default_voice"));
             } else {
@@ -178,30 +168,27 @@ public class EditTextController {
                 team.submit(preview);
 
                 PreviewHelper finalPreview = preview;
-                preview.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                    @Override
-                    public void handle(WorkerStateEvent workerStateEvent) {
-                        try {
-                            if (finalPreview.get().intValue() == 255){
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("voice changed to default");
-                                alert.setHeaderText("switch voice to the default due to limitation of other voice options");
-                                alert.setContentText("Sorry for the inconvenience");
-                                alert.showAndWait();
+                preview.setOnSucceeded(workerStateEvent -> {
+                    try {
+                        if (finalPreview.get().intValue() == 255){
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("voice changed to default");
+                            alert.setHeaderText("switch voice to the default due to limitation of other voice options");
+                            alert.setContentText("Sorry for the inconvenience");
+                            alert.showAndWait();
 
-                                team.submit(new PreviewHelper("default_voice"));
-                                /*FileWriter newWriter=new FileWriter("default_voice");
-                                newWriter.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+_selectedText +"\"" + ")") ;
-                                newWriter.close();
-                                String useDefault="festival -b default_voice";
-                                ProcessBuilder pronounce = new ProcessBuilder("bash", "-c", useDefault);
-                                pronounce.start();*/
-                            }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
+                            team.submit(new PreviewHelper("default_voice"));
+                            /*FileWriter newWriter=new FileWriter("default_voice");
+                            newWriter.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+_selectedText +"\"" + ")") ;
+                            newWriter.close();
+                            String useDefault="festival -b default_voice";
+                            ProcessBuilder pronounce = new ProcessBuilder("bash", "-c", useDefault);
+                            pronounce.start();*/
                         }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
                     }
                 });
 
@@ -267,10 +254,63 @@ public class EditTextController {
 
     private class SaveHelper extends Task<Void>{
 
+        private String _voice;
+        private String _textWithoutBrackets;
+        private String _number;
+
+        public SaveHelper(String voice, String number){
+            _number = number;
+            _selectedText = textArea.getSelectedText();
+            _textWithoutBrackets = _selectedText.replaceAll("[\\[\\](){}']",""); // remove the text in brackets to make it readable
+            _voice = voice;
+        }
+
         @Override
         protected Void call() throws Exception {
+            String createAudio = "";
+            if (_voice.equals("default_voice")){
+                createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term + "-"+ _number+ ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
+            } else if (_voice.equals("male_voice")){
+                createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ _number + ".wav\" \"" +
+                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval jdt.scm";
+            } else if (_voice.equals("female_voice")){
+                createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ _number + ".wav\" \"" +
+                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval cw.scm";
+            }
+
+            new BashCommand().bash(createAudio);
+
             return null;
         }
+    }
+
+    private void clearAudio(String file_path){
+        String deleteCmd = "rm -f " + file_path;
+        try {
+            new BashCommand().bash(deleteCmd);
+            updateExistingAudio();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Check if text is readable.
+     * @param number
+     * @return String valid path of audio to be saved.
+     */
+    private String checkReadableText(String number){
+        String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term + "-"+number+ ".wav";
+        File file = new File(file_path);
+        // handle the case when audio is not saved successfully
+        if (file.length() == 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("audio not save");
+            alert.setHeaderText("part not readable");
+            alert.setContentText("check the part that you select is readable");
+            alert.showAndWait();
+        }
+        return file_path;
     }
 
     /**
@@ -279,7 +319,7 @@ public class EditTextController {
      * @throws IOException
      */
     @FXML
-    public void save(ActionEvent event) throws IOException {
+    public void save(ActionEvent event) throws Exception {
         //RadioButton selectedRadioButton = (RadioButton) group.getSelectedToggle();
         String selectedText = textArea.getSelectedText();
 
@@ -290,212 +330,66 @@ public class EditTextController {
             int numberOfAudio=countNumberOfAudioFileInAudioPiece();
             String number=Integer.toString(numberOfAudio);
 
-            FileWriter writer = new FileWriter(PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt"); //TODO combine text so we can read as description of file.
+            ManageFolder.writeToFile(PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt", saveble);
+            /*FileWriter writer = new FileWriter(PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt"); //TODO combine text so we can read as description of file.
             writer.write(saveble);
-            writer.close();
-
-
-
+            writer.close();*/
             if (default_voice.isSelected()) {
-                String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term + "-"+ number+ ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
-                System.out.println(createAudio);
+                SaveHelper sh = new SaveHelper("default_voice", number);
+                team.submit(sh);
 
-                ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
-                try {
-                    Process process = pb.start();
-                    process.waitFor();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-                String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term + "-"+number+ ".wav";
-                File file = new File(file_path);
-                // handle the case when audio is not saved successfully
-                if (file.length() == 0) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("audio not save");
-                    alert.setHeaderText("part not readable");
-                    alert.setContentText("check the part that you select is readable");
-                    alert.showAndWait();
-                    String deleteCmd = "rm -f " + file_path;
-                    System.out.println(deleteCmd);
-                    ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", deleteCmd);
-                    try {
-                        Process delete = pb2.start();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                _audioExisted.clear();
-                existingAudioView.getItems().clear();
-                String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
-                System.out.println(PathCD.getPathInstance().getPath());
-                ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
-                try {
-                    String line;
-                    Process process = builder.start();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                    while ((line = reader.readLine()) != null) {
-                        _audioExisted.add(line);
-                    }
-                    existingAudioView.getItems().addAll(_audioExisted);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                sh.setOnSucceeded(workerStateEvent -> {
+                    clearAudio(checkReadableText(number));
+                });
+            } else {
+                SaveHelper sh;
+                if (male_voice.isSelected()){
+                    sh = new SaveHelper("male_voice", number);
+                } else {
+                    sh = new SaveHelper("female_voice", number);
                 }
 
+                team.submit(sh);
+                sh.setOnSucceeded(workerStateEvent -> {
+                    String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number + ".wav";
+                    File file = new File(file_path);
 
-            } else if (male_voice.isSelected()) {
-                String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number + ".wav\" \"" +
-                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval jdt.scm";
+                    /* ask user to save in default voice or give up saving if the male voice option can't save the audio*/
+                    if (file.length() == 0) {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Give up or save in default voice");
+                        alert.setHeaderText("Can't save the audio in this voice");
+                        alert.setContentText("Do you want to save in default voice?");
+                        Optional<ButtonType> result = alert.showAndWait();
+                        String deleteCmd = "rm -f " + file_path;
 
-                ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
-                try {
-                    Process process = pb.start();
-                    process.waitFor();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-                String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number + ".wav";
-                File file = new File(file_path);
-                /*
-                ask user to save in default voice or give up saving if the male voice option can't save the audio
-                 */
-                if (file.length() == 0) {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Give up or save in default voice");
-                    alert.setHeaderText("Can't save the audio in this voice");
-                    alert.setContentText("Do you want to save in default voice?");
-                    Optional<ButtonType> result = alert.showAndWait();
-                    String deleteCmd = "rm -f " + file_path;
-                    System.out.println(deleteCmd);
-                    ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", deleteCmd);
-                    try {
-                        Process delete = pb2.start();
-                        int exitStatus = delete.waitFor();
+                        clearAudio(file_path);
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                        if (result.get() == ButtonType.OK) {
+                            int numberOfAudio2 = countNumberOfAudioFileInAudioPiece();
+                            String number2 = Integer.toString(numberOfAudio2);
 
-                    if (result.get() == ButtonType.OK) {
-                        int numberOfAudio2=countNumberOfAudioFileInAudioPiece();
-                        String number2=Integer.toString(numberOfAudio2);
-                        String createDefaultAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number2  + ".wav\" \"" +
-                                PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
+                            SaveHelper sh2 = new SaveHelper("default_voice", number2);
+                            team.submit(sh2);
+                            sh.setOnSucceeded(workerStateEvent1 -> {
+                                clearAudio(checkReadableText(number));
+                            });
+                            /*String createDefaultAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number2  + ".wav\" \"" +
+                                    PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
 
-                        ProcessBuilder pb3 = new ProcessBuilder("bash", "-c", createDefaultAudio);
-                        try {
-                            Process process = pb3.start();
-                            process.waitFor();
+                            ProcessBuilder pb3 = new ProcessBuilder("bash", "-c", createDefaultAudio);
+                            try {
+                                Process process = pb3.start();
+                                process.waitFor();
 
-                        } catch (IOException | InterruptedException e) {
-                            e.printStackTrace();
+                            } catch (IOException | InterruptedException e) {
+                                e.printStackTrace();
+                            }*/
+                        } else {
+                            //do nothing
                         }
-
-
-                    } else {
-                        //do nothing
                     }
-
-
-                }
-                _audioExisted.clear();
-                existingAudioView.getItems().clear();
-                String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
-                System.out.println(PathCD.getPathInstance().getPath());
-                ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
-                try {
-                    String line;
-                    Process process = builder.start();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                    while ((line = reader.readLine()) != null) {
-                        _audioExisted.add(line);
-                    }
-                    existingAudioView.getItems().addAll(_audioExisted);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-            }else if (female_voice.isSelected()) {
-                String createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number + ".wav\" \"" +
-                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval cw.scm";
-                System.out.println(createAudio);
-
-                ProcessBuilder pb = new ProcessBuilder("bash", "-c", createAudio);
-                try {
-                    Process process = pb.start();
-                    process.waitFor();
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-                String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number  + ".wav";
-                File file = new File(file_path);
-                /*
-                ask user to save in default voice or give up saving if the female voice option can't save the audio
-                 */
-                if (file.length() == 0) {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Give up or save in default voice");
-                    alert.setHeaderText("Can't save the audio in this voice");
-                    alert.setContentText("Do you want to save in default voice?");
-                    Optional<ButtonType> result = alert.showAndWait();
-                    String deleteCmd = "rm -f " + file_path;
-                    System.out.println(deleteCmd);
-                    ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", deleteCmd);
-                    try {
-                        Process delete = pb2.start();
-                        int exitStatus = delete.waitFor();
-                        System.out.println(exitStatus);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (result.get() == ButtonType.OK) {
-                        int numberOfAudio2=countNumberOfAudioFileInAudioPiece();
-                        String number2=Integer.toString(numberOfAudio2);
-
-                        String createDefaultAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number2  + ".wav\" \"" +
-                                PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
-
-                        ProcessBuilder pb3 = new ProcessBuilder("bash", "-c", createDefaultAudio);
-                        try {
-                            Process process = pb3.start();
-                            process.waitFor();
-
-                        } catch (IOException | InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        //do nothing
-                    }
-
-
-                }
-                _audioExisted.clear();
-                existingAudioView.getItems().clear();
-                String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
-                System.out.println(PathCD.getPathInstance().getPath());
-                ProcessBuilder builder = new ProcessBuilder("bash", "-c", command);
-                try {
-                    String line;
-                    Process process = builder.start();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                    while ((line = reader.readLine()) != null) {
-                        _audioExisted.add(line);
-                    }
-                    existingAudioView.getItems().addAll(_audioExisted);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            } else {//do nothing
+                });
             }
         }
     }
@@ -556,9 +450,4 @@ public class EditTextController {
         }
         return wc;
     }
-
 }
-
-
-
-

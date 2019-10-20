@@ -28,7 +28,6 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception{
-        System.out.println(ManageFolder.findPath("apple", true));
         this.initializeFolder();
         this.writeScheme();
 
@@ -86,7 +85,7 @@ public class Main extends Application {
     @Override
     public void stop() throws Exception { //In case the deletion of such extra files were not successful.
         new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -"); //Clear files in extra folder.);
-        com.sun.javafx.application.PlatformImpl.tkExit(); //https://stackoverflow.com/questions/15808063/how-to-stop-javafx-application-thread
+        //com.sun.javafx.application.PlatformImpl.tkExit(); //https://stackoverflow.com/questions/15808063/how-to-stop-javafx-application-thread //TODO FIX ALL PROCESSES ENDING
         Platform.exit();
     }
 
