@@ -21,19 +21,6 @@
          <font>
             <Font size="16.0" />
          </font></Button>
-      <ListView fx:id="audioList" layoutX="12.0" layoutY="24.0" onMouseClicked="#getTheSelection" prefHeight="491.0" prefWidth="218.0" />
-      <Label layoutX="11.0" layoutY="4.0" text="Existing audios">
-         <font>
-            <Font size="16.0" />
-         </font></Label>
-      <Button fx:id="playButton" layoutX="20.0" layoutY="551.0" mnemonicParsing="false" onAction="#playAudio" text="play" />
-      <Button fx:id="deleteButton" layoutX="106.0" layoutY="549.0" mnemonicParsing="false" onAction="#deleteAudio" text="delete" />
-      <VBox layoutX="230.0" layoutY="101.0" prefHeight="52.0" prefWidth="35.0">
-         <children>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="^" />
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="v" />
-         </children>
-      </VBox>
       <VBox layoutX="311.0" layoutY="36.0" prefHeight="481.0" prefWidth="441.0">
          <children>
             <HBox prefHeight="39.0" prefWidth="476.0" spacing="10.0">

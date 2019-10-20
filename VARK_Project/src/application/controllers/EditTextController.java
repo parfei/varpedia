@@ -41,8 +41,12 @@ public class EditTextController {
     @FXML private RadioButton male_voice;
     @FXML private RadioButton female_voice;
     @FXML private Label remindLabel;
-    @FXML private ListView existingAudioView;
 
+    @FXML private ListView existingAudioView;
+    @FXML private Button playButton;
+    @FXML private Button deleteButton;
+
+    private String _audioChoice;
     private String _term;
     private String _selectedText;
     private List<String> _audioExisted= new ArrayList<>();
@@ -449,5 +453,58 @@ public class EditTextController {
             ++i; // Move to next character
         }
         return wc;
+    }
+
+    /**
+     * Get the selection of the audio list.
+     */
+    @FXML
+    public void getAudioSelection(){
+        try{
+            ObservableList selectedCreation = existingAudioView.getSelectionModel().getSelectedItems();
+            _audioChoice = selectedCreation.get(0).toString();
+        }catch (Exception e){
+        }
+        if (_audioChoice!=null){
+            playButton.setDisable(false);
+            deleteButton.setDisable(false);
+        }
+    }
+
+    @FXML
+    public void playAudio(ActionEvent event) throws Exception {
+        String wavFile = findAudio(_audioChoice);
+        // String musicFile = "StayTheNight.mp3";     // For example
+
+        Media sound = new Media(new File(wavFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.dispose());
+        mediaPlayer.play();
+    }
+
+    @FXML
+    public void deleteAudio(ActionEvent event) throws Exception {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Delete");
+        alert.setHeaderText("Check again!");
+        alert.setContentText("Are you sure to delete this?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            String path = findAudio(_audioChoice); //finds the audio
+
+            String cmd = "rm -f \"" + path + "\"";
+            new BashCommand().bash(cmd);
+            _audioExisted.clear();
+            existingAudioView.getItems().clear();
+            updateExistingAudio();
+        }else{
+            return;
+        }
+    }
+
+    private String findAudio(String name) throws Exception {
+        String command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + name + ".wav\"";
+        return new BashCommand().bash(command).get(0);
     }
 }

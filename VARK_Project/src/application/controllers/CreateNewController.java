@@ -39,19 +39,15 @@ import java.util.concurrent.Executors;
  */
 public class CreateNewController {
 
-    private String _choice;
     private List<String> _audioExisted = new ArrayList<String>();
     private String _musicChoice;
 
-    @FXML private ListView audioList;
-    @FXML private Label labelMessage;
     @FXML private TextField textFieldCreationName;
     @FXML private TextField textFldImagesNum;
     @FXML private Label errorName;
     @FXML private Label errorImg;
 
     @FXML private ListView listViewExistCreation;
-    @FXML private Label remindLabel;
 
     @FXML private Button playButton;
     @FXML private Button deleteButton;
@@ -70,9 +66,6 @@ public class CreateNewController {
      * This method will add the existing creation to the ListView
      */
     public void initialize() throws IOException {
-
-
-
         ObservableList list=FXCollections.observableArrayList();
         list.addAll("Clouds","Fingers", "Sun", "No music");
         choiceBox.getItems().addAll(list);
@@ -83,8 +76,7 @@ public class CreateNewController {
 
         team = Executors.newSingleThreadExecutor();
 
-
-        // list audios presented
+        /* list audios presented
         String listAudio = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
         ProcessBuilder builder = new ProcessBuilder("bash", "-c", listAudio);
         try {
@@ -100,7 +92,7 @@ public class CreateNewController {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         //List out all the existing creations!
         String command = "ls -R \"" + PathCD.getPathInstance().getPath() + "/mydir/creations\" " + " | grep .mp4 | cut -f1 -d'.' | sort";
@@ -295,83 +287,8 @@ public class CreateNewController {
         }
     }
 
-    /**
-     * Get the selection of the audio list.
-     */
-    public void getTheSelection(){
-        try{
-            ObservableList selectedCreation = audioList.getSelectionModel().getSelectedItems();
-            _choice = selectedCreation.get(0).toString();
-        }catch (Exception e){
-        }
-        if (_choice!=null){
-            playButton.setDisable(false);
-            deleteButton.setDisable(false);
-        }
-    }
-
-    @FXML
-    public void playAudio(ActionEvent event){
-        String wavFile = findAudio(_choice);
-        // String musicFile = "StayTheNight.mp3";     // For example
-
-        Media sound = new Media(new File(wavFile).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
-    }
-
-    @FXML
-    public void deleteAudio(ActionEvent event) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Delete");
-        alert.setHeaderText("Check again!");
-        alert.setContentText("Are you sure to delete this?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            System.out.println(findAudio(_choice));
-            String path = findAudio(_choice); //finds the relevant creation
-
-            String cmd = "rm -f \"" + path + "\"";
-            System.out.println(cmd);
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
-            try {
-                Process process = pb.start();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            _audioExisted.clear();
-            audioList.getItems().clear();
-            this.initialize();
-        }else{
-            return;
-        }
-    }
-
-    private String findAudio(String name){
-        String command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + name + ".wav\"";
-        System.out.println(command);
-        ProcessBuilder find = new ProcessBuilder("bash", "-c", command);
-        try {
-            Process process = find.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            return reader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
     //String createMusicCommand="ffmpeg -i ./src/music/groovy-music.mp3 -acodec pcm_u8 -ar 16000 ./myaudio/song.wav";
     //String combineBackGroundMusic="sox -m ./myaudio/sound.wav ./myaudio/song.wav ./myaudio/out.wav trim 0 "+seconds
-
-
-
-
-
-
-
 
     /*public void moveUp()
         foreach (ListViewItem lvi in audioList.SelectedItems)
@@ -384,8 +301,6 @@ public class CreateNewController {
             }
         }
     }*/
-
-
 }
 
 
