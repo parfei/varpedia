@@ -2,6 +2,7 @@ package application;
 
 import application.bashwork.BashCommand;
 import application.bashwork.ManageFolder;
+import application.values.PathIs;
 import application.values.SceneFXML;
 import application.controllers.MainController;
 import javafx.application.Application;
@@ -92,21 +93,21 @@ public class Main extends Application {
     @SuppressWarnings("restriction")
     @Override
     public void stop() throws Exception { //In case the deletion of such extra files were not successful.
-        new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -"); //Clear files in extra folder.);
+        new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp/audioPiece/* ; cd -"); //Clear files in temp folder.);
         //com.sun.javafx.application.PlatformImpl.tkExit(); //https://stackoverflow.com/questions/15808063/how-to-stop-javafx-application-thread //TODO FIX ALL PROCESSES ENDING
         //Platform.exit();
     }
 
     public void writeScheme() throws IOException{ //TODO reorganise files
-        FileWriter writer1=new FileWriter("kal.scm");
+        FileWriter writer1=new FileWriter(PathIs.TEMP + "/kal.scm");
         writer1.write("(voice_kal_diphone)");
         writer1.close();
 
-        FileWriter writer2=new FileWriter("jdt.scm");
+        FileWriter writer2=new FileWriter(PathIs.TEMP + "/jdt.scm");
         writer2.write("(voice_akl_nz_jdt_diphone)");
         writer2.close();
 
-        FileWriter writer3=new FileWriter("cw.scm");
+        FileWriter writer3=new FileWriter(PathIs.TEMP + "/cw.scm");
         writer3.write("(voice_akl_nz_cw_cg_cg)");
         writer3.close();
     }

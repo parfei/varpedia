@@ -2,6 +2,8 @@ package application.controllers;
 import application.ChangeScene;
 import application.Main;
 import application.PathCD;
+import application.bashwork.BashCommand;
+import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -34,11 +36,9 @@ public class CreationController {
     private ChangeScene _changeSceneObject=new ChangeScene();
 
     @FXML
-    public void initialize() throws IOException {
-        String path = PathCD.getPathInstance().getPath();
-        String command2 = "mkdir -p \"" + path + "/mydir/extra/audioPiece\"";
-        ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
-        pb2.start();
+    public void initialize() throws Exception {
+        String command2 = "mkdir -p \"" + PathIs.TEMP + "/audioPiece\"";
+        new BashCommand().bash(command2);
 
         progress.setVisible(false);
         enterButton.setDisable(false);
@@ -122,10 +122,8 @@ public class CreationController {
                 //resultOut = true;
                 // get the format of the searchedText
                 //String command = "echo -e \"" + _line + "\" > " + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
-               String path = PathCD.getPathInstance().getPath() + "/mydir/extra";
-
                 try {
-                    FileWriter tempWriter = new FileWriter(path + "/temp.txt");
+                    FileWriter tempWriter = new FileWriter(PathIs.EXTRA + "/temp.txt");
                     tempWriter.write(_line);
                     tempWriter.close();
                 } catch (IOException e) {
@@ -134,7 +132,7 @@ public class CreationController {
 
                 Platform.runLater(() -> {
                     try {
-                        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -"; //Clear files in extra folder.
+                        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp/audioPiece/* ; cd -"; //Clear files in temp folder.
                         ProcessBuilder pb2 = new ProcessBuilder("bash", "-c", command);
                         try {
                             Process end = pb2.start();

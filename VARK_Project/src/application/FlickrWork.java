@@ -1,5 +1,6 @@
 package application;
 
+import application.values.PathIs;
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.REST;
@@ -128,7 +129,7 @@ public class FlickrWork extends Task<String> {
                 try {
                     BufferedImage image = photos.getImage(photo, Size.LARGE);
                     String filename = "img" + Integer.toString(count) + ".jpg";
-                    File outputfile = new File(PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name,filename);
+                    File outputfile = new File(PathIs.EXTRA + "/" + _term + "/" + _name,filename);
                     ImageIO.write(image, "jpg", outputfile); //Download the image
                     System.out.println("Downloaded "+filename);
 

@@ -1,6 +1,7 @@
 package application.bashwork;
 
 import application.PathCD;
+import application.values.PathIs;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class ManageFolder {
         ArrayList<String> list = output.bash("[ -e \"" + path + "/mydir\" ]");
         if (list.isEmpty()){
         } else if (list.get(0).equals("1")) {
-            output.bash("mkdir -p \"" + path + "/mydir/extra/\" ; mkdir -p \"" + path + "/mydir/creations/creations\" ; mkdir -p \"" + path + "/mydir/creations/favourites\"");
+            output.bash("mkdir -p \"" + path + "/mydir/.extra/\" ; mkdir -p \"" + path + "/mydir/creations/creations\" ; mkdir -p \"" + path + "/mydir/creations/favourites\" ; mkdir -p \"" + path + "/mydir/.temp\"");
         }
     }
 
@@ -29,7 +30,7 @@ public class ManageFolder {
         if (isVideo){
             command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/\"*\"/" + name + ".mp4\""; //Video is in favourites or creations folder.
         } else {
-            command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/\"*\"/" + name + "\""; //Find the path of the folder that contains the extra files of the creation.
+            command = "find \"" + PathIs.EXTRA + "/\"*\"/" + name + "\""; //Find the path of the folder that contains the extra files of the creation.
         }
         BashCommand cmd = new BashCommand();
         return cmd.bash(command).get(0);

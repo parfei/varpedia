@@ -2,6 +2,7 @@ package application.controllers;
 
 import application.*;
 import application.bashwork.BashCommand;
+import application.values.PathIs;
 import application.values.SceneFXML;
 import com.sun.jdi.connect.Transport;
 import javafx.application.Platform;
@@ -21,7 +22,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -75,24 +75,6 @@ public class CreateNewController {
         errorImg.setVisible(false);
 
         team = Executors.newSingleThreadExecutor();
-
-        /* list audios presented
-        String listAudio = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
-        ProcessBuilder builder = new ProcessBuilder("bash", "-c", listAudio);
-        try {
-            String line;
-            Process process = builder.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-
-            while ((line = reader.readLine()) != null) {
-                _audioExisted.add(line);
-            }
-            audioList.getItems().addAll(_audioExisted);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
 
         //List out all the existing creations!
         String command = "ls -R \"" + PathCD.getPathInstance().getPath() + "/mydir/creations\" " + " | grep .mp4 | cut -f1 -d'.' | sort";
@@ -232,14 +214,18 @@ public class CreateNewController {
                             @Override
                             public void handle(WorkerStateEvent workerStateEvent) {
                                 try {
-                                    String p = "\"" + PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + textFieldCreationName.getText() + "/";
+                                    String p = "\"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "/";
                                     new BashCommand().bash("touch " + p + "confidence.txt\" " + p + "plays.txt\"");
                                     team.submit(new Confidence(textFieldCreationName.getText(), 0));
                                     team.submit(new Play(textFieldCreationName.getText()));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                cleanUp(); //Clean up audio files after the Creation has been made.
+                                try {
+                                    cleanUp(); //Clean up audio files after the Creation has been made.
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 
                                 _CreationsExisted.clear();
                                 Alert complete = new Alert(Alert.AlertType.INFORMATION);
@@ -263,28 +249,16 @@ public class CreateNewController {
      * @throws IOException
      */
     private void createDirectories() throws Exception {
-        String path = PathCD.getPathInstance().getPath();
-
-        new BashCommand().bash("mkdir -p \"" + path + "/mydir/extra/" + _term + "/" + textFieldCreationName.getText() + "\"" +
-                " ; mkdir -p \"" + path + "/mydir/creations/creations" + _term + "\""); //create a creations folders
+        new BashCommand().bash("mkdir -p \"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "\"" +
+                " ; mkdir -p \"" + PathIs.CREATIONS + "/" + _term + "\""); //create a creations folders
     }
 
     /**
      * Clean up audio files after creation.
      */
-    private void cleanUp() {
-
-        //String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/" + TransportClass.getInstance().getter() + "/" + textFieldCreationName.getCharacters().toString() +
-        //"/* ; cd -"; //Clear files in extra folder.
-
-        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -";
-
-        ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
-        try {
-            Process end = pb.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void cleanUp() throws Exception {
+        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp/audioPiece/* ; cd -";
+        new BashCommand().bash(command);
     }
 
     //String createMusicCommand="ffmpeg -i ./src/music/groovy-music.mp3 -acodec pcm_u8 -ar 16000 ./myaudio/song.wav";

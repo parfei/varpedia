@@ -1,5 +1,6 @@
 package application;
 
+import application.values.PathIs;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 
@@ -28,7 +29,7 @@ public class CreationWork extends Task<String> {
         _name = name;
         _term = term;
         _picNum = picNum;
-        _path = PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name + "/";
+        _path = PathIs.EXTRA + "/" + _term + "/" + _name + "/";
         System.out.println(_path);
         _combine = combine;
         _musicChoice = musicChoice;
@@ -64,8 +65,8 @@ public class CreationWork extends Task<String> {
      * Generate combined audio of all the audio pieces we have.
      */
     private void generateCombinedAudio() {
-        String combine = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\" ; sox $(ls -tcr | grep wav) \"" +
-                PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name + "/sound.wav\"";
+        String combine = "cd \"" + PathIs.TEMP + "/audioPiece\" ; sox $(ls -tcr | grep wav) \"" +
+                PathIs.EXTRA + "/" + _term + "/" + _name + "/sound.wav\"";
         System.out.println(combine);
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", combine);
         try {
@@ -81,7 +82,7 @@ public class CreationWork extends Task<String> {
      * Generate audio of specified number of lines. NOT USED FOR THIS ASSIGNMENT.
      */
     private void generateAudio() {
-        String soundCommand = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/lines.txt\" | text2wave -o \"" + _path + "sound.wav\"";
+        String soundCommand = "cat \"" + PathIs.EXTRA + "/lines.txt\" | text2wave -o \"" + _path + "sound.wav\"";
         System.out.println(soundCommand);
         ProcessBuilder sound = new ProcessBuilder("bash", "-c", soundCommand);
         try {
@@ -113,8 +114,6 @@ public class CreationWork extends Task<String> {
      * Generate slideshow video of all the images related to the term.
      */
     private void generatePicVideo() {
-
-        //video
         try {
             generateFilesTxt();
 
@@ -142,7 +141,7 @@ public class CreationWork extends Task<String> {
     private void combineForms() {
 
         String combineCommand = "ffmpeg -y -i \"" + _path + "combinedSound.wav\" -i \"" + _path + "video.mp4\" -c:v copy -c:a aac -strict experimental \"" +
-                PathCD.getPathInstance().getPath() + "/mydir/creations/" + _term + "/" + _name + ".mp4\" 2>/dev/null";
+                PathCD.getPathInstance().getPath() + "/mydir/creations/creations/" + _term + "/" + _name + ".mp4\" 2>/dev/null";
         System.out.println(combineCommand);
         ProcessBuilder getTogether = new ProcessBuilder("bash", "-c", combineCommand);
 
@@ -211,7 +210,7 @@ public class CreationWork extends Task<String> {
 
         //change mp3 file to wav file
         String createMusicFile = null;
-        String path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece";
+        String path = PathIs.TEMP + "/audioPiece";
 
         if (_musicChoice==null||_musicChoice.equals("No music")){
             createMusicFile = "";

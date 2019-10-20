@@ -5,6 +5,7 @@ import application.Main;
 import application.PathCD;
 import application.bashwork.BashCommand;
 import application.bashwork.ManageFolder;
+import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -67,13 +68,13 @@ public class EditTextController {
         remindLabel.setVisible(false);
 
         BashCommand audio = new BashCommand();
-        String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
+        String cmd = "cat \"" + PathIs.EXTRA + "/temp.txt\"";
         ArrayList<String> output = audio.bash(cmd);
         textArea.setText(output.toString()); //Put all current audio pieces list view.
     }
 
     private void updateExistingAudio() throws Exception {
-        String command = "ls \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece\"" + " | cut -f1 -d'.'\n";
+        String command = "ls \"" + PathIs.TEMP + "/audioPiece\"" + " | cut -f1 -d'.'\n";
         BashCommand update = new BashCommand();
         ArrayList<String> items = update.bash(command);
 
@@ -81,7 +82,7 @@ public class EditTextController {
     }
 
     public int countNumberOfAudioFileInAudioPiece() {
-        String path= PathCD.getPathInstance().getPath()+"/mydir/extra/audioPiece";
+        String path= PathIs.TEMP + "/audioPiece";
         return new File(path).listFiles().length;
     }
 
@@ -273,13 +274,13 @@ public class EditTextController {
         protected Void call() throws Exception {
             String createAudio = "";
             if (_voice.equals("default_voice")){
-                createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term + "-"+ _number+ ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
+                createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term + "-"+ _number+ ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
             } else if (_voice.equals("male_voice")){
-                createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ _number + ".wav\" \"" +
-                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval jdt.scm";
+                createAudio = "text2wave -o \"" + PathIs.TEMP +"/audioPiece/" + _term+ "-"+ _number + ".wav\" \"" +
+                        PathIs.EXTRA + "/savedText.txt\" -eval jdt.scm";
             } else if (_voice.equals("female_voice")){
-                createAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ _number + ".wav\" \"" +
-                        PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval cw.scm";
+                createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term+ "-"+ _number + ".wav\" \"" +
+                        PathIs.EXTRA + "/savedText.txt\" -eval cw.scm";
             }
 
             new BashCommand().bash(createAudio);
@@ -304,7 +305,7 @@ public class EditTextController {
      * @return String valid path of audio to be saved.
      */
     private String checkReadableText(String number){
-        String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term + "-"+number+ ".wav";
+        String file_path = PathIs.TEMP + "/audioPiece/" + _term + "-"+number+ ".wav";
         File file = new File(file_path);
         // handle the case when audio is not saved successfully
         if (file.length() == 0) {
@@ -334,10 +335,9 @@ public class EditTextController {
             int numberOfAudio=countNumberOfAudioFileInAudioPiece();
             String number=Integer.toString(numberOfAudio);
 
-            ManageFolder.writeToFile(PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt", saveble);
-            /*FileWriter writer = new FileWriter(PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt"); //TODO combine text so we can read as description of file.
-            writer.write(saveble);
-            writer.close();*/
+            ManageFolder.writeToFile(PathIs.EXTRA + "/savedText.txt", saveble);
+            //TODO combine text so we can read as description of file.
+
             if (default_voice.isSelected()) {
                 SaveHelper sh = new SaveHelper("default_voice", number);
                 team.submit(sh);
@@ -355,7 +355,7 @@ public class EditTextController {
 
                 team.submit(sh);
                 sh.setOnSucceeded(workerStateEvent -> {
-                    String file_path = PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number + ".wav";
+                    String file_path = PathIs.TEMP + "/audioPiece/" + _term+ "-"+ number + ".wav";
                     File file = new File(file_path);
 
                     /* ask user to save in default voice or give up saving if the male voice option can't save the audio*/
@@ -405,7 +405,7 @@ public class EditTextController {
      */
     @FXML
     public void backToMain(ActionEvent event) throws Exception { //TODO set up back to search term functionality, change backto main to a little x button at the top?
-        String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/extra/audioPiece\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
+        String cmd1="rm -rf \""+ PathIs.TEMP + "/audioPiece\" ; rm -f \""+ PathIs.EXTRA + "/temp.txt\"; ";
         new BashCommand().bash(cmd1);
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
@@ -504,7 +504,7 @@ public class EditTextController {
     }
 
     private String findAudio(String name) throws Exception {
-        String command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + name + ".wav\"";
+        String command = "find \"" + PathIs.TEMP + "/audioPiece/" + name + ".wav\"";
         return new BashCommand().bash(command).get(0);
     }
 }
