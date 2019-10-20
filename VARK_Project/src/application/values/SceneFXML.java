@@ -31,10 +31,12 @@ public enum SceneFXML {
             return "resources/EditText.fxml";
         }
     },
+    IMAGES{
+        @Override
+        public String toString() { return "resources/EditPictures.fxml"; }
+    },
     CREATE{
         @Override
-        public String toString() {
-            return "resources/CreateNew.fxml";
-        }
+        public String toString() { return "resources/CreateNew.fxml"; }
     };
 }

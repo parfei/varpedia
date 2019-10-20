@@ -24,12 +24,12 @@ import java.util.ArrayList;
  */
 public class FlickrWork extends Task<String> {
     private String _term;
-    private String _name;
+    //private String _name;
     private int _num;
     private ArrayList<String> _html = new ArrayList<String>();
 
-    public FlickrWork(String term, String name, String num){
-        _name = name;
+    public FlickrWork(String term, String num){
+        //_name = name;
         _term = term;
         _num = Integer.parseInt(num);
     }
@@ -129,7 +129,8 @@ public class FlickrWork extends Task<String> {
                 try {
                     BufferedImage image = photos.getImage(photo, Size.LARGE);
                     String filename = "img" + Integer.toString(count) + ".jpg";
-                    File outputfile = new File(PathIs.EXTRA + "/" + _term + "/" + _name,filename);
+                    //File outputfile = new File(PathIs.EXTRA + "/" + _term + "/" + _name,filename);
+                    File outputfile = new File(String.valueOf(PathIs.TEMP),filename);
                     ImageIO.write(image, "jpg", outputfile); //Download the image
                     System.out.println("Downloaded "+filename);
 

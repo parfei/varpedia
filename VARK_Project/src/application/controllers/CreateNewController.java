@@ -188,9 +188,10 @@ public class CreateNewController {
             complete.show();
 
             createDirectories(); //Create necessary directories if they have not existed yet.
-
+                //TODO before uncommenting, must implement editpictures to write down necessary images needed...
+                //TODO then we only need the CreationWork to be submitted to executor thread.
                 //Send an instance of FlickrWork to the background thread to retrieve the images from Flickr.
-                FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getText(), textFldImagesNum.getText());
+                /*FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getText(), textFldImagesNum.getText());
                 team.submit(getImg);
 
                 //When images have been successfully retrieved, send an instance of CreationWrok to the background thread to combine audio, slideshow and video forms into one Creation.
@@ -238,7 +239,7 @@ public class CreateNewController {
                             }
                         });
                     }
-                });
+                });*/
 
             Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
         }

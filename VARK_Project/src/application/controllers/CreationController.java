@@ -26,8 +26,7 @@ public class CreationController {
     public String _InputFromUser;
     private String _line;
 
-    @FXML
-    private TextField yourKeyWord;
+    @FXML private TextField yourKeyWord;
 
     @FXML private Label whatDoYouWant;
     @FXML private ProgressBar progress;

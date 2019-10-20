@@ -422,7 +422,7 @@ public class EditTextController {
      */
     @FXML
     public void readyToCombine(ActionEvent event) throws IOException {
-        CreateNewController controller = (CreateNewController) Main.getController().setTOPVIEW(SceneFXML.CREATE.toString());
+        EditPicturesController controller = (EditPicturesController) Main.getController().setTOPVIEW(SceneFXML.IMAGES.toString());
         controller.initData(_term);
     }
 
