@@ -36,26 +36,17 @@ public class EditTextController {
     @FXML private TextArea textArea;
     @FXML private Label askForVoice;
     @FXML private ToggleGroup group;
-    @FXML private Label select;
-
-    @FXML private Button create;
-
-    private StringBuffer _stringBuffer = new StringBuffer();
-    private List<String> _audioExisted= new ArrayList<>();
-
     @FXML private RadioButton default_voice;
     @FXML private RadioButton male_voice;
     @FXML private RadioButton female_voice;
     @FXML private Label remindLabel;
-
     @FXML private ListView existingAudioView;
-    @FXML private TextField textField;
+
     private String _term;
     private String _selectedText;
-
+    private List<String> _audioExisted= new ArrayList<>();
     static final int OUT = 0;
     static final int IN = 1;
-
     private ExecutorService team = Executors.newSingleThreadExecutor();
 
     public void initData(String term){
@@ -68,28 +59,12 @@ public class EditTextController {
      */
     @FXML
     public void initialize() throws Exception {
-
         remindLabel.setVisible(false);
 
-        String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
         BashCommand audio = new BashCommand();
+        String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
         ArrayList<String> output = audio.bash(cmd);
-        textArea.setText(output.toString());
-        ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
-        /*try {
-            Process process = pb.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                _stringBuffer.append(line);
-            }
-            textArea.setText(_stringBuffer.toString());
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }*/
-
+        textArea.setText(output.toString()); //Put all current audio pieces list view.
     }
 
     public int countNumberOfAudioFileInAudioPiece() {
@@ -531,15 +506,9 @@ public class EditTextController {
      * @throws IOException
      */
     @FXML
-    public void backToMain(ActionEvent event) throws IOException { //TODO set up back to search term functionality, change backto main to a little x button at the top?
+    public void backToMain(ActionEvent event) throws Exception { //TODO set up back to search term functionality, change backto main to a little x button at the top?
         String cmd1="rm -rf \""+PathCD.getPathInstance().getPath()+"/mydir/extra/audioPiece\" ; rm -f \""+ PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"; ";
-
-        ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd1);
-        try {
-            Process process = pb.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new BashCommand().bash(cmd1);
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
 
@@ -573,21 +542,17 @@ public class EditTextController {
         // Scan all characters one by one
         while (i < str.length())
         {
-            // If next character is a separator, set the
-            // state as OUT
+            // If next character is a separator, set the state as OUT
             if (str.charAt(i) == ' ' || str.charAt(i) == '\n'
                     || str.charAt(i) == '\t')
                 state = OUT;
-                // If next character is not a word separator
-                // and state is OUT, then set the state as IN
-                // and increment word count
+                // If next character is not a word separator and state is OUT, then set the state as IN and increment word count
             else if (state == OUT)
             {
                 state = IN;
                 ++wc;
             }
-            // Move to next character
-            ++i;
+            ++i; // Move to next character
         }
         return wc;
     }
