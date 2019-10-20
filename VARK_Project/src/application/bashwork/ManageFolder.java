@@ -29,7 +29,7 @@ public class ManageFolder {
         if (isVideo){
             command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/\"*\"/" + name + ".mp4\""; //Video is in favourites or creations folder.
         } else {
-            command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/extra/\"*\"/" + name + "\""; //Find the path of the folder that contains the extra files of the creation.
+            command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/\"*\"/" + name + "\""; //Find the path of the folder that contains the extra files of the creation.
         }
         BashCommand cmd = new BashCommand();
         return cmd.bash(command).get(0);
@@ -39,7 +39,7 @@ public class ManageFolder {
         try{
             File file = new File(path);
 
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            FileWriter fw = new FileWriter(file);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(content);
             bw.close();
@@ -48,21 +48,21 @@ public class ManageFolder {
         }
     }
 
-    public static String readFile(String path){
+    public static String readFile(String path) throws FileNotFoundException {
         String output = "";
-        try {
+
             BufferedReader br = new BufferedReader(new FileReader(path));
 
             String line;
-            while ((line = br.readLine()) != null) {
-                output += line;
+            try {
+                while ((line = br.readLine()) != null){
+                    output += line;
+                }
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            br.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         return output;
     }
 

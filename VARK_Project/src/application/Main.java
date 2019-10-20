@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
 
 /**
  * This is the entry point of the application.
@@ -49,8 +50,9 @@ public class Main extends Application {
             public void handle(WorkerStateEvent workerStateEvent) {
                 team.submit(new CreationWork("apple", 1, false, false));
             }
-        });*/
-
+        });*/ //TESTING FLICKR
+        /*Executors.newSingleThreadExecutor().submit(new Confidence("apple3", 2));
+        Executors.newSingleThreadExecutor().submit(new Play("apple3"));*/ //TESTING CONFIDENCE & PLAYS TXT WRITING AND READING
     }
 
     /**

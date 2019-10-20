@@ -233,7 +233,14 @@ public class CreateNewController {
                         creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
                             @Override
                             public void handle(WorkerStateEvent workerStateEvent) {
-                                //TODO CREATION Main.getCreationsList().addCreation(new Creation(_term, textFieldCreationName.getText()));
+                                try {
+                                    String p = "\"" + PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + textFieldCreationName.getText() + "/";
+                                    new BashCommand().bash("touch " + p + "confidence.txt\" " + p + "plays.txt\"");
+                                    team.submit(new Confidence(textFieldCreationName.getText(), 0));
+                                    team.submit(new Play(textFieldCreationName.getText()));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                                 cleanUp(); //Clean up audio files after the Creation has been made.
 
                                 _CreationsExisted.clear();

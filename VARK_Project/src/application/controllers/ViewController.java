@@ -71,7 +71,14 @@ public class ViewController {
 
                 File file = new File(ManageFolder.findPath(_choice, true));
                 _player = new MediaPlayer(new Media(file.toURI().toString())); //Set up player to be played.
-                confidence.setValue(Double.parseDouble(ManageFolder.readFile(ManageFolder.findPath(_choice, false) + "/confidence.txt"))); //Set up confidence for viewing.
+
+                //Get confidence rating from file.
+                int rate = Integer.parseInt(ManageFolder.readFile(ManageFolder.findPath(_choice, false) + "/confidence.txt"));
+                if (rate == 0){
+                    confidence.setValue(1);
+                } else {
+                    confidence.setValue(rate); //Set up confidence for viewing.
+                }
 
                 //When the player ends...
                 _player.setOnEndOfMedia(() -> {
@@ -206,7 +213,7 @@ public class ViewController {
     }
 
     @FXML
-    public void changeConfidence(ActionEvent event) throws Exception {
+    public void changeConfidence(javafx.scene.input.MouseEvent mouseEvent) throws Exception {
         int rating = (int) confidence.getValue();
         team.submit(new Confidence(_choice, rating));
     }
