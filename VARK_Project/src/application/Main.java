@@ -82,9 +82,11 @@ public class Main extends Application {
      * Run this process to clean files when the application finishes
      * @throws Exception
      */
+    @SuppressWarnings("restriction")
     @Override
     public void stop() throws Exception { //In case the deletion of such extra files were not successful.
         new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -"); //Clear files in extra folder.);
+        com.sun.javafx.application.PlatformImpl.tkExit();
         Platform.exit();
     }
 

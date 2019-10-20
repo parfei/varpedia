@@ -3,6 +3,7 @@ package application.controllers;
 import application.ChangeScene;
 import application.Main;
 import application.PathCD;
+import application.bashwork.BashCommand;
 import application.values.SceneFXML;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -66,14 +67,16 @@ public class EditTextController {
      * this method will add the search result to the text area
      */
     @FXML
-    public void initialize() {
+    public void initialize() throws Exception {
 
         remindLabel.setVisible(false);
 
         String cmd = "cat \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt\"";
-
+        BashCommand audio = new BashCommand();
+        ArrayList<String> output = audio.bash(cmd);
+        textArea.setText(output.toString());
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
-        try {
+        /*try {
             Process process = pb.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
@@ -85,7 +88,7 @@ public class EditTextController {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        }*/
 
     }
 
