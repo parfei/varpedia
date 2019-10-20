@@ -6,10 +6,13 @@ import application.values.SceneFXML;
 import application.controllers.MainController;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,6 +55,11 @@ public class Main extends Application {
         });*/ //TESTING FLICKR
         /*Executors.newSingleThreadExecutor().submit(new Confidence("apple3", 2));
         Executors.newSingleThreadExecutor().submit(new Play("apple3"));*/ //TESTING CONFIDENCE & PLAYS TXT WRITING AND READING
+
+        primaryStage.setOnCloseRequest(event -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     /**
@@ -86,7 +94,7 @@ public class Main extends Application {
     public void stop() throws Exception { //In case the deletion of such extra files were not successful.
         new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -"); //Clear files in extra folder.);
         //com.sun.javafx.application.PlatformImpl.tkExit(); //https://stackoverflow.com/questions/15808063/how-to-stop-javafx-application-thread //TODO FIX ALL PROCESSES ENDING
-        Platform.exit();
+        //Platform.exit();
     }
 
     public void writeScheme() throws IOException{ //TODO reorganise files
