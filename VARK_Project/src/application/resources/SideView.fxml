@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minWidth="664.0" prefHeight="362.0" prefWidth="664.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ViewController">
+   <children>
+      <ListView fx:id="stuffCreated" layoutX="4.0" layoutY="27.0" onMouseClicked="#getTheSelection" prefHeight="308.0" prefWidth="214.0" />
+      <TableView fx:id="list" layoutY="-2.0" prefHeight="341.0" prefWidth="220.0" visible="false">
+        <columns>
+          <TableColumn prefWidth="154.0" text="CREATIONS" />
+          <TableColumn prefWidth="30.0" text="★" />
+            <TableColumn prefWidth="35.0" text="!" />
+        </columns>
+      </TableView>
+      <HBox layoutX="110.0" layoutY="341.0" prefHeight="28.0" prefWidth="104.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#favourite" prefHeight="26.0" prefWidth="34.0" text="★" />
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteVideo" prefHeight="11.0" prefWidth="78.0" text="Delete">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <Pane fx:id="videoPlayer" layoutX="214.0" layoutY="3.0" prefHeight="295.0" prefWidth="444.0">
+         <children>
+            <MediaView fx:id="view" fitHeight="300.0" fitWidth="444.0" layoutX="5.0" layoutY="-2.0" preserveRatio="false">
+               <viewport>
+                  <Rectangle2D />
+               </viewport>
+            </MediaView>
+         </children>
+      </Pane>
+      <ButtonBar fx:id="playOptions" layoutX="210.0" layoutY="298.0" prefHeight="46.0" prefWidth="354.0">
+         <buttons>
+            <Button fx:id="timeBack" layoutX="189.0" layoutY="20.0" mnemonicParsing="false" onAction="#videoPlay" prefHeight="34.0" text="&lt;&lt; 10" />
+            <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
+            <Button fx:id="stopButton" layoutX="125.0" layoutY="20.0" mnemonicParsing="false" onAction="#videoPlay" prefHeight="33.0" text="Stop" />
+            <Button fx:id="timeForward" layoutX="189.0" layoutY="20.0" minWidth="75.0" mnemonicParsing="false" onAction="#videoPlay" prefHeight="34.0" text="10 &gt;&gt;" />
+         </buttons>
+      </ButtonBar>
+      <Button fx:id="muteButton" layoutX="605.0" layoutY="304.0" mnemonicParsing="false" onAction="#videoPlay" prefHeight="34.0" prefWidth="53.0" text="Mute" />
+      <Button fx:id="playButton" layoutX="320.0" layoutY="304.0" mnemonicParsing="false" onAction="#playVideo" prefHeight="33.0" prefWidth="95.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Play" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Label fx:id="errorText" layoutX="5.0" layoutY="336.0" prefHeight="28.0" prefWidth="95.0" text="Select item" textFill="RED" />
+      <CheckBox fx:id="favOption" layoutX="116.0" layoutY="5.0" mnemonicParsing="false" onAction="#tickFav" text="Favourites" />
+      <ChoiceBox fx:id="confidence" layoutX="230.0" layoutY="342.0" onDragDetected="#changeConfidence" prefHeight="18.0" prefWidth="150.0" />
+      <Label layoutX="397.0" layoutY="347.0" text="Confidence Rating" />
+   </children>
+</AnchorPane>

@@ -150,8 +150,8 @@ public class CreateNewController {
     public void returnToStart(ActionEvent event) throws IOException {
 
         _CreationsExisted.clear();
-        _changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
-
+        //_changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
+        Main.getController().setBOTTOMVIEW("resources/DefaultBottom");
     }
 
 
@@ -175,17 +175,8 @@ public class CreateNewController {
             alert.setContentText("Make audio first");
             alert.showAndWait();
 
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/EditText.fxml")); //Go back to the edittext menu if there is no audio to combine!
-            Parent createViewParent = loader.load();
-            EditTextController controller = loader.getController();
-
+            EditTextController controller = (EditTextController) Main.getController().setBOTTOMVIEW("resources/EditText.fxml");
             controller.initData(_term);
-            Scene createViewScene = new Scene(createViewParent);
-            // gets the Stage information
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setTitle("Edit Text Menu");
-            window.setScene(createViewScene);
-            window.show();
 
         }
         else {
@@ -295,19 +286,7 @@ public class CreateNewController {
                     }
                 });
 
-
-            Parent menuParent = null;
-            try {
-                menuParent = FXMLLoader.load(Main.class.getResource("resources/menu.fxml")); //Return back to menu.
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Scene createViewScene = new Scene(menuParent);
-            // gets the Stage information
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(createViewScene);
-            window.setTitle("Main Menu");
-            window.show();
+            Main.getController().setBOTTOMVIEW("resources/DefaultBottom.fxml");
         }
     }
 

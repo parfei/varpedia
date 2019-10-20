@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -16,6 +18,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,24 +31,27 @@ import javafx.util.Duration;
  * Controller for the view window of the application.
  */
 public class ViewController {
-    private List <String > innovation = new ArrayList<String>();
     private String _choice;
     private MediaPlayer _player;
 
     // create an object of CreateController to use to go back to main menu method
     private CreationController creation = new CreationController();
 
+    @FXML private TableView list;
+
     @FXML private ListView stuffCreated;
+    @FXML private Label errorText;
+
     @FXML private MediaView view;
     @FXML private ButtonBar playOptions;
     @FXML private Button playButton;
     @FXML private Button deleteButton;
-    @FXML private Button pauseButton;
     @FXML private Button muteButton;
     @FXML private Button timeBack;
     @FXML private Button timeForward;
 
-    @FXML private Text errorText;
+    @FXML private CheckBox favOption;
+    @FXML private ChoiceBox confidence;
 
     @FXML private URL location;
     @FXML private ResourceBundle resources;
@@ -51,28 +59,17 @@ public class ViewController {
     /**
      * This method will add the existing creation to the ListView
      */
-    public void initialize()
+    public void initialize() //TODO concurrency for this??
     {
-        String path = PathCD.getPathInstance().getPath();
 
-        String cmd = "ls -R"+ " \""+ path + "/mydir/creations\""+ " | grep .mp4 | cut -f1 -d'.' | sort";
-        ProcessBuilder initializing = new ProcessBuilder("bash","-c",cmd);
-        try{
-            Process process = initializing.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
+        List<String> list = getCreations("creations");
 
-            while ((line = reader.readLine()) != null) {
-                innovation.add(line);
-            }
-            stuffCreated.getItems().addAll(innovation);
-        }catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        stuffCreated.getItems().addAll(list);
 
-        playOptions.managedProperty().bind(playOptions.visibleProperty());
-        playOptions.setVisible(false); //Manage the buttons for the video player
-        muteButton.setVisible(false);
+        errorText.setVisible(false);
+        playButton.setDisable(true);
+        playOptions.setDisable(true);
+        muteButton.setDisable(true);
     }
 
     /**
@@ -80,10 +77,10 @@ public class ViewController {
      * @param event
      * @throws IOException
      */
-    @FXML
+    /*@FXML
     public void backToMain(ActionEvent event) throws IOException {
         creation.backToMain(event);
-    }
+    }*/
 
     /**
      * Retrieve the user selection of the ListView.
@@ -91,10 +88,37 @@ public class ViewController {
      */
     @FXML
     public void getTheSelection(javafx.scene.input.MouseEvent mouseEvent) {
-        errorText.setVisible(false);
         try{
             ObservableList selectedCreation = stuffCreated.getSelectionModel().getSelectedItems();
             _choice = selectedCreation.get(0).toString();
+            if (_choice != null){
+                playButton.setDisable(false);
+
+                File file = new File(findCreation(_choice));
+                _player = new MediaPlayer(new Media(file.toURI().toString()));
+                //_player.setAutoPlay(true);
+
+                _player.setOnEndOfMedia(new Runnable() { //When the player ends...
+                    @Override
+                    public void run() {
+                        resetPlayer();
+                    }
+                });
+
+                view.setDisable(false);
+                view.setMediaPlayer(_player);
+
+                /*String cmd = "ffplay -autoexit \"" + path "\"";
+            System.out.println(cmd);
+            ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
+            try {
+                Process process = pb.start();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            }else{
+            }*/
+            }
         }catch (Exception e){
         }
     }
@@ -106,47 +130,25 @@ public class ViewController {
      */
     @FXML
     public void playVideo(ActionEvent event)throws IOException{
-        view.setVisible(true);
-
-        if(_choice!=null) { //If the user selected something to play
-            String path = findCreation(_choice); //Find the creation of the user's choice
-
-            File file = new File(path);
-            _player = new MediaPlayer(new Media(file.toURI().toString()));
-            _player.setAutoPlay(true);
-
-            _player.setOnEndOfMedia(new Runnable() { //When the player ends...
-                @Override
-                public void run() {
-                    resetPlayer();
-                }
-            });
-
-            view.setMediaPlayer(_player);
-            _player.play(); //Play the video
-            muteButton.setVisible(true);
-            playOptions.setVisible(true); //Show the video manipulation options.
-
-            /*String cmd = "ffplay -autoexit \"" + path "\"";
-            System.out.println(cmd);
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
-            try {
-                Process process = pb.start();
-
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-
-
-            }else{
-
-            }*/
-
-        }else{
+        if (_choice == null){
             errorText.setVisible(true);
-            errorText.setText("Select something to play."); //If user has not selected anything, prompt them.
+            return;
         }
+
+        stuffCreated.setDisable(true);
+
+        errorText.setVisible(false);
+        muteButton.setDisable(false);
+        playOptions.setDisable(false); //Show the video manipulation options.
+
+        if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+            _player.pause();
+            playButton.setText("Play");
+        } else {
+            _player.play();
+            playButton.setText("Pause");
+        }
+
     }
 
     /**
@@ -155,7 +157,7 @@ public class ViewController {
      * @param event
      */
     @FXML
-    public void videoPlay(ActionEvent event){
+    public void videoPlay(ActionEvent event){ //TODO if user presses something else
         String btnText = ((Button)event.getSource()).getText(); //Get button pressed's text
 
         if (btnText.equals("<< 10")){ //Regardless if playing status or not...
@@ -169,20 +171,10 @@ public class ViewController {
             resetPlayer();
         } else if (btnText.equals("Mute")){
             _player.setMute(true);
-            muteButton.setText("Unmute");
-        } else if (btnText.equals("Unmute")){
+            muteButton.setText("!Mute");
+        } else if (btnText.equals("!Mute")){
             _player.setMute(false);
             muteButton.setText("Mute");
-        } else if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)){ //IF VIDEO IS PLAYING
-            if (btnText.equals("Pause")){ //pause
-                _player.pause();
-                pauseButton.setText("Resume");
-            }
-        }else{ //IF VIDEO IS PAUSED
-            if (btnText.equals("Resume")){ //resume
-                _player.play();
-                pauseButton.setText("Pause");
-            }
         }
     }
 
@@ -203,18 +195,19 @@ public class ViewController {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
+                resetPlayer();
 
                 String path = findCreation(_choice); //finds the relevant creation
 
-                String cmd= "rm -f \"" + path + "\"";
+                String cmd= "rm -f \"" + path + "\""; //TODO check...
                 System.out.println(cmd);
                 ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
                 try {
                     Process process = pb.start();
-                } catch (IOException ex) {
+                    process.waitFor();
+                } catch (IOException | InterruptedException ex) {
                     ex.printStackTrace();
                 }
-                innovation.clear();
                 stuffCreated.getItems().clear();
                 this.initialize();
 
@@ -223,13 +216,11 @@ public class ViewController {
             }
         } else {
             errorText.setVisible(true);
-            errorText.setText("Select something to delete.");
         }
     }
 
     private String findCreation(String name){
         String command = "find \"" + PathCD.getPathInstance().getPath() + "/mydir/creations/\"*\"/" + name + ".mp4\"";
-
 
         ProcessBuilder find = new ProcessBuilder("bash", "-c", command);
         try {
@@ -242,14 +233,79 @@ public class ViewController {
         return null;
     }
 
+    @FXML
+    public void changeConfidence(ActionEvent event){
+        //TODO change confidence rating of creation
+    }
+
+    @FXML
+    public void favourite(ActionEvent event) throws IOException { //TODO implement remove favourites, button changes when this option is ticked.
+        if (_choice != null){
+            errorText.setVisible(false);
+
+            String file = "\"" + findCreation(_choice) + "\"";
+            String file2 = "\"" + PathCD.getPathInstance().getPath() + "/mydir/favourites/" + _choice + ".mp4\"";
+
+            resetPlayer();
+            String command = "mv " + file + " " + file2;
+
+            System.out.println(command);
+
+            ProcessBuilder move = new ProcessBuilder("bash", "-c", command);
+            try {
+                Process process = move.start();
+                process.waitFor();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            errorText.setVisible(true);
+        }
+    }
+
+    @FXML
+    public void tickFav(ActionEvent event){
+        List<String> list = null;
+        if (favOption.isSelected()){
+            list = getCreations("favourites");
+        } else {
+            list = getCreations("creations");
+            stuffCreated.getItems().clear();
+            stuffCreated.getItems().setAll(list);
+        }
+        stuffCreated.getItems().clear();
+        stuffCreated.getItems().setAll(list);
+    }
+
+    public static List<String> getCreations(String path){ //TODO USE THIS!
+        ArrayList<String> innovation = new ArrayList<String>();
+
+        String cmd = "ls -R"+ " \""+ PathCD.getPathInstance().getPath() + "/mydir/" + path + "\""+ " | grep .mp4 | cut -f1 -d'.' | sort";
+        ProcessBuilder initializing = new ProcessBuilder("bash","-c",cmd);
+        try{
+            Process process = initializing.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                innovation.add(line);
+            }
+        }catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return innovation;
+    }
+
     private void resetPlayer(){
-        muteButton.setVisible(false);
-        playOptions.setVisible(false);
+        muteButton.setDisable(true);
+        playOptions.setDisable(true);
         muteButton.setText("Mute");
-        pauseButton.setText("Pause");
+        playButton.setText("Play");
         _choice = null;
-        view.setVisible(false);
+        view.setDisable(true);
         _player.dispose();
+
+        stuffCreated.setDisable(false);
     }
 
 }

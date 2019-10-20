@@ -1,5 +1,6 @@
 package application;
 
+import application.controllers.MainController;
 import javafx.application.Application;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -22,6 +23,7 @@ import java.util.concurrent.Executors;
  * This is the entry point of the application.
  */
 public class Main extends Application {
+    private static MainController _controller;
 
     /**
      * Sets the stage
@@ -32,9 +34,14 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         this.initializeFolder();
         this.writeScheme();
-        Parent root = FXMLLoader.load(Main.class.getResource("resources/menu.fxml"));
-        primaryStage.setTitle("Main Menu");
-        primaryStage.setScene(new Scene(root, 600, 400));
+
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/MainWindow.fxml"));
+        Parent root = loader.load();
+        _controller = (MainController) loader.getController();
+
+        primaryStage.setTitle("VARpedia");
+        primaryStage.setScene(new Scene(root, 1200, 650));
+        primaryStage.setResizable(false);
         primaryStage.show();
 
         /*TransportClass.getInstance().setter("apple"); //testing
@@ -65,7 +72,7 @@ public class Main extends Application {
             Process folder = pb.start();
 
             if (folder.waitFor() == 1) {
-                String command2 = "mkdir -p \"" + path + "/mydir/extra/\" ; mkdir \"" + path + "/mydir/creations\"; "; //create a creations folder.
+                String command2 = "mkdir -p \"" + path + "/mydir/extra/\" ; mkdir \"" + path + "/mydir/creations/favourites\"; "; //create a creations folder.
                 ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
                 pb2.start();
             }
@@ -104,8 +111,10 @@ public class Main extends Application {
         FileWriter writer3=new FileWriter("cw.scm");
         writer3.write("(voice_akl_nz_cw_cg_cg)");
         writer3.close();
+    }
 
-
+    public static MainController getController(){
+        return _controller;
     }
 
     public static void main(String[] args) {
