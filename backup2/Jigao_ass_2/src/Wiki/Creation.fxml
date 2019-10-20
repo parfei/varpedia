@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="labelask" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CreationController">
+   <children>
+      <Label fx:id="whatDoYouWant" layoutX="334.0" layoutY="98.0" prefHeight="16.0" prefWidth="594.0" text="Hi, What do you want to search" />
+      <TextField fx:id="yourKeyWord" layoutX="152.0" layoutY="136.0" prefHeight="26.0" prefWidth="594.0" promptText="Your Keyword" />
+      <Button fx:id="enterButton" layoutX="793.0" layoutY="136.0" mnemonicParsing="false" onAction="#search" text="search" />
+      <Button fx:id="goingBack" layoutX="830.0" layoutY="360.0" mnemonicParsing="false" onAction="#backToMain" text="Back" />
+      <ProgressBar fx:id="progress" layoutX="328.0" layoutY="244.0" prefWidth="200.0" progress="0.0" />
+   </children>
+</AnchorPane>

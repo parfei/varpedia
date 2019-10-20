@@ -217,11 +217,11 @@ public class CreationWork extends Task<String> {
             createMusicFile = "";
         }
         else if (_musicChoice.equals("Clouds")) {
-            createMusicFile = "ffmpeg -i ./src/songs/clouds.mp3 -acodec pcm_u8 -ar 16000 "+ path+"/song.wav";
+            createMusicFile = "ffmpeg -i ./songs/clouds.mp3 -acodec pcm_u8 -ar 16000 "+ path+"/song.wav";
         } else if (_musicChoice.equals("Fingers")) {
-            createMusicFile = "ffmpeg -i ./src/songs/fingers.mp3 -acodec pcm_u8 -ar 16000 " + path + "/song.wav";
+            createMusicFile = "ffmpeg -i ./songs/fingers.mp3 -acodec pcm_u8 -ar 16000 " + path + "/song.wav";
         } else if (_musicChoice.equals("Sun")) {
-            createMusicFile = "ffmpeg -i ./src/songs/sun.mp3 -acodec pcm_u8 -ar 16000 " + path + "/song.wav";
+            createMusicFile = "ffmpeg -i ./songs/sun.mp3 -acodec pcm_u8 -ar 16000 " + path + "/song.wav";
         }
         else {
             System.out.println("Bug");
