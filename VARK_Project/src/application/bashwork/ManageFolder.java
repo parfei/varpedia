@@ -21,8 +21,9 @@ public class ManageFolder {
         ArrayList<String> list = output.bash("[ -e \"" + path + "/mydir\" ]");
         if (list.isEmpty()){
         } else if (list.get(0).equals("1")) {
-            output.bash("mkdir -p \"" + path + "/mydir/.extra/\" ; mkdir -p \"" + path + "/mydir/creations/creations\" ; mkdir -p \"" + path + "/mydir/creations/favourites\" ; mkdir -p \"" + path + "/mydir/.temp\"");
+            output.bash("mkdir -p \"" + path + "/mydir/.extra/\" ; mkdir -p \"" + path + "/mydir/creations/creations\" ; mkdir -p \"" + path + "/mydir/creations/favourites\"");
         }
+        new BashCommand().bash("mkdir -p \"" + path + "/mydir/.temp\"");
     }
 
     public static String findPath(String name, Boolean isVideo) throws Exception {

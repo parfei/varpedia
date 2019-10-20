@@ -32,7 +32,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception{
-        this.initializeFolder();
+        ManageFolder.initializeFolders(); //Create necessary folders.
         this.writeScheme();
 
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.WINDOW.toString()));
@@ -57,45 +57,16 @@ public class Main extends Application {
         /*Executors.newSingleThreadExecutor().submit(new Confidence("apple3", 2));
         Executors.newSingleThreadExecutor().submit(new Play("apple3"));*/ //TESTING CONFIDENCE & PLAYS TXT WRITING AND READING
 
+        //On close request, close processes, threads and children threads. Also clear out .temp folder when exiting application.
         primaryStage.setOnCloseRequest(event -> {
+            try {
+                new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp ; cd -"); //Clear files in temp folder.);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             Platform.exit();
             System.exit(0);
         });
-    }
-
-    /**
-     * Creates necessary folders.
-     */
-    private void initializeFolder() throws Exception {
-        ManageFolder.initializeFolders();
-        /*try {
-            String command = "[ -e \"" + path + "/mydir\" ]"; //check if there is a creations folder.
-            ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
-
-            Process folder = pb.start();
-
-            if (folder.waitFor() == 1) {
-                String command2 = "mkdir -p \"" + path + "/mydir/extra/\" ; mkdir -p \"" + path + "/mydir/creations/favourites\"; "; //create a creations folder.
-                ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
-                pb2.start();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-    }
-
-    /**
-     * Run this process to clean files when the application finishes
-     * @throws Exception
-     */
-    @SuppressWarnings("restriction")
-    @Override
-    public void stop() throws Exception { //In case the deletion of such extra files were not successful.
-        new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp/audioPiece/* ; cd -"); //Clear files in temp folder.);
-        //com.sun.javafx.application.PlatformImpl.tkExit(); //https://stackoverflow.com/questions/15808063/how-to-stop-javafx-application-thread //TODO FIX ALL PROCESSES ENDING
-        //Platform.exit();
     }
 
     public void writeScheme() throws IOException{ //TODO reorganise files
