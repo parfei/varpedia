@@ -129,15 +129,16 @@ public class EditTextController {
             if (_voice.equals("default_voice")){
                 writer=new FileWriter(PathIs.TEMP + "/" + _voice);
                 writer.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+_selectedText +"\"" + ")");
-                cmd = "festival -b default_voice";
+                cmd = "festival -b \"" + PathIs.TEMP + "/default_voice\"";
+                System.out.println(cmd);
             } else if (_voice.equals("male_voice")){
                 writer=new FileWriter(PathIs.TEMP + "/" + _voice);
                 writer.write("(voice_akl_nz_jdt_diphone)"+"\n"+"(SayText" + " "+"\""+_textWithoutBrackets+"\"" + ")");
-                cmd = "festival -b male_voice";
+                cmd = "festival -b \"" + PathIs.TEMP + "/male_voice\"";
             } else if (_voice.equals("female_voice")){
                 writer=new FileWriter(PathIs.TEMP + "/female_voice.scm");
                 writer.write("(voice_akl_nz_cw_cg_cg)"+"\n"+"(SayText" + " "+"\""+_textWithoutBrackets+"\"" + ")");
-                cmd = "festival -b female_voice.scm";
+                cmd = "festival -b \"" + PathIs.TEMP + "/female_voice.scm\"";
             }
             writer.close();
 
@@ -163,6 +164,7 @@ public class EditTextController {
             //String textWithoutBrackets = _selectedText.replaceAll("[\\[\\](){}']",""); // remove the text in brackets to make it readable
             if (default_voice.isSelected()){
                 team.submit(new PreviewHelper("default_voice"));
+                System.out.println("default voice");
             } else {
 
                 PreviewHelper preview = null;
@@ -279,6 +281,7 @@ public class EditTextController {
             if (_voice.equals("default_voice")){
                 createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term + "-"+ _number+ ".wav\" " +
                         path + " -eval \"" + PathIs.TEMP +"/kal.scm\"";
+                System.out.println(createAudio);
             } else if (_voice.equals("male_voice")){
                 createAudio = "text2wave -o \"" + PathIs.TEMP +"/audioPiece/" + _term+ "-"+ _number + ".wav\" " +
                         path + " -eval \"" + PathIs.TEMP + "/jdt.scm\"";
