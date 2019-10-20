@@ -70,7 +70,9 @@ public class EditTextController {
         BashCommand audio = new BashCommand();
         String cmd = "cat \"" + PathIs.EXTRA + "/temp.txt\"";
         ArrayList<String> output = audio.bash(cmd);
-        textArea.setText(output.toString()); //Put all current audio pieces list view.
+        String finalText = output.toString().substring(1);
+        finalText = finalText.substring(0,finalText.lastIndexOf("]"));
+        textArea.setText(finalText); //Put all current audio pieces list view.
     }
 
     private void updateExistingAudio() throws Exception {
@@ -273,14 +275,16 @@ public class EditTextController {
         @Override
         protected Void call() throws Exception {
             String createAudio = "";
+            String path = "\"" + PathIs.EXTRA + "/savedText" + countNumberOfAudioFileInAudioPiece() + ".txt\"";
             if (_voice.equals("default_voice")){
-                createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term + "-"+ _number+ ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval \"" + PathIs.TEMP +"/kal.scm\"";
+                createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term + "-"+ _number+ ".wav\" " +
+                        path + " -eval \"" + PathIs.TEMP +"/kal.scm\"";
             } else if (_voice.equals("male_voice")){
-                createAudio = "text2wave -o \"" + PathIs.TEMP +"/audioPiece/" + _term+ "-"+ _number + ".wav\" \"" +
-                        PathIs.EXTRA + "/savedText.txt\" -eval \"" + PathIs.TEMP + "/jdt.scm\"";
+                createAudio = "text2wave -o \"" + PathIs.TEMP +"/audioPiece/" + _term+ "-"+ _number + ".wav\" " +
+                        path + " -eval \"" + PathIs.TEMP + "/jdt.scm\"";
             } else if (_voice.equals("female_voice")){
-                createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term+ "-"+ _number + ".wav\" \"" +
-                        PathIs.EXTRA + "/savedText.txt\" -eval \"" + PathIs.TEMP + "/cw.scm\"";
+                createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term+ "-"+ _number + ".wav\" " +
+                        path + " -eval \"" + PathIs.TEMP + "/cw.scm\"";
             }
             new BashCommand().bash(createAudio);
 
@@ -334,7 +338,7 @@ public class EditTextController {
             int numberOfAudio=countNumberOfAudioFileInAudioPiece();
             String number=Integer.toString(numberOfAudio);
 
-            ManageFolder.writeToFile(PathIs.EXTRA + "/savedText.txt", saveble);
+            ManageFolder.writeToFile(PathIs.EXTRA + "/savedText" + countNumberOfAudioFileInAudioPiece() + ".txt", saveble);
             //TODO combine text so we can read as description of file.
 
             if (default_voice.isSelected()) {
