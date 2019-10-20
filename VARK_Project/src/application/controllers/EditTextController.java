@@ -125,15 +125,15 @@ public class EditTextController {
             String cmd = "";
 
             if (_voice.equals("default_voice")){
-                writer=new FileWriter(_voice);
+                writer=new FileWriter(PathIs.TEMP + "/" + _voice);
                 writer.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+_selectedText +"\"" + ")");
                 cmd = "festival -b default_voice";
             } else if (_voice.equals("male_voice")){
-                writer=new FileWriter(_voice);
+                writer=new FileWriter(PathIs.TEMP + "/" + _voice);
                 writer.write("(voice_akl_nz_jdt_diphone)"+"\n"+"(SayText" + " "+"\""+_textWithoutBrackets+"\"" + ")");
                 cmd = "festival -b male_voice";
             } else if (_voice.equals("female_voice")){
-                writer=new FileWriter("female_voice.scm");
+                writer=new FileWriter(PathIs.TEMP + "/female_voice.scm");
                 writer.write("(voice_akl_nz_cw_cg_cg)"+"\n"+"(SayText" + " "+"\""+_textWithoutBrackets+"\"" + ")");
                 cmd = "festival -b female_voice.scm";
             }
@@ -274,15 +274,14 @@ public class EditTextController {
         protected Void call() throws Exception {
             String createAudio = "";
             if (_voice.equals("default_voice")){
-                createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term + "-"+ _number+ ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
+                createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term + "-"+ _number+ ".wav\" \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval \"" + PathIs.TEMP +"/kal.scm\"";
             } else if (_voice.equals("male_voice")){
                 createAudio = "text2wave -o \"" + PathIs.TEMP +"/audioPiece/" + _term+ "-"+ _number + ".wav\" \"" +
-                        PathIs.EXTRA + "/savedText.txt\" -eval jdt.scm";
+                        PathIs.EXTRA + "/savedText.txt\" -eval \"" + PathIs.TEMP + "/jdt.scm\"";
             } else if (_voice.equals("female_voice")){
                 createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term+ "-"+ _number + ".wav\" \"" +
-                        PathIs.EXTRA + "/savedText.txt\" -eval cw.scm";
+                        PathIs.EXTRA + "/savedText.txt\" -eval \"" + PathIs.TEMP + "/cw.scm\"";
             }
-
             new BashCommand().bash(createAudio);
 
             return null;
