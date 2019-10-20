@@ -2,6 +2,7 @@ package application.controllers;
 import application.ChangeScene;
 import application.Main;
 import application.PathCD;
+import application.values.SceneFXML;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -26,15 +27,10 @@ public class CreationController {
     @FXML
     private TextField yourKeyWord;
 
-
-    @FXML
-    private Label whatDoYouWant;
-    @FXML
-    private ProgressBar progress;
-    @FXML
-    private Button enterButton;
-    @FXML
-    private Button goingBack;
+    @FXML private Label whatDoYouWant;
+    @FXML private ProgressBar progress;
+    @FXML private Button enterButton;
+    @FXML private Button goingBack;
     private ChangeScene _changeSceneObject=new ChangeScene();
 
     @FXML
@@ -50,11 +46,10 @@ public class CreationController {
         yourKeyWord.setDisable(false);
     }
 
-
     @FXML
     public void backToMain(ActionEvent event) throws IOException {
         //_changeSceneObject.changeScene(event, "resources/menu.fxml", "Main Menu");
-        Main.getController().setBOTTOMVIEW("resources/DefaultBottom.fxml");
+        Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
 
     /**
@@ -62,16 +57,11 @@ public class CreationController {
      */
     @FXML
     public void search(ActionEvent event) throws IOException {
-
         _InputFromUser = yourKeyWord.getText();
         if (_InputFromUser.trim().isEmpty() || _InputFromUser == null) {
             whatDoYouWant.setText("Invalid input, please enter again");
             yourKeyWord.clear();
         } else {
-
-            //TransportClass transport = TransportClass.getInstance();
-            //transport.setter(_InputFromUser);
-
             DoingJob doingJob = new DoingJob(event);
             Thread thread = new Thread(doingJob);
             thread.start();
@@ -106,7 +96,6 @@ public class CreationController {
                 Process process = pb.start();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 _line = reader.readLine();
-
                 //_line = _line.replace(". ", ".\n");
 
             } catch (IOException ex) {
@@ -131,7 +120,6 @@ public class CreationController {
                 });
             } else {
                 //resultOut = true;
-
                 // get the format of the searchedText
                 //String command = "echo -e \"" + _line + "\" > " + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
                String path = PathCD.getPathInstance().getPath() + "/mydir/extra";
@@ -143,7 +131,6 @@ public class CreationController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
                 Platform.runLater(() -> {
                     try {
@@ -157,16 +144,12 @@ public class CreationController {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-
-                        EditTextController controller = (EditTextController) Main.getController().setBOTTOMVIEW("resources/EditText.fxml");
+                        EditTextController controller = (EditTextController) Main.getController().setTOPVIEW(SceneFXML.AUDIO.toString());
                         controller.initData(_InputFromUser);
-
                     } catch (IOException e) {
-                        e.printStackTrace();//TODO error?
+                        e.printStackTrace();
                     }
-
                 });
-
             }
         }
     }

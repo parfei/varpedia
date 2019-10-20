@@ -1,37 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainController">
    <children>
-      <VBox layoutX="-2.0" prefHeight="356.0" prefWidth="132.0">
+      <VBox layoutX="-2.0" prefHeight="601.0" prefWidth="132.0">
          <children>
-            <Button fx:id="view" mnemonicParsing="false" onAction="#view" prefHeight="97.0" prefWidth="159.0" text="PLAY">
+            <Button fx:id="view" mnemonicParsing="false" onAction="#view" prefHeight="173.0" prefWidth="132.0" text="PLAY">
                <font>
                   <Font size="17.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#info" prefHeight="97.0" prefWidth="150.0" text="INFO">
+            <Button layoutX="10.0" layoutY="107.0" mnemonicParsing="false" onAction="#create" prefHeight="278.0" prefWidth="132.0" text="CREATE">
                <font>
                   <Font size="17.0" />
                </font>
             </Button>
-            <Button layoutX="10.0" layoutY="107.0" mnemonicParsing="false" onAction="#create" prefHeight="97.0" prefWidth="150.0" text="CREATE">
-               <font>
-                  <Font size="17.0" />
-               </font>
-            </Button>
-            <Button layoutX="10.0" layoutY="204.0" mnemonicParsing="false" onAction="#help" prefHeight="97.0" prefWidth="150.0" text="HELP">
+            <ProgressIndicator prefHeight="45.0" prefWidth="300.0" progress="0.0" />
+            <Button layoutX="10.0" layoutY="204.0" mnemonicParsing="false" onAction="#help" prefHeight="111.0" prefWidth="132.0" text="HELP">
                <font>
                   <Font size="17.0" />
                </font>
             </Button>
          </children>
       </VBox>
-      <AnchorPane fx:id="TOPVIEW" layoutX="133.0" layoutY="-2.0" prefHeight="361.0" prefWidth="664.0" />
-      <AnchorPane fx:id="BOTTOMVIEW" layoutX="4.0" layoutY="359.0" prefHeight="236.0" prefWidth="791.0" />
+      <AnchorPane fx:id="TOPVIEW" layoutX="133.0" layoutY="2.0" prefHeight="596.0" prefWidth="1065.0" />
    </children>
 </AnchorPane>

@@ -5,7 +5,7 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CombineAudio">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.old.CombineAudio">
    <children>
       <ListView fx:id="audioList" layoutX="14.0" layoutY="22.0" prefHeight="200.0" prefWidth="200.0" />
       <Button layoutX="14.0" layoutY="257.0" mnemonicParsing="false" onAction="#combineAudioPieces" text="Combine" />

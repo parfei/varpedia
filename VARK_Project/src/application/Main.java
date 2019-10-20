@@ -1,22 +1,18 @@
 package application;
 
+import application.bashwork.BashCommand;
+import application.bashwork.ManageFolder;
+import application.values.SceneFXML;
 import application.controllers.MainController;
 import javafx.application.Application;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.concurrent.ExecutorService;
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 
 /**
@@ -32,15 +28,16 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception{
+        System.out.println(ManageFolder.findPath("apple", true));
         this.initializeFolder();
         this.writeScheme();
 
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("resources/MainWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.WINDOW.toString()));
         Parent root = loader.load();
         _controller = (MainController) loader.getController();
 
         primaryStage.setTitle("VARpedia");
-        primaryStage.setScene(new Scene(root, 1200, 650));
+        primaryStage.setScene(new Scene(root, 1200, 600));
         primaryStage.setResizable(false);
         primaryStage.show();
 
@@ -53,26 +50,24 @@ public class Main extends Application {
             public void handle(WorkerStateEvent workerStateEvent) {
                 team.submit(new CreationWork("apple", 1, false, false));
             }
-        });*/
-
-
+        });*/ //TESTING FLICKR
+        /*Executors.newSingleThreadExecutor().submit(new Confidence("apple3", 2));
+        Executors.newSingleThreadExecutor().submit(new Play("apple3"));*/ //TESTING CONFIDENCE & PLAYS TXT WRITING AND READING
     }
 
     /**
-     * This method will create a folder
+     * Creates necessary folders.
      */
-    private void initializeFolder(){
-        String path = PathCD.getPathInstance().getPath();
-
-
-        try {
+    private void initializeFolder() throws Exception {
+        ManageFolder.initializeFolders();
+        /*try {
             String command = "[ -e \"" + path + "/mydir\" ]"; //check if there is a creations folder.
             ProcessBuilder pb = new ProcessBuilder("/bin/bash", "-c", command);
 
             Process folder = pb.start();
 
             if (folder.waitFor() == 1) {
-                String command2 = "mkdir -p \"" + path + "/mydir/extra/\" ; mkdir \"" + path + "/mydir/creations/favourites\"; "; //create a creations folder.
+                String command2 = "mkdir -p \"" + path + "/mydir/extra/\" ; mkdir -p \"" + path + "/mydir/creations/favourites\"; "; //create a creations folder.
                 ProcessBuilder pb2 = new ProcessBuilder("/bin/bash", "-c", command2);
                 pb2.start();
             }
@@ -80,26 +75,20 @@ public class Main extends Application {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
-
 
     /**
      * Run this process to clean files when the application finishes
      * @throws Exception
      */
-    @Override //TODO check if it always works, implement for start, check if exits and nothing is blocking some process is running too.
+    @Override
     public void stop() throws Exception { //In case the deletion of such extra files were not successful.
-        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -"; //Clear files in extra folder.
-        ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
-        try {
-            Process end = pb.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf extra/audioPiece/* ; cd -"); //Clear files in extra folder.);
+        Platform.exit();
     }
 
-    public void writeScheme() throws IOException {
+    public void writeScheme() throws IOException{ //TODO reorganise files
         FileWriter writer1=new FileWriter("kal.scm");
         writer1.write("(voice_kal_diphone)");
         writer1.close();
