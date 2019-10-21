@@ -5,6 +5,7 @@ import application.Main;
 import application.PathCD;
 import application.bashwork.BashCommand;
 import application.bashwork.ManageFolder;
+import application.bashwork.SaveHelper;
 import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.collections.ObservableList;
@@ -261,38 +262,6 @@ public class EditTextController {
         }
     }
 
-    private class SaveHelper extends Task<Void>{
-
-        private String _voice;
-        private String _textWithoutBrackets;
-        private String _number;
-
-        public SaveHelper(String voice, String number){
-            _number = number;
-            _selectedText = textArea.getSelectedText();
-            _textWithoutBrackets = _selectedText.replaceAll("[\\[\\](){}']",""); // remove the text in brackets to make it readable
-            _voice = voice;
-        }
-
-        @Override
-        protected Void call() throws Exception {
-            String createAudio = "";
-            String path = "\"" + PathIs.EXTRA + "/savedText" + countNumberOfAudioFileInAudioPiece() + ".txt\"";
-            if (_voice.equals("default_voice")){
-                createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term + "-"+ _number+ ".wav\" " +
-                        path + " -eval \"" + PathIs.TEMP +"/kal.scm\"";
-            } else if (_voice.equals("male_voice")){
-                createAudio = "text2wave -o \"" + PathIs.TEMP +"/audioPiece/" + _term+ "-"+ _number + ".wav\" " +
-                        path + " -eval \"" + PathIs.TEMP + "/jdt.scm\"";
-            } else if (_voice.equals("female_voice")){
-                createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term+ "-"+ _number + ".wav\" " +
-                        path + " -eval \"" + PathIs.TEMP + "/cw.scm\"";
-            }
-            new BashCommand().bash(createAudio);
-            return null;
-        }
-    }
-
     private void clearAudio(String file_path){
         String deleteCmd = "rm -f " + file_path;
         try {
@@ -342,7 +311,7 @@ public class EditTextController {
             ManageFolder.writeToFile(PathIs.EXTRA + "/savedText" + countNumberOfAudioFileInAudioPiece() + ".txt", saveble);
 
             if (default_voice.isSelected()) {
-                SaveHelper sh = new SaveHelper("default_voice", number);
+                SaveHelper sh = new SaveHelper("default_voice", number, _term);
                 team.submit(sh);
 
                 sh.setOnSucceeded(workerStateEvent -> {
@@ -364,9 +333,9 @@ public class EditTextController {
             } else {
                 SaveHelper sh;
                 if (male_voice.isSelected()){
-                    sh = new SaveHelper("male_voice", number);
+                    sh = new SaveHelper("male_voice", number, _term);
                 } else {
-                    sh = new SaveHelper("female_voice", number);
+                    sh = new SaveHelper("female_voice", number, _term);
                 }
 
                 team.submit(sh);
@@ -383,23 +352,31 @@ public class EditTextController {
                         Optional<ButtonType> result = alert.showAndWait();
 
                         clearAudio(file_path);
+                        System.out.println("Cleared");
 
                         if (result.get() == ButtonType.OK) {
+                            System.out.println("OK");
                             int numberOfAudio2 = countNumberOfAudioFileInAudioPiece();
                             String number2 = Integer.toString(numberOfAudio2);
 
-                            SaveHelper sh2 = new SaveHelper("default_voice", number2);
+                            SaveHelper sh2 = new SaveHelper("default_voice", number2, _term);
                             team.submit(sh2);
                             sh.setOnSucceeded(workerStateEvent1 -> {
                                 try {
                                     if (file.length() == 0){
                                         clearAudio(checkReadableText(number));
                                     } else {
+                                        System.out.println("update");
                                         updateExistingAudio();
                                     }
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                //Finally
+                                try { updateExistingAudio(); } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             });
@@ -414,13 +391,7 @@ public class EditTextController {
                             } catch (IOException | InterruptedException e) {
                                 e.printStackTrace();
                             }*/
-                        } else {
-                            //do nothing
                         }
-                    }
-
-                    try { updateExistingAudio(); } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 });
             }
