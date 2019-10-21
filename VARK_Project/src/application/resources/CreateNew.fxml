@@ -48,24 +48,6 @@
                               <Font size="16.0" />
                            </font>
                         </TextField>
-                        <VBox prefHeight="62.0" prefWidth="229.0">
-                           <children>
-                              <Label text="No. of images:">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Label>
-                              <HBox prefHeight="38.0" prefWidth="229.0">
-                                 <children>
-                                    <TextField fx:id="textFldImagesNum" promptText="Number">
-                                       <font>
-                                          <Font size="16.0" />
-                                       </font>
-                                    </TextField>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
                      </children>
                   </VBox>
                   <Button fx:id="enterCreationButton" mnemonicParsing="false" onAction="#EnterCreation" text="Enter">

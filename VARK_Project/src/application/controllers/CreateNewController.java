@@ -43,9 +43,7 @@ public class CreateNewController {
     private String _musicChoice;
 
     @FXML private TextField textFieldCreationName;
-    @FXML private TextField textFldImagesNum;
     @FXML private Label errorName;
-    @FXML private Label errorImg;
 
     @FXML private ListView listViewExistCreation;
 
@@ -69,7 +67,6 @@ public class CreateNewController {
         list.addAll("Clouds","Fingers", "Sun", "No music");
         choiceBox.getItems().addAll(list);
         errorName.setVisible(false);
-        errorImg.setVisible(false);
 
         team = Executors.newSingleThreadExecutor();
 
@@ -127,12 +124,11 @@ public class CreateNewController {
             controller.initData(_term);
 
         } else {
-            errorImg.setVisible(false);
             errorName.setVisible(false);
 
             Boolean error = false;
 
-            try {
+            /*try {
                 Integer num = Integer.parseInt(textFldImagesNum.getText()); /////Check for picture number error input.
                 if (num < 0 || num > 10) {
                     errorImg.setVisible(true);
@@ -145,7 +141,9 @@ public class CreateNewController {
                 errorImg.setText("Enter a valid input.");
                 textFldImagesNum.clear();
                 error = true;
-            }try {
+            }*/
+
+            try {
                 if (_CreationsExisted.contains(textFieldCreationName.getText())) { /////Check for creation name error input.
                     errorName.setText("Duplicated name.");
                     Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
@@ -168,8 +166,8 @@ public class CreateNewController {
                     error = true;
                 }
             } catch (Exception e) {
-                errorImg.setVisible(true);
-                errorImg.setText("Enter a valid input.");
+                //errorImg.setVisible(true);
+                //errorImg.setText("Enter a valid input.");
                 textFieldCreationName.clear();
                 error = true;
             }
