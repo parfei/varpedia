@@ -327,12 +327,12 @@ public class EditTextController {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-
-                                //Finally
-                                try { updateExistingAudio(); } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
                             });
+                        }
+                    } else {
+                        //Finally
+                        try { updateExistingAudio(); } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 });

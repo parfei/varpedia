@@ -37,47 +37,27 @@ public class EditPicturesController {
     private List<Image> _allImage=new ArrayList<Image>();
     private List<Image>  _remainImage=new ArrayList<Image>();
 
-    @FXML
-    ImageView view1;
-    @FXML
-    ImageView view2;
-    @FXML
-    ImageView view3;
-    @FXML
-    ImageView view4;
-    @FXML
-    ImageView view5;
-    @FXML
-    ImageView view6;
-    @FXML
-    ImageView view7;
-    @FXML
-    ImageView view8;
-    @FXML
-    ImageView view9;
-    @FXML
-    ImageView view10;
-    @FXML
-    ImageView view11;
-    @FXML
-    ImageView view12;
-
+    @FXML ImageView view1;
+    @FXML ImageView view2;
+    @FXML ImageView view3;
+    @FXML ImageView view4;
+    @FXML ImageView view5;
+    @FXML ImageView view6;
+    @FXML ImageView view7;
+    @FXML ImageView view8;
+    @FXML ImageView view9;
+    @FXML ImageView view10;
+    @FXML ImageView view11;
+    @FXML ImageView view12;
 
     public void initData(String term) {
         _term = term;
-    }
-
-    @FXML
-    public void initialize() {
-
         FlickrWork images = new FlickrWork(_term, "12");
         team.submit(images);
         images.setOnSucceeded(workerStateEvent -> {
             loadImages(_imageList);
             addImages();
 
-
-            //TODO insert loading images into tableview or listview for user to select.
             //TODO when user selects images, put the names into imgs.txt...(need to modify CreationWork then)
         });
     }
@@ -91,8 +71,6 @@ public class EditPicturesController {
 
     @FXML
     public void toFinalScene() throws IOException {
-
-
         if(_imageList.size() ==12 || _imageList.size() < 2) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Choosing Images");
@@ -101,9 +79,6 @@ public class EditPicturesController {
             alert.showAndWait();
             return;
         }
-
-
-
         // Delete remaining images (undesired ones)
         for(Image image : _imageList) {
             Path toFile = Paths.get(image.getUrl().substring(5));
@@ -144,18 +119,14 @@ public class EditPicturesController {
             for (File file : imageListing) {
                 Image image = new Image(file.toURI().toString());
                 list.add(image);
-
-
             }
         }
-
-
     }
 
     /*
     add images to image view
      */
-    public void addImages() {
+    private void addImages() {
         view1.setImage(_imageList.get(0));
         view2.setImage(_imageList.get(1));
         view3.setImage(_imageList.get(2));
@@ -168,7 +139,10 @@ public class EditPicturesController {
         view10.setImage(_imageList.get(9));
         view11.setImage(_imageList.get(10));
         view12.setImage(_imageList.get(11));
+
+        downloading.setVisible(false);
     }
+
     @FXML
     /*
     let user choose images and make the _imageList contain the images that user don't want to include
