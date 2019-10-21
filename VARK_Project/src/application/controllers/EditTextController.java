@@ -138,7 +138,7 @@ public class EditTextController {
                 PreviewHelper finalPreview = preview;
                 preview.setOnSucceeded(workerStateEvent -> {
                     try {
-                        if (finalPreview.get().intValue() == 255){
+                        if (finalPreview.get() == 255){
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("voice changed to default");
                             alert.setHeaderText("switch voice to the default due to limitation of other voice options");
@@ -308,12 +308,12 @@ public class EditTextController {
 
                         if (result.get() == ButtonType.OK) {
                             System.out.println("OK");
-                            int numberOfAudio2 = countNumberOfAudioFileInAudioPiece();
-                            String number2 = Integer.toString(numberOfAudio2);
+                            //int numberOfAudio2 = countNumberOfAudioFileInAudioPiece();
+                            //String number2 = Integer.toString(numberOfAudio2);
 
-                            SaveHelper sh2 = new SaveHelper("default_voice", number2, _term);
-                            team.submit(sh2);
-                            sh.setOnSucceeded(workerStateEvent1 -> {
+                            SaveHelper retry = new SaveHelper("default_voice", number, _term);
+                            team.submit(retry);
+                            retry.setOnSucceeded(workerStateEvent1 -> {
                                 try {
                                     if (file.length() == 0){
                                         clearAudio(checkReadableText(number));
@@ -332,17 +332,6 @@ public class EditTextController {
                                     e.printStackTrace();
                                 }
                             });
-                            /*String createDefaultAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number2  + ".wav\" \"" +
-                                    PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
-
-                            ProcessBuilder pb3 = new ProcessBuilder("bash", "-c", createDefaultAudio);
-                            try {
-                                Process process = pb3.start();
-                                process.waitFor();
-
-                            } catch (IOException | InterruptedException e) {
-                                e.printStackTrace();
-                            }*/
                         }
                     }
                 });
