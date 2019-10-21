@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -87,6 +88,8 @@ public class EditPicturesController {
      */
     @FXML
     public void toFinalScene(ActionEvent event) throws IOException {
+        Button btn = (Button) event.getSource();
+        if (btn.getText().equals(""))
         if(_imageList.size() ==12 || _imageList.size() < 2) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Choosing Images");
@@ -95,16 +98,16 @@ public class EditPicturesController {
             alert.showAndWait();
             return;
         }
-        // Delete remaining images (undesired ones)
+
+        /*// Delete remaining images (undesired ones)
         for(Image image : _imageList) {
             Path toFile = Paths.get(image.getUrl().substring(5));
             File toDelete = toFile.toFile();
             toDelete.delete();
         }
-
         // load remaing Images
         loadImages(_remainImage);
-
+        */
 
 
 
