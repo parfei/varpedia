@@ -172,13 +172,14 @@ public class CreationWork extends Task<String> {
 
         double dura = duration / _picNum; //Calculate duration of each picture.
 
+        String path = PathIs.TEMP + "/photos/";
         try {
-            PrintWriter writer = new PrintWriter(_path + "imgs.txt", "UTF-8");
+            PrintWriter writer = new PrintWriter(path + "imgs.txt", "UTF-8");
             for (int i = 0; i < _picNum; i++) {
-                writer.println("file '" + _path + "img" + i + ".jpg'"); //Write file name for each image to be included.
+                writer.println("file '" + path + "img" + i + ".jpg'"); //Write file name for each image to be included.
                 writer.println("duration " + dura); //Write duration for each image to be included.
             }
-            writer.println("file '" + _path + "img" + Integer.toString(_picNum - 1) + ".jpg'");
+            writer.println("file '" + path + "img" + Integer.toString(_picNum - 1) + ".jpg'");
             writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
