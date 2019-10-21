@@ -33,6 +33,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.sun.prism.impl.Disposer.cleanUp;
+
 /**
  * We create a new creation in this class. Name checking is done here. The bulk of the video creation is called from here.
  * We call new instances of the work to be done in a background thread. Can return back to the menu from here.
@@ -109,11 +111,7 @@ public class CreateNewController {
      */
     @FXML
     public void EnterCreation(ActionEvent event) throws Exception {
-       // if (choiceBox.getValue()==null){
-           // remindLabel.setText("Select your options of music");
-        //}
-
-         if (_audioExisted.isEmpty()){
+        if (_audioExisted.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("No audio to combine");
             alert.setHeaderText("Go back and make audios ");
@@ -127,7 +125,6 @@ public class CreateNewController {
             errorName.setVisible(false);
 
             Boolean error = false;
-
             /*try {
                 Integer num = Integer.parseInt(textFldImagesNum.getText()); /////Check for picture number error input.
                 if (num < 0 || num > 10) {
@@ -142,7 +139,6 @@ public class CreateNewController {
                 textFldImagesNum.clear();
                 error = true;
             }*/
-
             try {
                 if (_CreationsExisted.contains(textFieldCreationName.getText())) { /////Check for creation name error input.
                     errorName.setText("Duplicated name.");
@@ -183,60 +179,91 @@ public class CreateNewController {
             complete.show();
 
             createDirectories(); //Create necessary directories if they have not existed yet.
-                //TODO before uncommenting, must implement editpictures to write down necessary images needed...
-                //TODO then we only need the CreationWork to be submitted to executor thread.
-                //Send an instance of FlickrWork to the background thread to retrieve the images from Flickr.
+
+            //Send creation work to background thread to create the final creation...
+            CreationWork creationWork = null;
+            creationWork = new CreationWork(_term, textFieldCreationName.getText(), _picNum, true,choiceBox.getValue());
+
+            team.submit(creationWork);
+
+            creationWork.setOnSucceeded(workerStateEvent -> {
+                try {
+                    String p = "\"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "/";
+                    new BashCommand().bash("touch " + p + "confidence.txt\" " + p + "plays.txt\"");
+                    team.submit(new Confidence(textFieldCreationName.getText(), 0));
+                    team.submit(new Play(textFieldCreationName.getText()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    cleanUp(); //Clean up audio files after the Creation has been made.
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                _CreationsExisted.clear();
+                Alert complete1 = new Alert(Alert.AlertType.INFORMATION);
+                complete1.setHeaderText("Created");
+                complete1.setContentText(textFieldCreationName.getText() + " has been created. You can now view.");
+                complete1.show();
+
+                textFieldCreationName.clear();
+
                 /*FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getText(), textFldImagesNum.getText());
-                team.submit(getImg);
+team.submit(getImg);
 
-                //When images have been successfully retrieved, send an instance of CreationWrok to the background thread to combine audio, slideshow and video forms into one Creation.
-                getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                    @Override
-                    public void handle(WorkerStateEvent workerStateEvent) {
+//When images have been successfully retrieved, send an instance of CreationWrok to the background thread to combine audio, slideshow and video forms into one Creation.
+getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+@Override
+public void handle(WorkerStateEvent workerStateEvent) {
 
-                        CreationWork creationWork = null;
-                        try {
-                            creationWork = new CreationWork(_term, textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true,choiceBox.getValue());
-                            //System.out.println("pic: " + getImg.get());
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
+CreationWork creationWork = null;
+try {
+creationWork = new CreationWork(_term, textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true,choiceBox.getValue());
+//System.out.println("pic: " + getImg.get());
+} catch (InterruptedException e) {
+e.printStackTrace();
+} catch (ExecutionException e) {
+e.printStackTrace();
+}
 
-                        team.submit(creationWork);
+team.submit(creationWork);
 
-                        creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                            @Override
-                            public void handle(WorkerStateEvent workerStateEvent) {
-                                try {
-                                    String p = "\"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "/";
-                                    new BashCommand().bash("touch " + p + "confidence.txt\" " + p + "plays.txt\"");
-                                    team.submit(new Confidence(textFieldCreationName.getText(), 0));
-                                    team.submit(new Play(textFieldCreationName.getText()));
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                try {
-                                    cleanUp(); //Clean up audio files after the Creation has been made.
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+@Override
+public void handle(WorkerStateEvent workerStateEvent) {
+try {
+    String p = "\"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "/";
+    new BashCommand().bash("touch " + p + "confidence.txt\" " + p + "plays.txt\"");
+    team.submit(new Confidence(textFieldCreationName.getText(), 0));
+    team.submit(new Play(textFieldCreationName.getText()));
+} catch (Exception e) {
+    e.printStackTrace();
+}
+try {
+    cleanUp(); //Clean up audio files after the Creation has been made.
+} catch (Exception e) {
+    e.printStackTrace();
+}
 
-                                _CreationsExisted.clear();
-                                Alert complete = new Alert(Alert.AlertType.INFORMATION);
-                                complete.setHeaderText("Created");
-                                complete.setContentText(textFieldCreationName.getText() + " has been created. You can now view.");
-                                complete.show();
+_CreationsExisted.clear();
+Alert complete = new Alert(Alert.AlertType.INFORMATION);
+complete.setHeaderText("Created");
+complete.setContentText(textFieldCreationName.getText() + " has been created. You can now view.");
+complete.show();
 
-                                textFieldCreationName.clear();
-                                textFldImagesNum.clear();
-                            }
-                        });
-                    }
-                });*/
-
-            Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
+textFieldCreationName.clear();
+textFldImagesNum.clear();
+}
+});
+}
+});*/
+                try {
+                    Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }
     }
 

@@ -55,7 +55,6 @@
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Label fx:id="errorImg" prefHeight="20.0" prefWidth="239.0" text="ERROR: not a valid num (1-10)" textFill="RED" />
                </children>
             </VBox>
          </children>
