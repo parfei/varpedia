@@ -20,11 +20,7 @@ Created with Scence Builder + Java OpenJDK 13, JavaFX 13 in Intellij
 
 # How to run
 
-Please use the SOFTENG 206 Virtual Box image provided to run the VARK_run.sh script file in.
-
-> Place run.sh in the same folder as the assignment-3.jar file, lib folder and api-key text file.
-
-> ./VARK_run.sh in terminal.
+Please use the SOFTENG 206 Virtual Box image provided to run the VARK_run.sh script file in. You need the libraries specified and api-key text file.
 
 Please do not change the directories/files around. Warning: prototype has print statements currently for testing.
 
