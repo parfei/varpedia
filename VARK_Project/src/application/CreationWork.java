@@ -1,5 +1,6 @@
 package application;
 
+import application.bashwork.BashCommand;
 import application.values.PathIs;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -10,6 +11,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.*;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is called with its instance to be worked in the background, due to its intensive computational complexity.
@@ -116,7 +119,7 @@ public class CreationWork extends Task<String> {
     private void generatePicVideo() {
         try {
             generateFilesTxt();
-
+            String path = PathIs.TEMP + "/photos/";
             //String command2 = "ffmpeg -framerate " + _picNum + "/\"$duration\" -f image2 -s 800x600 -i \"" + _path + "img%01d.jpg\" -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -r 25 \"" + _path + "slideshow.mp4\"";
 
             //Create the slideshow.
@@ -129,8 +132,12 @@ public class CreationWork extends Task<String> {
             ProcessBuilder video = new ProcessBuilder("bash", "-c", videoCommand);
             Process vid = null;
             vid = video.start(); //Start the video
-            vid.waitFor();
+            int exitStatus=vid.waitFor();
+
+            System.out.println(exitStatus+"happy");
         } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -147,7 +154,8 @@ public class CreationWork extends Task<String> {
 
         try {
             Process combine = getTogether.start(); //Combine into the final product.
-            combine.waitFor();
+            int exitStatus=combine.waitFor();
+            System.out.println(exitStatus+"hello");
 
         } catch (IOException | InterruptedException ex) {
             ex.printStackTrace();
@@ -157,8 +165,21 @@ public class CreationWork extends Task<String> {
     /**
      * Helper function to generate the required text file to specify duration and files needed for the slideshow.
      */
-    private void generateFilesTxt() {
+    private void generateFilesTxt() throws Exception {
         double duration = 0;
+
+        // add the file name in the photos folder into a list
+
+        String command = "ls \"" + PathIs.TEMP + "/photos\"" + " | cut -f1 -d'.'\n";
+        BashCommand update = new BashCommand();
+        ArrayList<String> photoList = update.bash(command);
+        for (int i=0;i<photoList.size();i++){
+            System.out.println(photoList.get(i));
+        }
+
+
+
+
 
         String command1 = "soxi -D \"" + _path + "combinedSound.wav\"";
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", command1);
@@ -172,14 +193,18 @@ public class CreationWork extends Task<String> {
 
         double dura = duration / _picNum; //Calculate duration of each picture.
 
+
+
         String path = PathIs.TEMP + "/photos/";
         try {
-            PrintWriter writer = new PrintWriter(path + "imgs.txt", "UTF-8");
+            //PrintWriter writer = new PrintWriter(path + "imgs.txt", "UTF-8");
+            PrintWriter writer = new PrintWriter(_path + "imgs.txt", "UTF-8");
             for (int i = 0; i < _picNum; i++) {
-                writer.println("file '" + path + "img" + i + ".jpg'"); //Write file name for each image to be included.
+                writer.println("file '" + path + photoList.get(i) + ".jpg'"); //Write file name for each image to be included.
                 writer.println("duration " + dura); //Write duration for each image to be included.
             }
             writer.println("file '" + path + "img" + Integer.toString(_picNum - 1) + ".jpg'");
+
             writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -238,9 +263,10 @@ public class CreationWork extends Task<String> {
 
             //"sox -m ./myaudio/sound.wav ./myaudio/song.wav ./myaudio/out.wav trim 0 "+seconds;
 
-            String combineAudiocommand="sox -m " + _path + "sound.wav "+ path+"/song.wav "+ _path + "combinedSound.wav trim 0 "+seconds;
-            System.out.println(combineAudiocommand);
-            ProcessBuilder builder1 = new ProcessBuilder("bash", "-c", combineAudiocommand);
+            String combineAudioCommand="sox -m " + _path + "sound.wav "+ path+"/song.wav "+ _path + "combinedSound.wav trim 0 "+seconds;
+            System.out.println(combineAudioCommand);
+
+            ProcessBuilder builder1 = new ProcessBuilder("bash", "-c", combineAudioCommand);
             Process combineMusic = builder1.start();
             int exit1=combineMusic.waitFor();
             if (exit1==0){
