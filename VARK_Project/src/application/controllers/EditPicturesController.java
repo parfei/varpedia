@@ -4,6 +4,7 @@ import application.ChangeScene;
 import application.FlickrWork;
 import application.Main;
 import application.bashwork.BashCommand;
+import application.values.FlickrDone;
 import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.concurrent.WorkerStateEvent;
@@ -52,14 +53,25 @@ public class EditPicturesController {
 
     public void initData(String term) {
         _term = term;
-        FlickrWork images = new FlickrWork(_term, "12");
-        team.submit(images);
+        if (!FlickrDone.checkDone()){
+            FlickrDone.addListener(this);
+        } else {
+            setGrid();
+        }
+        //FlickrWork images = new FlickrWork(_term, "12");
+        /*team.submit(images);
         images.setOnSucceeded(workerStateEvent -> {
             loadImages(_imageList);
             addImages();
-
             //TODO when user selects images, put the names into imgs.txt...(need to modify CreationWork then)
-        });
+        });*/
+    }
+
+    public void setGrid(){
+        FlickrDone.reset();
+        loadImages(_imageList);
+        addImages();
+        downloading.setVisible(false);
     }
 
     @FXML
@@ -139,8 +151,6 @@ public class EditPicturesController {
         view10.setImage(_imageList.get(9));
         view11.setImage(_imageList.get(10));
         view12.setImage(_imageList.get(11));
-
-        downloading.setVisible(false);
     }
 
     @FXML

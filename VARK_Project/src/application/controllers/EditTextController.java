@@ -1,12 +1,14 @@
 package application.controllers;
 
 import application.ChangeScene;
+import application.FlickrWork;
 import application.Main;
 import application.PathCD;
 import application.bashwork.BashCommand;
 import application.bashwork.ManageFolder;
 import application.bashwork.PreviewHelper;
 import application.bashwork.SaveHelper;
+import application.values.FlickrDone;
 import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.collections.ObservableList;
@@ -60,7 +62,11 @@ public class EditTextController {
 
     public void initData(String term){
         _term = term;
-        System.out.println(_term);
+        FlickrWork images = new FlickrWork(_term, "12");
+        team.submit(images);
+        images.setOnSucceeded(workerStateEvent -> {
+            FlickrDone.isDone(true);
+        });
     }
 
     /**
