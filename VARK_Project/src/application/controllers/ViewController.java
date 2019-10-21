@@ -120,6 +120,7 @@ public class ViewController {
             return;
         }
 
+        view.setVisible(true);
         stuffCreated.setDisable(true);
         errorText.setVisible(false);
         muteButton.setDisable(false);
@@ -192,17 +193,6 @@ public class ViewController {
                         return null;
                     }
                 });
-                /*String path = ManageFolder.findPath(_choice, true); //finds the relevant creation
-
-                String cmd= "rm -f \"" + path + "\"";
-                System.out.println(cmd);
-                ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
-                try {
-                    Process process = pb.start();
-                    process.waitFor();
-                } catch (IOException | InterruptedException ex) {
-                    ex.printStackTrace();
-                }*/
                 tickFav(new ActionEvent()); //get the list of creations for currently ticked option.
             } else if (result.get() == ButtonType.CANCEL){
                 return;

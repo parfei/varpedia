@@ -56,6 +56,7 @@ public class EditTextController {
     static final int OUT = 0;
     static final int IN = 1;
     private ExecutorService team = Executors.newSingleThreadExecutor();
+    private MediaPlayer _mediaPlayer;
 
     public void initData(String term){
         _term = term;
@@ -418,13 +419,14 @@ public class EditTextController {
         // String musicFile = "StayTheNight.mp3";     // For example
 
         Media sound = new Media(new File(wavFile).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.dispose());
-        mediaPlayer.play();
+        _mediaPlayer = new MediaPlayer(sound);
+        _mediaPlayer.play();
     }
 
     @FXML
     public void deleteAudio(ActionEvent event) throws Exception {
+        _mediaPlayer.stop();
+        _mediaPlayer.dispose();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Delete");
         alert.setHeaderText("Check again!");
@@ -436,8 +438,8 @@ public class EditTextController {
 
             String cmd = "rm -f \"" + path + "\"";
             new BashCommand().bash(cmd);
-            _audioExisted.clear();
-            existingAudioView.getItems().clear();
+            //_audioExisted.clear();
+            //existingAudioView.getItems().clear();
             updateExistingAudio();
         }else{
             return;
