@@ -74,7 +74,8 @@ public class EditPicturesController {
 
     @FXML
     public void backToMainMenu() throws Exception {
-        String cmd1 = "rm -rf \"" + PathIs.TEMP + "/audioPiece\" ; rm -f \"" + PathIs.EXTRA + "/temp.txt\"; ";
+        //String cmd1 = "rm -rf \"" + PathIs.TEMP + "/audioPiece\" ; rm -f \"" + PathIs.EXTRA + "/temp.txt\"; ";
+        String cmd1 = "rm -rf \"" + PathIs.TEMP + "\" ; rm -f \"" + PathIs.EXTRA + "/temp.txt\"; ";
         new BashCommand().bash(cmd1);
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
@@ -136,6 +137,7 @@ public class EditPicturesController {
     add images to image view
      */
     private void addImages() {
+
         view1.setImage(_imageToDeleteList.get(0));
         view2.setImage(_imageToDeleteList.get(1));
         view3.setImage(_imageToDeleteList.get(2));

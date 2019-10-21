@@ -107,12 +107,14 @@ public class EditTextController {
             error.setHeaderText("please select a chunk");
             error.setContentText("please select a part of text ");
             error.showAndWait();
+            return false;
         } else if (numberOfWords > 25) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("select a smaller chunk");
             alert.setHeaderText("too much words");
             alert.setContentText("please select a smaller chunk");
             alert.showAndWait();
+            return false;
         }else if (selectedRadioButton==null){
             askForVoice.setText("SELECT A VOICE PLEASE");
             return false;
@@ -431,8 +433,10 @@ public class EditTextController {
 
     @FXML
     public void deleteAudio(ActionEvent event) throws Exception {
-        _mediaPlayer.stop();
-        _mediaPlayer.dispose();
+        if (_mediaPlayer!=null) {
+            _mediaPlayer.stop();
+            _mediaPlayer.dispose();
+        }
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Delete");
         alert.setHeaderText("Check again!");
