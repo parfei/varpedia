@@ -1,15 +1,12 @@
 package application.controllers;
 
-import application.ChangeScene;
-import application.FlickrWork;
 import application.Main;
 import application.bashwork.BashCommand;
+import application.values.ButtonLiterals;
 import application.values.FlickrDone;
 import application.values.PathIs;
 import application.values.SceneFXML;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -35,7 +32,7 @@ public class EditPicturesController {
     ExecutorService team = Executors.newSingleThreadExecutor();
 
     //private ChangeScene changeSceneObject=new ChangeScene();
-    private List<Image> _imageList = new ArrayList<Image>();
+    private List<Image> _imageToDeleteList = new ArrayList<Image>();
     private List<Image> _allImage=new ArrayList<Image>();
     private List<Image>  _remainImage=new ArrayList<Image>();
 
@@ -70,7 +67,7 @@ public class EditPicturesController {
 
     public void setGrid(){
         FlickrDone.reset();
-        loadImages(_imageList);
+        loadImages(_imageToDeleteList);
         addImages();
         downloading.setVisible(false);
     }
@@ -88,9 +85,16 @@ public class EditPicturesController {
      */
     @FXML
     public void toFinalScene(ActionEvent event) throws IOException {
+        int picNum;
+
         Button btn = (Button) event.getSource();
-        if (btn.getText().equals(""))
-        if(_imageList.size() ==12 || _imageList.size() < 2) {
+        if (btn.getText().equals(ButtonLiterals.NO_IMAGES)){
+            picNum = 0;
+        } else {
+            picNum = 12 - _imageToDeleteList.size();
+        }
+
+        if(_imageToDeleteList.size() ==12 || _imageToDeleteList.size() < 2) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Choosing Images");
             alert.setHeaderText("You haven't selected right amount of images!");
@@ -98,29 +102,18 @@ public class EditPicturesController {
             alert.showAndWait();
             return;
         }
-
-        /*// Delete remaining images (undesired ones)
-        for(Image image : _imageList) {
+        // Delete remaining images (undesired ones)
+        for(Image image : _imageToDeleteList) {
             Path toFile = Paths.get(image.getUrl().substring(5));
             File toDelete = toFile.toFile();
             toDelete.delete();
         }
         // load remaing Images
-        loadImages(_remainImage);
-        */
-
-
-
-
-
-        // find the rest of images in photos folder
-
-
-
+        //loadImages(_remainImage);
 
 
         CreateNewController controller = (CreateNewController) Main.getController().setTOPVIEW(SceneFXML.CREATE.toString());
-        controller.initData(_term);
+        controller.initData(_term, picNum);
     }
 
     /**
@@ -143,20 +136,19 @@ public class EditPicturesController {
     add images to image view
      */
     private void addImages() {
-        view1.setImage(_imageList.get(0));
-        view2.setImage(_imageList.get(1));
-        view3.setImage(_imageList.get(2));
-        view4.setImage(_imageList.get(3));
-        view5.setImage(_imageList.get(4));
-        view6.setImage(_imageList.get(5));
-        view7.setImage(_imageList.get(6));
-        view8.setImage(_imageList.get(7));
-        view9.setImage(_imageList.get(8));
-        view10.setImage(_imageList.get(9));
-        view11.setImage(_imageList.get(10));
-        view12.setImage(_imageList.get(11));
+        view1.setImage(_imageToDeleteList.get(0));
+        view2.setImage(_imageToDeleteList.get(1));
+        view3.setImage(_imageToDeleteList.get(2));
+        view4.setImage(_imageToDeleteList.get(3));
+        view5.setImage(_imageToDeleteList.get(4));
+        view6.setImage(_imageToDeleteList.get(5));
+        view7.setImage(_imageToDeleteList.get(6));
+        view8.setImage(_imageToDeleteList.get(7));
+        view9.setImage(_imageToDeleteList.get(8));
+        view10.setImage(_imageToDeleteList.get(9));
+        view11.setImage(_imageToDeleteList.get(10));
+        view12.setImage(_imageToDeleteList.get(11));
     }
-
 
     /**
     let user choose images and make the _imageList contain the images that user don't want to include
@@ -166,14 +158,14 @@ public class EditPicturesController {
         ImageView clickedImageView = (ImageView) (event.getPickResult().getIntersectedNode());
         Image selectedImage = clickedImageView.getImage();
 
-        if (_imageList.contains(selectedImage)) {
+        if (_imageToDeleteList.contains(selectedImage)) {
             // Remove image from _imageList and make it opaque
-            _imageList.remove(selectedImage);
+            _imageToDeleteList.remove(selectedImage);
 
             clickedImageView.setStyle("-fx-opacity: 1.0");
         } else {
             // Add image to _imageList, and make it transparent
-            _imageList.add(selectedImage);
+            _imageToDeleteList.add(selectedImage);
             clickedImageView.setStyle("-fx-opacity: 0.4");
         }
     }

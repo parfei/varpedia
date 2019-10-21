@@ -49,17 +49,16 @@ public class CreateNewController {
 
     @FXML private ListView listViewExistCreation;
 
-    @FXML private Button playButton;
-    @FXML private Button deleteButton;
-
     private List<String> _CreationsExisted = new ArrayList<String>();
     private ExecutorService team;
     private String _term;
     private ChangeScene _changeSceneObject=new ChangeScene();
+    private int _picNum;
     @FXML private ChoiceBox<String> choiceBox;
 
-    public void initData(String term){
+    public void initData(String term, int picNum){
         _term = term;
+        _picNum = picNum;
     }
 
     /**
@@ -69,8 +68,6 @@ public class CreateNewController {
         ObservableList list=FXCollections.observableArrayList();
         list.addAll("Clouds","Fingers", "Sun", "No music");
         choiceBox.getItems().addAll(list);
-        playButton.setDisable(true);
-        deleteButton.setDisable(true);
         errorName.setVisible(false);
         errorImg.setVisible(false);
 
