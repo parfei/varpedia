@@ -281,7 +281,6 @@ public class EditTextController {
             if (_voice.equals("default_voice")){
                 createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term + "-"+ _number+ ".wav\" " +
                         path + " -eval \"" + PathIs.TEMP +"/kal.scm\"";
-                System.out.println(createAudio);
             } else if (_voice.equals("male_voice")){
                 createAudio = "text2wave -o \"" + PathIs.TEMP +"/audioPiece/" + _term+ "-"+ _number + ".wav\" " +
                         path + " -eval \"" + PathIs.TEMP + "/jdt.scm\"";
@@ -290,7 +289,6 @@ public class EditTextController {
                         path + " -eval \"" + PathIs.TEMP + "/cw.scm\"";
             }
             new BashCommand().bash(createAudio);
-
             return null;
         }
     }
@@ -342,14 +340,26 @@ public class EditTextController {
             String number=Integer.toString(numberOfAudio);
 
             ManageFolder.writeToFile(PathIs.EXTRA + "/savedText" + countNumberOfAudioFileInAudioPiece() + ".txt", saveble);
-            //TODO combine text so we can read as description of file.
 
             if (default_voice.isSelected()) {
                 SaveHelper sh = new SaveHelper("default_voice", number);
                 team.submit(sh);
 
                 sh.setOnSucceeded(workerStateEvent -> {
-                    clearAudio(checkReadableText(number));
+                    String file_path = PathIs.TEMP + "/audioPiece/" + _term+ "-"+ number + ".wav";
+                    File file = new File(file_path);
+                    try {
+                        if (file.length() == 0){
+                            System.out.println("bad");
+                            clearAudio(checkReadableText(number));
+                        } else {
+                           updateExistingAudio();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 });
             } else {
                 SaveHelper sh;
@@ -371,7 +381,6 @@ public class EditTextController {
                         alert.setHeaderText("Can't save the audio in this voice");
                         alert.setContentText("Do you want to save in default voice?");
                         Optional<ButtonType> result = alert.showAndWait();
-                        String deleteCmd = "rm -f " + file_path;
 
                         clearAudio(file_path);
 
@@ -382,7 +391,17 @@ public class EditTextController {
                             SaveHelper sh2 = new SaveHelper("default_voice", number2);
                             team.submit(sh2);
                             sh.setOnSucceeded(workerStateEvent1 -> {
-                                clearAudio(checkReadableText(number));
+                                try {
+                                    if (file.length() == 0){
+                                        clearAudio(checkReadableText(number));
+                                    } else {
+                                        updateExistingAudio();
+                                    }
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             });
                             /*String createDefaultAudio = "text2wave -o \"" + PathCD.getPathInstance().getPath() + "/mydir/extra/audioPiece/" + _term+ "-"+ number2  + ".wav\" \"" +
                                     PathCD.getPathInstance().getPath() + "/mydir/extra/savedText.txt\" -eval kal.scm";
@@ -398,6 +417,10 @@ public class EditTextController {
                         } else {
                             //do nothing
                         }
+                    }
+
+                    try { updateExistingAudio(); } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 });
             }
