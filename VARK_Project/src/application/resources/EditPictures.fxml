@@ -53,5 +53,6 @@
       <Label layoutX="236.0" layoutY="19.0" text="select image to put in your creation" />
       <Button layoutX="975.0" layoutY="537.0" mnemonicParsing="false" onAction="#toFinalScene" text="next" />
       <Button layoutX="882.0" layoutY="537.0" mnemonicParsing="false" onAction="#backToMainMenu" text="back" />
+      <Button layoutX="891.0" layoutY="494.0" mnemonicParsing="false" onAction="#toFinalScene" text="I want no pictures!" />
    </children>
 </AnchorPane>

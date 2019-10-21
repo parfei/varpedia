@@ -81,8 +81,12 @@ public class EditPicturesController {
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
 
+    /**
+     * If user wants no pictures in their video, then signal to produce no images.
+     * @throws IOException
+     */
     @FXML
-    public void toFinalScene() throws IOException {
+    public void toFinalScene(ActionEvent event) throws IOException {
         if(_imageList.size() ==12 || _imageList.size() < 2) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Choosing Images");
@@ -116,13 +120,10 @@ public class EditPicturesController {
         controller.initData(_term);
     }
 
-
-
-
-    /*
+    /**
     load images to image list
      */
-    public void loadImages(List<Image> list) {
+    private void loadImages(List<Image> list) {
         String photoFolder = PathIs.TEMP + "/photos";
         Path dirPath = Paths.get(photoFolder);
         File dirFiles = dirPath.toFile();
@@ -135,7 +136,7 @@ public class EditPicturesController {
         }
     }
 
-    /*
+    /**
     add images to image view
      */
     private void addImages() {
@@ -153,10 +154,11 @@ public class EditPicturesController {
         view12.setImage(_imageList.get(11));
     }
 
-    @FXML
-    /*
+
+    /**
     let user choose images and make the _imageList contain the images that user don't want to include
      */
+    @FXML
     public void chooseImage(MouseEvent event) {
         ImageView clickedImageView = (ImageView) (event.getPickResult().getIntersectedNode());
         Image selectedImage = clickedImageView.getImage();
