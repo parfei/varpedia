@@ -110,7 +110,7 @@ public class FlickrWork extends Task<String> {
             String sharedSecret = getAPIKey("secret");
 
             Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
-
+            System.out.println(_term);
             String query = _term;
             int resultsPerPage = _num;
             int page = 0;
@@ -130,9 +130,14 @@ public class FlickrWork extends Task<String> {
                     BufferedImage image = photos.getImage(photo, Size.LARGE);
                     String filename = "img" + Integer.toString(count) + ".jpg";
                     //File outputfile = new File(PathIs.EXTRA + "/" + _term + "/" + _name,filename);
-                    File outputfile = new File(String.valueOf(PathIs.TEMP),filename);
+
+                    String photoFolder=PathIs.TEMP+"/photos";
+                    //File outputfile = new File(String.valueOf(PathIs.TEMP),filename);
+                    File outputfile = new File(photoFolder,filename);
                     ImageIO.write(image, "jpg", outputfile); //Download the image
-                    System.out.println("Downloaded "+filename);
+
+                    //how to put the photo into a folder
+                    System.out.println(filename);
 
                     count++;
                 } catch (FlickrException fe) {
