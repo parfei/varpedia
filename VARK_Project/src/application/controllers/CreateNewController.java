@@ -41,9 +41,6 @@ import static com.sun.prism.impl.Disposer.cleanUp;
  */
 public class CreateNewController {
 
-    private List<String> _audioExisted = new ArrayList<String>();
-    private String _musicChoice;
-
     @FXML private TextField textFieldCreationName;
     @FXML private Label errorName;
 
@@ -103,6 +100,16 @@ public class CreateNewController {
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
 
+    private Boolean checkEmptyAudio(){
+        File directoryCheck = new File(PathIs.TEMP + "/audioPiece");
+        String[] files = directoryCheck.list();
+        if (files.length > 0){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     /***
      * When the user hits the create button, the user will be taken back to the menu whilst the work is done in
      * background threads. The method also checks for the validity of the name.
@@ -111,7 +118,7 @@ public class CreateNewController {
      */
     @FXML
     public void EnterCreation(ActionEvent event) throws Exception {
-        if (_audioExisted.isEmpty()){
+        if (checkEmptyAudio()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("No audio to combine");
             alert.setHeaderText("Go back and make audios ");
