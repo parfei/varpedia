@@ -27,6 +27,7 @@ public class CreationWork extends Task<String> {
     private String _musicChoice;
     private int _picNum;
     private Boolean _combine;
+    private double _audioDura;
 
     public CreationWork(String term, String name, int picNum, Boolean combine, String musicChoice) {
         _name = name;
@@ -52,6 +53,7 @@ public class CreationWork extends Task<String> {
         } else {
             generateAudio();
         }
+        setAudioDuration();
         if (_picNum == 0) { //If failed to get Flickr images or there are no Flickr images available then generate blue video.
             generateBlueVideo();
         } else {
@@ -166,10 +168,8 @@ public class CreationWork extends Task<String> {
      * Helper function to generate the required text file to specify duration and files needed for the slideshow.
      */
     private void generateFilesTxt() throws Exception {
-        double duration = 0;
 
         // add the file name in the photos folder into a list
-
         String command = "ls \"" + PathIs.TEMP + "/photos\"" + " | cut -f1 -d'.'\n";
         BashCommand update = new BashCommand();
         ArrayList<String> photoList = update.bash(command);
@@ -177,24 +177,19 @@ public class CreationWork extends Task<String> {
             System.out.println(photoList.get(i));
         }
 
-
-
-
-
-        String command1 = "soxi -D \"" + _path + "combinedSound.wav\"";
-        ProcessBuilder pb = new ProcessBuilder("bash", "-c", command1);
+        //String command1 = "soxi -D \"" + _path + "combinedSound.wav\"";
+        //duration = Double.parseDouble(new BashCommand().bash(command1).get(0));
+        /*ProcessBuilder pb = new ProcessBuilder("bash", "-c", command1);
         try {
             Process process = pb.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             duration = Double.parseDouble(reader.readLine());
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
+        double dura = _audioDura / Double.parseDouble(_picNum + ".0"); //Calculate duration of each picture
 
-        double dura = duration / _picNum; //Calculate duration of each picture.
-
-
-
+        //Write the list of photos to be included in the slideshow in a text file
         String path = PathIs.TEMP + "/photos/";
         try {
             //PrintWriter writer = new PrintWriter(path + "imgs.txt", "UTF-8");
@@ -203,7 +198,8 @@ public class CreationWork extends Task<String> {
                 writer.println("file '" + path + photoList.get(i) + ".jpg'"); //Write file name for each image to be included.
                 writer.println("duration " + dura); //Write duration for each image to be included.
             }
-            writer.println("file '" + path + "img" + Integer.toString(_picNum - 1) + ".jpg'");
+            //writer.println("file '" + path + "img" + Integer.toString(_picNum - 1) + ".jpg'");
+            writer.println("file '" + photoList.get(photoList.size() -1) + ".jpg'"); //Fixes slideshow bug by including the last entry twice (second time without duration)
 
             writer.close();
         } catch (FileNotFoundException e) {
@@ -217,11 +213,10 @@ public class CreationWork extends Task<String> {
     public void addBackgroundMusic() throws InterruptedException, IOException {
         System.out.println("start adding background music");
 
-
         //measure the length of audio working
        // String pathOfSoundWithoutMusic=PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name;
         //String command = "soxi -D ./myaudio/sound.wav";
-        String command= "soxi -D "+_path+"sound.wav";
+        /*String command= "soxi -D "+_path+"sound.wav";
         ProcessBuilder measureLength = new ProcessBuilder("/bin/bash", "-c", command);
         Process process = measureLength.start();
         BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -230,9 +225,9 @@ public class CreationWork extends Task<String> {
         if (exitStatus == 0) {
             double duration = Double.parseDouble(stdout.readLine());
             seconds = (int) Math.ceil(duration);
+        }*/
 
-
-        }
+        int seconds = (int) Math.ceil(_audioDura); //Get duration in seconds 
 
         //change mp3 file to wav file
         String createMusicFile = null;
@@ -251,15 +246,13 @@ public class CreationWork extends Task<String> {
         else {
             System.out.println("Bug");
         }
-        if (!(createMusicFile == "")) {
+        if (createMusicFile != "") {
             ProcessBuilder builder = new ProcessBuilder("bash", "-c", createMusicFile);
             Process createMusic = builder.start();
             int exit = createMusic.waitFor();
             if (exit == 0) {
                 System.out.println("convert the music to wav file");
             }
-
-
 
             //"sox -m ./myaudio/sound.wav ./myaudio/song.wav ./myaudio/out.wav trim 0 "+seconds;
 
@@ -282,8 +275,15 @@ public class CreationWork extends Task<String> {
             if (exit2==0){
                 System.out.println("rename completed");
             }
-
         }
+    }
 
+    private void setAudioDuration(){
+        String command1 = "soxi -D \"" + _path + "combinedSound.wav\"";
+        try {
+            _audioDura = Double.parseDouble(new BashCommand().bash(command1).get(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

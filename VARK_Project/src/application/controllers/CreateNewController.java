@@ -132,20 +132,6 @@ public class CreateNewController {
             errorName.setVisible(false);
 
             Boolean error = false;
-            /*try {
-                Integer num = Integer.parseInt(textFldImagesNum.getText()); /////Check for picture number error input.
-                if (num < 0 || num > 10) {
-                    errorImg.setVisible(true);
-                    errorImg.setText("Please enter between 0-10");
-                    textFldImagesNum.clear();
-                    error = true;
-                }
-            } catch (NumberFormatException e) {
-                errorImg.setVisible(true);
-                errorImg.setText("Enter a valid input.");
-                textFldImagesNum.clear();
-                error = true;
-            }*/
             try {
                 if (_CreationsExisted.contains(textFieldCreationName.getText())) { /////Check for creation name error input.
                     errorName.setText("Duplicated name.");
@@ -169,8 +155,6 @@ public class CreateNewController {
                     error = true;
                 }
             } catch (Exception e) {
-                //errorImg.setVisible(true);
-                //errorImg.setText("Enter a valid input.");
                 textFieldCreationName.clear();
                 error = true;
             }
@@ -215,56 +199,6 @@ public class CreateNewController {
                 complete1.show();
 
                 textFieldCreationName.clear();
-
-                /*FlickrWork getImg = new FlickrWork(_term, textFieldCreationName.getText(), textFldImagesNum.getText());
-team.submit(getImg);
-
-//When images have been successfully retrieved, send an instance of CreationWrok to the background thread to combine audio, slideshow and video forms into one Creation.
-getImg.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-@Override
-public void handle(WorkerStateEvent workerStateEvent) {
-
-CreationWork creationWork = null;
-try {
-creationWork = new CreationWork(_term, textFieldCreationName.getText(), Integer.parseInt(getImg.get()), true,choiceBox.getValue());
-//System.out.println("pic: " + getImg.get());
-} catch (InterruptedException e) {
-e.printStackTrace();
-} catch (ExecutionException e) {
-e.printStackTrace();
-}
-
-team.submit(creationWork);
-
-creationWork.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-@Override
-public void handle(WorkerStateEvent workerStateEvent) {
-try {
-    String p = "\"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "/";
-    new BashCommand().bash("touch " + p + "confidence.txt\" " + p + "plays.txt\"");
-    team.submit(new Confidence(textFieldCreationName.getText(), 0));
-    team.submit(new Play(textFieldCreationName.getText()));
-} catch (Exception e) {
-    e.printStackTrace();
-}
-try {
-    cleanUp(); //Clean up audio files after the Creation has been made.
-} catch (Exception e) {
-    e.printStackTrace();
-}
-
-_CreationsExisted.clear();
-Alert complete = new Alert(Alert.AlertType.INFORMATION);
-complete.setHeaderText("Created");
-complete.setContentText(textFieldCreationName.getText() + " has been created. You can now view.");
-complete.show();
-
-textFieldCreationName.clear();
-textFldImagesNum.clear();
-}
-});
-}
-});*/
                 try {
                     Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
                 } catch (IOException e) {
