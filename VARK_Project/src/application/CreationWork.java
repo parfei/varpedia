@@ -227,14 +227,14 @@ public class CreationWork extends Task<String> {
             seconds = (int) Math.ceil(duration);
         }*/
 
-        int seconds = (int) Math.ceil(_audioDura); //Get duration in seconds 
+        int seconds = (int) Math.ceil(_audioDura); //Get duration in seconds
 
         //change mp3 file to wav file
         String createMusicFile = null;
         String path = PathIs.TEMP + "/audioPiece";
 
         if (_musicChoice==null||_musicChoice.equals("No music")){
-            createMusicFile = "";
+            createMusicFile = ""; //Will not convert to anything if no music selected/specified no music //TODO make it default for music selection to be none?
         }
         else if (_musicChoice.equals("Clouds")) {
             createMusicFile = "ffmpeg -i ./songs/clouds.mp3 -acodec pcm_u8 -ar 16000 "+ path+"/song.wav";
@@ -256,7 +256,7 @@ public class CreationWork extends Task<String> {
 
             //"sox -m ./myaudio/sound.wav ./myaudio/song.wav ./myaudio/out.wav trim 0 "+seconds;
 
-            String combineAudioCommand="sox -m " + _path + "sound.wav "+ path+"/song.wav "+ _path + "combinedSound.wav trim 0 "+seconds;
+            String combineAudioCommand="sox -m " + _path + "sound.wav "+ path+"/song.wav "+ _path + "combinedSound.wav trim 0 "+seconds; //TODO does it work for double? more accurate
             System.out.println(combineAudioCommand);
 
             ProcessBuilder builder1 = new ProcessBuilder("bash", "-c", combineAudioCommand);
@@ -265,7 +265,6 @@ public class CreationWork extends Task<String> {
             if (exit1==0){
                 System.out.println("combine music completed");
             }
-
         }
         else {
             String renameCommand="mv "+_path+"sound.wav "+_path+"combinedSound.wav";
