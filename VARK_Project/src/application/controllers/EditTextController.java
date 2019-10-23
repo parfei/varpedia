@@ -23,6 +23,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -51,6 +52,7 @@ public class EditTextController {
     @FXML private ListView existingAudioView;
     @FXML private Button playButton;
     @FXML private Button deleteButton;
+    @FXML private ImageView audioSaveResponse;
 
     private String _audioChoice;
     private String _term;
@@ -262,6 +264,7 @@ public class EditTextController {
     @FXML
     public void save(ActionEvent event) throws Exception {
         //RadioButton selectedRadioButton = (RadioButton) group.getSelectedToggle();
+        audioSaveResponse.setVisible(true);
         String selectedText = textArea.getSelectedText();
 
         if (!checkValidSelection(textArea.getSelectedText())) {
@@ -348,6 +351,7 @@ public class EditTextController {
                 });
             }
         }
+        audioSaveResponse.setVisible(false);
     }
 
     /**
