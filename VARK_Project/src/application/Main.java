@@ -61,13 +61,7 @@ public class Main extends Application {
 
         //On close request, close processes, threads and children threads. Also clear out .temp folder when exiting application.
         primaryStage.setOnCloseRequest(event -> {
-            try {
-                new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp ; cd -"); //Clear files in temp folder.);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Platform.exit();
-            System.exit(0);
+            clear();
         });
     }
 
@@ -87,6 +81,29 @@ public class Main extends Application {
 
     public static MainController getController(){
         return _controller;
+    }
+
+    /**
+     * In case program terminates unexpectedly, NOT through exit button.
+     * @throws Exception
+     */
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        clear();
+    }
+
+    /**
+     * Helper function to clear .temp folder and stop all threads cleanly.
+     */
+    private void clear(){
+        try {
+            new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp ; cd -"); //Clear files in temp folder.);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Platform.exit();
+        System.exit(0);
     }
 
     public static void main(String[] args) {
