@@ -24,6 +24,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -53,6 +55,10 @@ public class EditTextController {
     @FXML private Button playButton;
     @FXML private Button deleteButton;
     @FXML private ImageView audioSaveResponse;
+    @FXML private ImageView warnUserImg;
+
+    @FXML private Button createBtn;
+    @FXML private HBox audioControlGroup;
 
     private String _audioChoice;
     private String _term;
@@ -93,6 +99,11 @@ public class EditTextController {
         BashCommand update = new BashCommand();
         ArrayList<String> items = update.bash(command);
 
+        if (items.isEmpty()){
+            warnUserImg.setVisible(false);
+            createBtn.setDisable(false);
+        }
+
         existingAudioView.getItems().setAll(items);
     }
 
@@ -101,11 +112,15 @@ public class EditTextController {
         return new File(path).listFiles().length;
     }
 
-    private Boolean checkValidSelection(String selectedText){
-        RadioButton selectedRadioButton = (RadioButton) group .getSelectedToggle();
-        int numberOfWords = countWords(selectedText);
+    @FXML
+    private Boolean checkValidSelection(){
+        audioControlGroup.setDisable(true);
+        _selectedText = textArea.getSelectedText();
 
-        if (selectedText == null || selectedText.isEmpty()) {
+        RadioButton selectedRadioButton = (RadioButton) group .getSelectedToggle();
+        int numberOfWords = countWords(_selectedText);
+
+        if (_selectedText == null || _selectedText.isEmpty()) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("No selection");
             error.setHeaderText("please select a chunk");
@@ -123,6 +138,8 @@ public class EditTextController {
             askForVoice.setText("SELECT A VOICE PLEASE");
             return false;
         }
+        System.out.println("check");
+        audioControlGroup.setDisable(false);
         return true;
     }
 
@@ -130,10 +147,10 @@ public class EditTextController {
     public void preview() throws IOException {
         _selectedText = textArea.getSelectedText();
 
-        if (!checkValidSelection(textArea.getSelectedText())) {
-            return;
-        } else {
-            //String textWithoutBrackets = _selectedText.replaceAll("[\\[\\](){}']",""); // remove the text in brackets to make it readable
+        //if (!checkValidSelection(textArea.getSelectedText())) {
+        //    return;
+        //} else {
+
             if (default_voice.isSelected()) {
                 team.submit(new PreviewHelper("default_voice", _selectedText));
                 System.out.println("default voice");
@@ -168,7 +185,7 @@ public class EditTextController {
                 });
             }
         }
-    }
+    //}
 
     private void clearAudio(String file_path){
         String deleteCmd = "rm -f " + file_path;
@@ -210,9 +227,9 @@ public class EditTextController {
         audioSaveResponse.setVisible(true);
         String selectedText = textArea.getSelectedText();
 
-        if (!checkValidSelection(textArea.getSelectedText())) {
-            return;
-        } else { // save the selected text to a file and switch scene to saveToAudio interface
+        //if (!checkValidSelection(textArea.getSelectedText())) {
+        //    return;
+        //} else { // save the selected text to a file and switch scene to saveToAudio interface
             String saveble = selectedText.replaceAll("[\\[\\](){}']", "");
             int numberOfAudio=countNumberOfAudioFileInAudioPiece();
             String number=Integer.toString(numberOfAudio);
@@ -228,7 +245,6 @@ public class EditTextController {
                     File file = new File(file_path);
                     try {
                         if (file.length() == 0){
-                            System.out.println("bad");
                             clearAudio(checkReadableText(number));
                         } else {
                            updateExistingAudio();
@@ -261,11 +277,8 @@ public class EditTextController {
                         Optional<ButtonType> result = alert.showAndWait();
 
                         clearAudio(file_path);
-                        System.out.println("Cleared");
 
                         if (result.get() == ButtonType.OK) {
-                            System.out.println("OK");
-
                             SaveHelper retry = new SaveHelper("default_voice", number, _term);
                             team.submit(retry);
                             retry.setOnSucceeded(workerStateEvent1 -> {
@@ -291,7 +304,7 @@ public class EditTextController {
                     }
                 });
             }
-        }
+        //}
         audioSaveResponse.setVisible(false);
     }
 

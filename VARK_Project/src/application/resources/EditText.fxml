@@ -14,9 +14,9 @@
 
 <AnchorPane minHeight="245.0" prefHeight="596.0" prefWidth="1065.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.EditTextController">
    <children>
-      <TextArea fx:id="textArea" layoutX="4.0" layoutY="4.0" prefHeight="590.0" prefWidth="546.0" wrapText="true" />
+      <TextArea fx:id="textArea" layoutX="4.0" layoutY="4.0" onMouseClicked="#checkValidSelection" prefHeight="590.0" prefWidth="546.0" wrapText="true" />
       <Button layoutX="1020.0" layoutY="6.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="18.0" prefWidth="33.0" text="x" />
-      <Button fx:id="create" layoutX="686.0" layoutY="513.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="47.0" prefWidth="95.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Create" textFill="WHITE" />
+      <Button fx:id="createBtn" disable="true" layoutX="686.0" layoutY="513.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="47.0" prefWidth="95.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Create" textFill="WHITE" />
       <Label layoutX="898.0" layoutY="12.0" text="Existing Audio" />
       <ListView fx:id="existingAudioView" layoutX="815.0" layoutY="37.0" onMouseClicked="#getAudioSelection" prefHeight="503.0" prefWidth="248.0" />
       <VBox layoutX="564.0" layoutY="161.0" prefHeight="231.0" prefWidth="227.0" spacing="20.0">
@@ -25,19 +25,19 @@
             <Label fx:id="askForVoice" prefHeight="103.0" prefWidth="136.0" text="Please select a voice" />
             <VBox prefHeight="84.0" prefWidth="120.0" spacing="10.0">
                <children>
-                  <RadioButton fx:id="default_voice" mnemonicParsing="false" text="default voice">
+                  <RadioButton fx:id="default_voice" mnemonicParsing="false" onAction="#checkValidSelection" text="default voice">
                      <toggleGroup>
                         <ToggleGroup fx:id="group" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="male_voice" mnemonicParsing="false" text="male voice" toggleGroup="$group" />
-                  <RadioButton fx:id="female_voice" mnemonicParsing="false" text="female voice" toggleGroup="$group" />
+                  <RadioButton fx:id="male_voice" mnemonicParsing="false" onAction="#checkValidSelection" text="male voice" toggleGroup="$group" />
+                  <RadioButton fx:id="female_voice" mnemonicParsing="false" onAction="#checkValidSelection" text="female voice" toggleGroup="$group" />
                </children>
             </VBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="audioControlGroup" disable="true" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#preview" prefHeight="26.0" prefWidth="70.0" text="Preview" />
-                  <Button mnemonicParsing="false" onAction="#save" prefHeight="26.0" prefWidth="62.0" text="Save" />
+                  <Button fx:id="previewBtn" mnemonicParsing="false" onAction="#preview" prefHeight="26.0" prefWidth="70.0" text="Preview" />
+                  <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#save" prefHeight="26.0" prefWidth="62.0" text="Save" />
                </children>
             </HBox>
          </children>
@@ -51,6 +51,11 @@
       <ImageView fx:id="audioSaveResponse" fitHeight="35.0" fitWidth="41.0" layoutX="842.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@images/edittext/download.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="warnUserImg" fitHeight="47.0" fitWidth="41.0" layoutX="637.0" layoutY="517.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@images/edittext/stop.png" />
          </image>
       </ImageView>
    </children>
