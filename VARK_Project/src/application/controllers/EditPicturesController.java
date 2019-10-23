@@ -51,7 +51,6 @@ public class EditPicturesController {
 
     public void initData(String term) {
         _term = term;
-        System.out.println(term);
         if (!FlickrDone.checkDone()){ //Check if downloading of images is done yet.
             FlickrDone.addListener(this); //Listen to the thread until all images have been downloaded.
         } else {

@@ -139,6 +139,7 @@ public class EditTextController {
             return false;
         }
         audioControlGroup.setDisable(false);
+        askForVoice.setText("");
         return true;
     }
 

@@ -9,7 +9,6 @@ public class FlickrDone {
     public static void isDone(Boolean v){
         _done = v;
         if (_listener != null){
-            System.out.println("hi");
             _listener.setGrid();
         }
     }
