@@ -22,7 +22,7 @@
       <VBox layoutX="564.0" layoutY="161.0" prefHeight="231.0" prefWidth="227.0" spacing="20.0">
          <children>
             <Label fx:id="remindLabel" prefHeight="140.0" prefWidth="259.0" text="Switched to default voice due to voice limitations" textFill="RED" wrapText="true" />
-            <Label fx:id="askForVoice" prefHeight="103.0" prefWidth="136.0" text="Please select a voice" />
+            <Label fx:id="askForVoice" prefHeight="17.0" prefWidth="219.0" text="Please select a voice" />
             <VBox prefHeight="84.0" prefWidth="120.0" spacing="10.0">
                <children>
                   <RadioButton fx:id="default_voice" mnemonicParsing="false" onAction="#checkValidSelection" text="default voice">

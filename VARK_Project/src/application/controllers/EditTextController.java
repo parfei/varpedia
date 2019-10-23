@@ -119,26 +119,28 @@ public class EditTextController {
 
         RadioButton selectedRadioButton = (RadioButton) group .getSelectedToggle();
         int numberOfWords = countWords(_selectedText);
+        String checkString = _selectedText.replaceAll("\\p{P}", "");
 
-        if (_selectedText == null || _selectedText.isEmpty()) {
-            Alert error = new Alert(Alert.AlertType.ERROR);
+        if (_selectedText == null || _selectedText.isEmpty() || checkString.isEmpty()) {
+            /*Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("No selection");
             error.setHeaderText("please select a chunk");
             error.setContentText("please select a part of text ");
-            error.showAndWait();
+            error.showAndWait();*/
+            askForVoice.setText("Select a readable chunk of text!");
             return false;
         } else if (numberOfWords > 25) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+            /*Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("select a smaller chunk");
             alert.setHeaderText("too much words");
             alert.setContentText("please select a smaller chunk");
-            alert.showAndWait();
+            alert.showAndWait();*/
+            askForVoice.setText("Select a smaller chunk of text!");
             return false;
         }else if (selectedRadioButton==null){
-            askForVoice.setText("SELECT A VOICE PLEASE");
+            askForVoice.setText("Select a voice!");
             return false;
         }
-        System.out.println("check");
         audioControlGroup.setDisable(false);
         return true;
     }
