@@ -265,8 +265,6 @@ public class EditTextController {
 
                         if (result.get() == ButtonType.OK) {
                             System.out.println("OK");
-                            //int numberOfAudio2 = countNumberOfAudioFileInAudioPiece();
-                            //String number2 = Integer.toString(numberOfAudio2);
 
                             SaveHelper retry = new SaveHelper("default_voice", number, _term);
                             team.submit(retry);
