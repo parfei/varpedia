@@ -11,6 +11,7 @@ import application.bashwork.SaveHelper;
 import application.values.FlickrDone;
 import application.values.PathIs;
 import application.values.SceneFXML;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -444,13 +445,34 @@ public class EditTextController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            String path = findAudio(_audioChoice); //finds the audio
+
+            team.submit(new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    String command = "find \"" + PathIs.TEMP + "/audioPiece/" + _audioChoice + ".wav\"";
+                    String path = new BashCommand().bash(command).get(0); //finds the audio
+
+                    Platform.runLater(() -> {
+                        _audioChoice = null;
+                        _mediaPlayer.dispose();
+                        try {
+                            String cmd = "rm -f \"" + path + "\"";
+                            new BashCommand().bash(cmd);
+                            updateExistingAudio(); //get the list of creations for currently ticked option.
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    return null;
+                }
+            });
+            /*String path = findAudio(_audioChoice); //finds the audio
 
             String cmd = "rm -f \"" + path + "\"";
             new BashCommand().bash(cmd);
             //_audioExisted.clear();
             //existingAudioView.getItems().clear();
-            updateExistingAudio();
+            updateExistingAudio();*/
         }else{
             return;
         }
