@@ -2,6 +2,7 @@ package application.controllers;
 
 import application.ChangeScene;
 import application.Main;
+import application.values.PicPath;
 import application.values.SceneFXML;
 import javafx.fxml.FXML;
 
@@ -12,6 +13,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -23,10 +26,15 @@ public class MainController {
 
     private ChangeScene _changeSceneObject=new ChangeScene();
     @FXML private AnchorPane TOPVIEW;
+    @FXML private ImageView creatingImg;
+
+    private static final Image LOADING = new Image(PicPath.MENU + "/download.png");
+    private static final Image PLACEHOLDER = new Image(PicPath.MENU + "/placeholder.png");
 
     @FXML
     public void initialize() throws IOException {
         this.setTOPVIEW(SceneFXML.MENU.toString());
+        creationInProgress(false);
     }
 
     /**
@@ -60,6 +68,14 @@ public class MainController {
         TOPVIEW.getChildren().setAll(node);
 
         return loader.getController();
+    }
+
+    public void creationInProgress(Boolean inProgress){
+        if (inProgress){
+            creatingImg.setImage(LOADING);
+        } else {
+            creatingImg.setImage(PLACEHOLDER);
+        }
     }
 
 }

@@ -201,6 +201,7 @@ public class CreateNewController {
                 textFieldCreationName.clear();
                 try {
                     Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
+                    Main.getController().creationInProgress(true);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

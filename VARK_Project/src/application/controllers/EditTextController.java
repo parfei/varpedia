@@ -99,7 +99,7 @@ public class EditTextController {
         BashCommand update = new BashCommand();
         ArrayList<String> items = update.bash(command);
 
-        if (items.isEmpty()){
+        if (!items.isEmpty()){
             warnUserImg.setVisible(false);
             createBtn.setDisable(false);
         }
