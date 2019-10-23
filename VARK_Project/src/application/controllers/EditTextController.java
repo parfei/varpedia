@@ -59,12 +59,13 @@ public class EditTextController {
     static final int OUT = 0;
     static final int IN = 1;
     private ExecutorService team = Executors.newSingleThreadExecutor();
+    private ExecutorService flickrteam = Executors.newSingleThreadExecutor();
     private MediaPlayer _mediaPlayer;
 
     public void initData(String term){
         _term = term;
         FlickrWork images = new FlickrWork(_term, "12");
-        team.submit(images);
+        flickrteam.submit(images);
         images.setOnSucceeded(workerStateEvent -> {
             FlickrDone.isDone(true);
         });
