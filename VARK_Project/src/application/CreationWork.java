@@ -136,7 +136,6 @@ public class CreationWork extends Task<String> {
             vid = video.start(); //Start the video
             int exitStatus=vid.waitFor();
 
-            System.out.println(exitStatus+"happy");
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -157,7 +156,6 @@ public class CreationWork extends Task<String> {
         try {
             Process combine = getTogether.start(); //Combine into the final product.
             int exitStatus=combine.waitFor();
-            System.out.println(exitStatus+"hello");
 
         } catch (IOException | InterruptedException ex) {
             ex.printStackTrace();
@@ -199,7 +197,7 @@ public class CreationWork extends Task<String> {
                 writer.println("duration " + dura); //Write duration for each image to be included.
             }
             //writer.println("file '" + path + "img" + Integer.toString(_picNum - 1) + ".jpg'");
-            writer.println("file '" + photoList.get(photoList.size() -1) + ".jpg'"); //Fixes slideshow bug by including the last entry twice (second time without duration)
+            writer.println("file '" + path + photoList.get(photoList.size() -1) + ".jpg'"); //Fixes slideshow bug by including the last entry twice (second time without duration)
 
             writer.close();
         } catch (FileNotFoundException e) {

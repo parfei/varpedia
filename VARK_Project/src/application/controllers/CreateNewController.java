@@ -173,7 +173,7 @@ public class CreateNewController {
 
             //Send creation work to background thread to create the final creation...
             CreationWork creationWork = null;
-            creationWork = new CreationWork(_term, textFieldCreationName.getText(), _picNum, true,choiceBox.getValue());
+            creationWork = new CreationWork(_term, textFieldCreationName.getText(), _picNum, true,choiceBox.getValue()); //TODO complete
 
             team.submit(creationWork);
 
