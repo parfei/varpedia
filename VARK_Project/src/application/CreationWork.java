@@ -34,7 +34,7 @@ public class CreationWork extends Task<String> {
         _term = term;
         _picNum = picNum;
         _path = PathIs.EXTRA + "/" + _term + "/" + _name + "/";
-        System.out.println(_path);
+
         _combine = combine;
         _musicChoice = musicChoice;
     }

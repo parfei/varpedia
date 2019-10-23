@@ -164,10 +164,10 @@ public class CreateNewController {
             }
 
             //Notify user of the creation wait.
-            Alert complete = new Alert(Alert.AlertType.INFORMATION);
-            complete.setHeaderText("Creating...");
-            complete.setContentText(textFieldCreationName.getText() + " is being created. Please wait, we will notify you.");
-            complete.show();
+//            Alert complete = new Alert(Alert.AlertType.INFORMATION);
+//            complete.setHeaderText("Creating...");
+//            complete.setContentText(textFieldCreationName.getText() + " is being created. Please wait, we will notify you.");
+//            complete.show();
 
             createDirectories(); //Create necessary directories if they have not existed yet.
 
@@ -193,19 +193,21 @@ public class CreateNewController {
                 }
 
                 _CreationsExisted.clear();
-                Alert complete1 = new Alert(Alert.AlertType.INFORMATION);
-                complete1.setHeaderText("Created");
-                complete1.setContentText(textFieldCreationName.getText() + " has been created. You can now view.");
-                complete1.show();
+//                Alert complete1 = new Alert(Alert.AlertType.INFORMATION);
+//                complete1.setHeaderText("Created");
+//                complete1.setContentText(textFieldCreationName.getText() + " has been created. You can now view.");
+//                complete1.show();
 
                 textFieldCreationName.clear();
-                try {
-                    Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
-                    Main.getController().creationInProgress(true);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Main.getController().creationInProgress(false);
+                
             });
+            try {
+                Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
+                Main.getController().creationInProgress(true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
