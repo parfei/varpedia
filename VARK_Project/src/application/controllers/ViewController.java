@@ -87,7 +87,11 @@ public class ViewController {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    resetPlayer();
+                    try {
+                        resetPlayer();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 });
 
                 view.setDisable(false);
@@ -128,12 +132,12 @@ public class ViewController {
 
         if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
             _player.pause();
+            stuffCreated.setDisable(false);
             playButton.setText("Play");
         } else {
             _player.play();
             playButton.setText("Pause");
         }
-
     }
 
     /**
@@ -142,7 +146,7 @@ public class ViewController {
      * @param event
      */
     @FXML
-    public void videoPlay(ActionEvent event){ //TODO if user presses something else
+    public void videoPlay(ActionEvent event) throws Exception { //TODO if user presses something else
         String btnText = ((Button)event.getSource()).getText(); //Get button pressed's text
 
         if (btnText.equals("<< 10")){ //Regardless if playing status or not...
@@ -187,13 +191,21 @@ public class ViewController {
                         String command = "rm -f \"" + path + "\"";
                         new BashCommand().bash(command);
 
-                        path = ManageFolder.findPath(_choice, false);
+                        /*path = ManageFolder.findPath(_choice, false); //deletes the content related to the creation in the extra folder.
                         command = "rm -rf \"" + path + "\"";
-                        new BashCommand().bash(command);
+                        new BashCommand().bash(command);*/
+
+                        Platform.runLater(() -> {
+                            _choice = null;
+                            try {
+                                tickFav(new ActionEvent()); //get the list of creations for currently ticked option.
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
                         return null;
                     }
                 });
-                tickFav(new ActionEvent()); //get the list of creations for currently ticked option.
             } else if (result.get() == ButtonType.CANCEL){
                 return;
             }
@@ -246,13 +258,14 @@ public class ViewController {
         stuffCreated.getItems().setAll(creations);
     }
 
-    private void resetPlayer(){
+    private void resetPlayer() throws Exception {
         muteButton.setDisable(true);
         playOptions.setDisable(true);
         muteButton.setText("Mute");
         playButton.setText("Play");
-        _choice = null;
+
         view.setDisable(true);
+        _player.stop();
         _player.dispose();
 
         stuffCreated.setDisable(false);
