@@ -134,7 +134,7 @@ public class EditTextController {
             return;
         } else {
             //String textWithoutBrackets = _selectedText.replaceAll("[\\[\\](){}']",""); // remove the text in brackets to make it readable
-            if (default_voice.isSelected()){
+            if (default_voice.isSelected()) {
                 team.submit(new PreviewHelper("default_voice", _selectedText));
                 System.out.println("default voice");
             } else {
@@ -142,7 +142,7 @@ public class EditTextController {
                 PreviewHelper preview = null;
                 if (male_voice.isSelected()) {
                     preview = new PreviewHelper("male_voice", _selectedText);
-                } else if (female_voice.isSelected()){
+                } else if (female_voice.isSelected()) {
                     preview = new PreviewHelper("female_voice", _selectedText);
                 }
 
@@ -151,7 +151,7 @@ public class EditTextController {
                 PreviewHelper finalPreview = preview;
                 preview.setOnSucceeded(workerStateEvent -> {
                     try {
-                        if (finalPreview.get() == 255){
+                        if (finalPreview.get() == 255) {
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("voice changed to default");
                             alert.setHeaderText("switch voice to the default due to limitation of other voice options");
@@ -166,64 +166,7 @@ public class EditTextController {
                         e.printStackTrace();
                     }
                 });
-
-                /*FileWriter writer=new FileWriter("male_voice");
-                writer.write("(voice_akl_nz_jdt_diphone)"+"\n"+"(SayText" + " "+"\""+textWithoutBrackets+"\"" + ")");
-                writer.close();
-                String cmd="festival -b male_voice";
-                ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
-                try {
-                    Process process = pb.start();
-                    int exitStatus=process.waitFor();
-                    // if the male voice can't read the text, switch to default voice
-                    if (exitStatus==255){
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("voice changed to default");
-                        alert.setHeaderText("switch voice to the default due to limitation of other voice options");
-                        alert.setContentText("Sorry for the inconvenience");
-                        alert.showAndWait();
-                        FileWriter newWriter=new FileWriter("default_voice");
-                        newWriter.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+_selectedText +"\"" + ")") ;
-                        newWriter.close();
-                        String useDefault="festival -b default_voice";
-                        ProcessBuilder pronounce = new ProcessBuilder("bash", "-c", useDefault);
-                        pronounce.start();
-
-                    }
-                } catch (IOException | InterruptedException ex) {
-                    ex.printStackTrace();
-                }*/
-
             }
-                /*else if (female_voice.isSelected()){
-                    FileWriter writer=new FileWriter("female_voice.scm");
-                    writer.write("(voice_akl_nz_cw_cg_cg)"+"\n"+"(SayText" + " "+"\""+textWithoutBrackets+"\"" + ")");
-                    writer.close();
-                    String cmd="festival -b female_voice.scm";
-                    ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
-                    try {
-                        Process process = pb.start();
-                        int exitStatus=process.waitFor();
-                        // if the female voice can't read the text, switch to default voice
-                        if (exitStatus==255){
-                            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                            alert2.setTitle("voice changed to default");
-                            alert2.setHeaderText("switch voice to the default due to limitation of other voice options");
-                            alert2.setContentText("Sorry for the inconvenience");
-                            alert2.showAndWait();
-
-                            FileWriter newWriter=new FileWriter("default_voice");
-                            newWriter.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+_selectedText +"\"" + ")") ;
-                            newWriter.close();
-                            String useDefault="festival -b default_voice";
-                            ProcessBuilder pronounce = new ProcessBuilder("bash", "-c", useDefault);
-                            pronounce.start();
-
-                        }
-                    } catch (IOException | InterruptedException ex) {
-                        ex.printStackTrace();
-                    }*/
-
         }
     }
 
@@ -366,12 +309,6 @@ public class EditTextController {
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
 
-    private static boolean isDirEmpty(final Path directory) throws IOException {
-        try(DirectoryStream<Path> dirStream = Files.newDirectoryStream(directory)) {
-            return !dirStream.iterator().hasNext();
-        }
-    }
-
     /**
      * This method will take the user to the creation of video interface when "create' button is clicked
      * @param event
@@ -430,7 +367,6 @@ public class EditTextController {
     @FXML
     public void playAudio(ActionEvent event) throws Exception {
         String wavFile = findAudio(_audioChoice);
-        // String musicFile = "StayTheNight.mp3";     // For example
 
         Media sound = new Media(new File(wavFile).toURI().toString());
         _mediaPlayer = new MediaPlayer(sound);
@@ -464,6 +400,8 @@ public class EditTextController {
                             String cmd = "rm -f \"" + path + "\"";
                             new BashCommand().bash(cmd);
                             updateExistingAudio(); //get the list of creations for currently ticked option.
+                            playButton.setDisable(true); //disable buttons again if deleted, prompt user to reselect option.
+                            deleteButton.setDisable(true);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -471,13 +409,6 @@ public class EditTextController {
                     return null;
                 }
             });
-            /*String path = findAudio(_audioChoice); //finds the audio
-
-            String cmd = "rm -f \"" + path + "\"";
-            new BashCommand().bash(cmd);
-            //_audioExisted.clear();
-            //existingAudioView.getItems().clear();
-            updateExistingAudio();*/
         }else{
             return;
         }

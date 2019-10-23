@@ -44,8 +44,8 @@
       </VBox>
       <HBox layoutX="818.0" layoutY="547.0" prefHeight="35.0" prefWidth="239.0">
          <children>
-            <Button fx:id="playButton" mnemonicParsing="false" onAction="#playAudio" prefHeight="26.0" prefWidth="121.0" text="play" />
-            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteAudio" prefHeight="26.0" prefWidth="130.0" text="delete" />
+            <Button fx:id="playButton" disable="true" mnemonicParsing="false" onAction="#playAudio" prefHeight="26.0" prefWidth="121.0" text="play" />
+            <Button fx:id="deleteButton" disable="true" mnemonicParsing="false" onAction="#deleteAudio" prefHeight="26.0" prefWidth="130.0" text="delete" />
          </children>
       </HBox>
       <ImageView fx:id="audioSaveResponse" fitHeight="35.0" fitWidth="41.0" layoutX="842.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" visible="false">
