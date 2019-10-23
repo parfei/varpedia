@@ -1,10 +1,12 @@
 package application;
 
+import application.values.FlickrDone;
 import application.values.PathIs;
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.REST;
 import com.flickr4java.flickr.photos.*;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import javax.imageio.ImageIO;
@@ -150,6 +152,7 @@ public class FlickrWork extends Task<String> {
         }
 
         System.out.println("\nDone");
+        Platform.runLater(() -> FlickrDone.isDone(true));
     }
 
 }

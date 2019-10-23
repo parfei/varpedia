@@ -200,7 +200,7 @@ public class CreateNewController {
 
                 textFieldCreationName.clear();
                 Main.getController().creationInProgress(false);
-                
+
             });
             try {
                 Main.getController().setTOPVIEW(SceneFXML.MENU.toString());

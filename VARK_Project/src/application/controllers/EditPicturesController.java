@@ -51,24 +51,18 @@ public class EditPicturesController {
 
     public void initData(String term) {
         _term = term;
-        if (!FlickrDone.checkDone()){
-            FlickrDone.addListener(this);
+        System.out.println(term);
+        if (!FlickrDone.checkDone()){ //Check if downloading of images is done yet.
+            FlickrDone.addListener(this); //Listen to the thread until all images have been downloaded.
         } else {
-            setGrid();
+            setGrid(); //When done, set the grid of images.
         }
-        //FlickrWork images = new FlickrWork(_term, "12");
-        /*team.submit(images);
-        images.setOnSucceeded(workerStateEvent -> {
-            loadImages(_imageList);
-            addImages();
-            //TODO when user selects images, put the names into imgs.txt...(need to modify CreationWork then)
-        });*/
     }
 
     public void setGrid(){
-        FlickrDone.reset();
-        loadImages(_imageToDeleteList);
-        addImages();
+        FlickrDone.reset(); //Reset value of flickr being done...
+        loadImages(_imageToDeleteList); //Load list of images, iterate through files in images folder (.temp)
+        addImages(); //Add images to the gridview.
         downloading.setVisible(false);
     }
 
@@ -95,7 +89,7 @@ public class EditPicturesController {
             picNum = 12 - _imageToDeleteList.size();
         }
 
-        if(_imageToDeleteList.size() ==12 || _imageToDeleteList.size() < 2) {
+        if(_imageToDeleteList.size() == 12 || _imageToDeleteList.size() < 2) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Choosing Images");
             alert.setHeaderText("You haven't selected right amount of images!");
@@ -109,9 +103,6 @@ public class EditPicturesController {
             File toDelete = toFile.toFile();
             toDelete.delete();
         }
-        // load remaing Images
-        //loadImages(_remainImage);
-
 
         CreateNewController controller = (CreateNewController) Main.getController().setTOPVIEW(SceneFXML.CREATE.toString());
         controller.initData(_term, picNum);

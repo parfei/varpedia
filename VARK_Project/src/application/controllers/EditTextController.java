@@ -74,9 +74,6 @@ public class EditTextController {
         _term = term;
         FlickrWork images = new FlickrWork(_term, "12");
         flickrteam.submit(images);
-        images.setOnSucceeded(workerStateEvent -> {
-            FlickrDone.isDone(true);
-        });
     }
 
     /**

@@ -3,12 +3,13 @@ package application.values;
 import application.controllers.EditPicturesController;
 
 public class FlickrDone {
-    private static Boolean _done;
+    private static Boolean _done = false;
     private static EditPicturesController _listener;
 
     public static void isDone(Boolean v){
         _done = v;
         if (_listener != null){
+            System.out.println("hi");
             _listener.setGrid();
         }
     }
