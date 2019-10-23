@@ -216,8 +216,7 @@ public class CreateNewController {
      * @throws IOException
      */
     private void createDirectories() throws Exception {
-        new BashCommand().bash("mkdir -p \"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "\"" +
-                " ; mkdir -p \"" + PathIs.CREATIONS + "/" + _term + "\""); //create a creations folders
+        new BashCommand().bash("mkdir -p \"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "\""); //create a creations folders. mkdir -p \"" + PathIs.CREATIONS + "/" + _term + "\""
     }
 
     /**

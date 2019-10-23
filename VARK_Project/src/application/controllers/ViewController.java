@@ -84,10 +84,6 @@ public class ViewController {
                 _player.setOnEndOfMedia(() -> {
                     try {
                         team.submit(new Play(_choice));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    try {
                         resetPlayer();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -190,10 +186,6 @@ public class ViewController {
                         String path = ManageFolder.findPath(_choice, true); //finds the relevant creation
                         String command = "rm -f \"" + path + "\"";
                         new BashCommand().bash(command);
-
-                        /*path = ManageFolder.findPath(_choice, false); //deletes the content related to the creation in the extra folder.
-                        command = "rm -rf \"" + path + "\"";
-                        new BashCommand().bash(command);*/
 
                         Platform.runLater(() -> {
                             _choice = null;
