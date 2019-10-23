@@ -5,6 +5,8 @@ import application.Play;
 import application.bashwork.BashCommand;
 import application.bashwork.ManageFolder;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -18,6 +20,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -261,6 +264,37 @@ public class ViewController {
         _player.dispose();
 
         stuffCreated.setDisable(false);
+    }
+
+    private void checkNeedReview(){
+        //TODO https://stackoverflow.com/questions/36061089/color-specific-row-in-listview-with-javafx
+        stuffCreated.setCellFactory(list -> {
+
+            ListCell<String> cell = new ListCell<String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setText(empty ? null : item);
+                }
+            };
+
+            BooleanBinding invalid = Bindings.createBooleanBinding(new Callable<Boolean>() {
+                @Override //TODO COMPLETE
+                public Boolean call() throws Exception {
+                    return null;
+                }
+            });
+
+            invalid.addListener((obs, wasInvalid, isNowInvalid) -> {
+                if (isNowInvalid) {
+                    cell.setStyle("-fx-text-fill:red;");
+                } else {
+                    cell.setStyle("");
+                }
+            });
+
+            return cell;
+        });
     }
 
 }
