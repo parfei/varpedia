@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -20,7 +22,20 @@
                   <Font size="17.0" />
                </font>
             </Button>
-            <ProgressIndicator prefHeight="45.0" prefWidth="300.0" progress="0.0" />
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="creatingImg" fitHeight="150.0" fitWidth="132.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                     <image>
+                        <Image url="@images/menu/download.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="placeholderImg" fitHeight="150.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/menu/placeholder.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </StackPane>
             <Button layoutX="10.0" layoutY="204.0" mnemonicParsing="false" onAction="#help" prefHeight="111.0" prefWidth="132.0" text="HELP">
                <font>
                   <Font size="17.0" />
