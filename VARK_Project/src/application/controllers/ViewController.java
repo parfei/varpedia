@@ -62,7 +62,7 @@ public class ViewController {
                 e.printStackTrace();
             }
         });
-        
+
         errorText.setVisible(false);
         playButton.setDisable(true);
         playOptions.setDisable(true);

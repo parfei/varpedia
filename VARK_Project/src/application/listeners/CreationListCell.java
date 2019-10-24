@@ -21,11 +21,12 @@ public class CreationListCell extends ListCell<String> {
 
             String bgStyle = "";
             String textStyle = "";
-            if (Integer.parseInt(confidence) < 3) { //If confidence is below 3
-                bgStyle += "red;";
-                textStyle += "white;";
-            } else if (Integer.parseInt(plays) == 0 && Integer.parseInt(confidence) == 1) { //If video has never been played.
+
+            if (Integer.parseInt(plays) == 0) { //If video has never been played. //TODO after play video once, confidence has to be set
                 bgStyle += "#93D4EE;";
+                textStyle += "white;";
+            } else if (Integer.parseInt(confidence) < 3) { //If confidence is below 3
+                bgStyle += "orange;";
                 textStyle += "white;";
             } else {
                 bgStyle += "white;";
