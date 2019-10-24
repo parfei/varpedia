@@ -4,12 +4,15 @@ import application.PathCD;
 import application.Play;
 import application.bashwork.BashCommand;
 import application.bashwork.ManageFolder;
+import application.listeners.CreationListCell;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.media.Media;
@@ -24,6 +27,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javafx.util.Callback;
 import javafx.util.Duration;
 
 /**
@@ -45,15 +49,20 @@ public class ViewController {
 
     /**
      * This method will add the existing creation to the ListView
+     * It will also set the cell factory for stuffcreated listview.
      */
     public void initialize() throws Exception {//TODO concurrency for this??
+        stuffCreated.setCellFactory((Callback<ListView<String>, ListCell<String>>) param -> new CreationListCell());
+
         team.submit(() -> {
             try {
                 setCreations("creations");
+                tickFav();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
+        
         errorText.setVisible(false);
         playButton.setDisable(true);
         playOptions.setDisable(true);
@@ -65,7 +74,8 @@ public class ViewController {
      * @param mouseEvent
      */
     @FXML
-    public void getTheSelection(javafx.scene.input.MouseEvent mouseEvent) {
+    public void getTheSelection(javafx.scene.input.MouseEvent mouseEvent) throws Exception {
+
         try{
             ObservableList selectedCreation = stuffCreated.getSelectionModel().getSelectedItems();
             _choice = selectedCreation.get(0).toString();
@@ -87,7 +97,11 @@ public class ViewController {
                 _player.setOnEndOfMedia(() -> {
                     try {
                         team.submit(new Play(_choice));
-                        resetPlayer();
+
+                        int index = stuffCreated.getSelectionModel().getSelectedIndex();
+                        Object[]cells = stuffCreated.lookupAll(".cell").toArray();
+                        Cell cell = (Cell) cells[index];
+                        checkNeedReview(cell, _choice);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -193,7 +207,7 @@ public class ViewController {
                         Platform.runLater(() -> {
                             _choice = null;
                             try {
-                                tickFav(new ActionEvent()); //get the list of creations for currently ticked option.
+                                tickFav(); //get the list of creations for currently ticked option.
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -212,7 +226,20 @@ public class ViewController {
     @FXML
     public void changeConfidence(javafx.scene.input.MouseEvent mouseEvent) throws Exception {
         int rating = (int) confidence.getValue();
-        team.submit(new Confidence(_choice, rating));
+        Confidence change = new Confidence(_choice, rating);
+        team.submit(change);
+
+        change.setOnSucceeded(workerStateEvent -> {
+            int index = stuffCreated.getSelectionModel().getSelectedIndex();
+            Object[]cells = stuffCreated.lookupAll(".cell").toArray();
+            Cell cell = (Cell) cells[index];
+            try {
+                checkNeedReview(cell, _choice);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     @FXML
@@ -227,19 +254,33 @@ public class ViewController {
             String command = "mv " + file + " " + file2;
 
             new BashCommand().bash(command);
+
         } else {
             errorText.setVisible(true);
         }
+        tickFav();
     }
 
     @FXML
-    public void tickFav(ActionEvent event) throws Exception {
+    public void tickFav() throws Exception {
         List<String> list = null;
         if (favOption.isSelected()){
             setCreations("favourites");
         } else {
             setCreations("creations");
         }
+
+//        int index = 0;
+//        for (Object item : stuffCreated.getItems()){
+//            Object[] cells = stuffCreated.lookupAll(".cell").toArray();
+//            Cell cell = (Cell) cells[index];
+//            try {
+//                checkNeedReview(cell, (String) item);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            index++;
+//        }
     }
 
     private void setCreations(String path) throws Exception { //TODO USE THIS!
@@ -264,37 +305,25 @@ public class ViewController {
         _player.dispose();
 
         stuffCreated.setDisable(false);
+        tickFav();
     }
 
-    private void checkNeedReview(){
-        //TODO https://stackoverflow.com/questions/36061089/color-specific-row-in-listview-with-javafx
-        stuffCreated.setCellFactory(list -> {
+    /**
+     * Method called everytime a video changes confidence or view count. Check whether item needs reviewing or not.
+     * Code inspired from: https://stackoverflow.com/questions/20936101/get-listcell-via-listview
+     */
+    private void checkNeedReview(Cell cell, String creation) throws Exception {
+        String confidence = ManageFolder.readFile(ManageFolder.findPath(creation, false) + "/confidence.txt");
+        String plays = ManageFolder.readFile(ManageFolder.findPath(creation, false) + "/plays.txt");
 
-            ListCell<String> cell = new ListCell<String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    setText(empty ? null : item);
-                }
-            };
+        String style = "-fx-background-color:";
+        if (Integer.parseInt(confidence) < 3){ //If confidence is below 3
+            style += "red;";
+        } else if (Integer.parseInt(plays) == 0 && Integer.parseInt(confidence) == 1){ //If video has never been played.
+            style += "#93D4EE;";
+        }
 
-            BooleanBinding invalid = Bindings.createBooleanBinding(new Callable<Boolean>() {
-                @Override //TODO COMPLETE
-                public Boolean call() throws Exception {
-                    return null;
-                }
-            });
-
-            invalid.addListener((obs, wasInvalid, isNowInvalid) -> {
-                if (isNowInvalid) {
-                    cell.setStyle("-fx-text-fill:red;");
-                } else {
-                    cell.setStyle("");
-                }
-            });
-
-            return cell;
-        });
+        cell.setStyle(style);
     }
 
 }
