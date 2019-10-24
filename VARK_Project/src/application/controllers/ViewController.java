@@ -52,7 +52,7 @@ public class ViewController {
      * It will also set the cell factory for stuffcreated listview.
      */
     public void initialize() throws Exception {//TODO concurrency for this??
-        stuffCreated.setCellFactory((Callback<ListView<String>, ListCell<String>>) param -> new CreationListCell());
+        initializeCellFactory();
 
         team.submit(() -> {
             try {
@@ -67,6 +67,10 @@ public class ViewController {
         playButton.setDisable(true);
         playOptions.setDisable(true);
         muteButton.setDisable(true);
+    }
+
+    private void initializeCellFactory(){
+        stuffCreated.setCellFactory((Callback<ListView<String>, ListCell<String>>) param -> new CreationListCell());
     }
 
     /**
@@ -317,10 +321,11 @@ public class ViewController {
         String plays = ManageFolder.readFile(ManageFolder.findPath(creation, false) + "/plays.txt");
 
         String style = "-fx-background-color:";
-        if (Integer.parseInt(confidence) < 3){ //If confidence is below 3
-            style += "red;";
-        } else if (Integer.parseInt(plays) == 0 && Integer.parseInt(confidence) == 1){ //If video has never been played.
+
+        if (Integer.parseInt(plays) == 0){ //If video has never been played.
             style += "#93D4EE;";
+        } else if (Integer.parseInt(confidence) < 3){ //If confidence is below 3
+            style += "orange;";
         }
 
         cell.setStyle(style);
