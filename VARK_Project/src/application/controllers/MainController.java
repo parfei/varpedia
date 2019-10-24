@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class MainController {
 
     private static final Image LOADING = new Image(PicPath.MENU + "/download.png");
     private static final Image PLACEHOLDER = new Image(PicPath.MENU + "/placeholder.png");
+    private final Popup helpFromStar = new Popup();
 
     @FXML
     public void initialize() throws IOException {
@@ -64,6 +66,14 @@ public class MainController {
         alert.showAndWait();
     }
 
+    @FXML
+    public void showInstructions(ActionEvent event) throws IOException {
+        Popup instructions = popupHelper();
+        instructions.show(((Node)event.getTarget()).getScene().getWindow());
+        instructions.setAnchorX(-50);
+        instructions.setAnchorY(500);
+    }
+
     public Object setTOPVIEW(String layout) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(layout));
         Parent node = loader.load();
@@ -78,6 +88,14 @@ public class MainController {
         } else {
             creatingImg.setImage(PLACEHOLDER);
         }
+    }
+
+    private Popup popupHelper() throws IOException {
+        Popup popup = new Popup();
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.TIP.toString()));
+        popup.getContent().add((Parent)loader.load());
+
+        return popup;
     }
 
 }

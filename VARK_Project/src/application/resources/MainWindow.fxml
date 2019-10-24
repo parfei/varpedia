@@ -32,7 +32,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button layoutX="27.0" layoutY="407.0" mnemonicParsing="false" stylesheets="@../css/star.css">
+      <Button layoutX="27.0" layoutY="407.0" mnemonicParsing="false" onAction="#showInstructions" stylesheets="@../css/star.css">
          <graphic>
             <ImageView fx:id="creatingImg" fitHeight="153.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true" />
          </graphic>
