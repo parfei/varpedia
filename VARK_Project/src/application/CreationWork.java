@@ -49,11 +49,12 @@ public class CreationWork extends Task<String> {
     protected String call() throws Exception {
         if (_combine) { //If user specifies to combine audio, we generate combined audio.
             generateCombinedAudio();
+            setAudioDuration();
             addBackgroundMusic();
         } else {
             generateAudio();
         }
-        setAudioDuration();
+        //setAudioDuration();
         if (_picNum == 0) { //If failed to get Flickr images or there are no Flickr images available then generate blue video.
             generateBlueVideo();
         } else {
@@ -276,7 +277,7 @@ public class CreationWork extends Task<String> {
     }
 
     private void setAudioDuration(){
-        String command1 = "soxi -D \"" + _path + "combinedSound.wav\"";
+        String command1 = "soxi -D \"" + _path + "sound.wav\"";
         try {
             _audioDura = Double.parseDouble(new BashCommand().bash(command1).get(0));
         } catch (Exception e) {
