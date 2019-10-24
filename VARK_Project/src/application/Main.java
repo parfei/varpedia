@@ -33,7 +33,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         ManageFolder.initializeFolders(); //Create necessary folders.
-        new BashCommand().bash("mkdir -p \"" + PathCD.getPathInstance().getPath() + "/mydir/.temp/photos\"");
+        new BashCommand().bash("mkdir -p \"" + PathCD.getPathInstance().getPath() + "/mydir/.temp/\"");
         this.writeScheme();
 
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.WINDOW.toString()));
