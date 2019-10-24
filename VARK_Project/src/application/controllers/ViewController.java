@@ -273,6 +273,7 @@ public class ViewController {
         } else {
             setCreations("creations");
         }
+        initializeCellFactory();
 
 //        int index = 0;
 //        for (Object item : stuffCreated.getItems()){
