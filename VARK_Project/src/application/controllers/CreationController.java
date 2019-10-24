@@ -36,7 +36,7 @@ public class CreationController {
 
     @FXML
     public void initialize() throws Exception {
-        String command2 = "mkdir -p \"" + PathIs.TEMP + "/audioPiece\"";
+        String command2 = "mkdir -p \"" + PathIs.TEMP + "/audioPiece\" ; mkdir -p \""+ PathIs.TEMP + "/photos\" ";
         new BashCommand().bash(command2);
 
         progress.setVisible(false);
