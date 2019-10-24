@@ -4,6 +4,8 @@ import application.ChangeScene;
 import application.Main;
 import application.values.PicPath;
 import application.values.SceneFXML;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 
 
@@ -13,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,12 +27,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainController {
 
     private ChangeScene _changeSceneObject=new ChangeScene();
     @FXML private AnchorPane TOPVIEW;
     @FXML private ImageView creatingImg;
+    @FXML private Button starBtn;
 
     private static final Image LOADING = new Image(PicPath.MENU + "/download.png");
     private static final Image PLACEHOLDER = new Image(PicPath.MENU + "/placeholder.png");
@@ -60,18 +67,21 @@ public class MainController {
     }
 
     @FXML
-    public void help(ActionEvent event){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("Help sheet will be included soon.");
-        alert.showAndWait();
-    }
-
-    @FXML
     public void showInstructions(ActionEvent event) throws IOException {
+        starBtn.setDisable(true);
         Popup instructions = popupHelper();
         instructions.show(((Node)event.getTarget()).getScene().getWindow());
-        instructions.setAnchorX(-50);
-        instructions.setAnchorY(500);
+        Executors.newSingleThreadExecutor().submit(new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                Thread.sleep(3000);
+                Platform.runLater(() -> {
+                    instructions.hide();
+                    starBtn.setDisable(false);
+                });
+                return null;
+            }
+        });
     }
 
     public Object setTOPVIEW(String layout) throws IOException {
@@ -94,6 +104,8 @@ public class MainController {
         Popup popup = new Popup();
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.TIP.toString()));
         popup.getContent().add((Parent)loader.load());
+        popup.setAnchorX(-100);
+        popup.setAnchorY(500);
 
         return popup;
     }
