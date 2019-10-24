@@ -38,5 +38,9 @@ public enum SceneFXML {
     CREATE{
         @Override
         public String toString() { return "resources/CreateNew.fxml"; }
+    },
+    TIP{
+        @Override
+        public String toString() { return "resources/StarTip.fxml"; }
     };
 }
