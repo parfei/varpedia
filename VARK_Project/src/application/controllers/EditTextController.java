@@ -23,6 +23,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -35,6 +36,7 @@ import java.io.*;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -223,18 +225,15 @@ public class EditTextController {
      */
     @FXML
     public void save(ActionEvent event) throws Exception {
-        //RadioButton selectedRadioButton = (RadioButton) group.getSelectedToggle();
         audioSaveResponse.setVisible(true);
         String selectedText = textArea.getSelectedText();
 
-        //if (!checkValidSelection(textArea.getSelectedText())) {
-        //    return;
-        //} else { // save the selected text to a file and switch scene to saveToAudio interface
+
             String saveble = selectedText.replaceAll("[\\[\\](){}']", "");
             int numberOfAudio=countNumberOfAudioFileInAudioPiece();
             String number=Integer.toString(numberOfAudio);
 
-            ManageFolder.writeToFile(PathIs.EXTRA + "/savedText" + countNumberOfAudioFileInAudioPiece() + ".txt", saveble);
+            ManageFolder.writeToFile(PathIs.EXTRA + "/saveTextFolder/"+"savedText" + countNumberOfAudioFileInAudioPiece() + ".txt", saveble);
 
             if (default_voice.isSelected()) {
                 SaveHelper sh = new SaveHelper("default_voice", number, _term);
@@ -327,8 +326,10 @@ public class EditTextController {
      */
     @FXML
     public void readyToCombine(ActionEvent event) throws IOException {
-        EditPicturesController controller = (EditPicturesController) Main.getController().setTOPVIEW(SceneFXML.IMAGES.toString());
-        controller.initData(_term);
+//        EditPicturesController controller = (EditPicturesController) Main.getController().setTOPVIEW(SceneFXML.IMAGES.toString());
+//        controller.initData(_term);
+
+        Main.getController().setTOPVIEW(SceneFXML.SHOWTEXT.toString());
     }
 
     /**
@@ -429,4 +430,18 @@ public class EditTextController {
         String command = "find \"" + PathIs.TEMP + "/audioPiece/" + name + ".wav\"";
         return new BashCommand().bash(command).get(0);
     }
+
+
+
+    public void concatenateTextFile() throws Exception {
+        String textFolder = PathIs.EXTRA + "/saveTextFolder";
+
+        ArrayList<String> output = new BashCommand().bash("cd \"" + textFolder+"\"; cat *.txt");
+        String finalText = output.toString().substring(1);
+        finalText = finalText.substring(0,finalText.lastIndexOf("]"));
+
+
+    }
 }
+
+

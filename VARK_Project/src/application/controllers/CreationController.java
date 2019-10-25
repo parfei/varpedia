@@ -28,6 +28,7 @@ import java.io.*;
 public class CreationController {
     public String _InputFromUser;
     private String _line;
+    private Scene _scene;
 
     @FXML private TextField yourKeyWord;
 
@@ -38,7 +39,10 @@ public class CreationController {
 
 
 
+
     public CreationController() throws IOException {
+
+
 
     }
 
@@ -59,6 +63,11 @@ public class CreationController {
 
 
     }
+    public Scene getScene(){
+        System.out.println(enterButton.getScene());
+        return enterButton.getScene();
+
+    }
 
 
 
@@ -69,7 +78,7 @@ public class CreationController {
 
 
     @FXML
-    public void backToMain(ActionEvent event) throws IOException {
+    public void backToMain() throws IOException {
         //_changeSceneObject.changeScene(event, "resources/menu.fxml", "Main Menu");
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
@@ -83,6 +92,7 @@ public class CreationController {
 
     @FXML
     public void search() throws IOException {
+        System.out.println(enterButton.getScene());
         _InputFromUser = yourKeyWord.getText();
         if (_InputFromUser.trim().isEmpty() || _InputFromUser == null) {
             whatDoYouWant.setText("Invalid input, please enter again");
@@ -94,11 +104,12 @@ public class CreationController {
         }
     }
 
-
+    @FXML
     public void addKeyBoardShortCut() {
         yourKeyWord.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
+
                 if (keyEvent.getCode() == KeyCode.ENTER) {
                     try {
                         search();
@@ -108,6 +119,22 @@ public class CreationController {
                 }
             }
         });
+       /*Scene scene=this.getScene();
+       scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
+            @Override
+            public void handle(KeyEvent keyEvent) {
+
+                if (keyEvent.getCode() == KeyCode.LEFT) {
+                    try {
+                        backToMain();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });*/
+
+
     }
 
 

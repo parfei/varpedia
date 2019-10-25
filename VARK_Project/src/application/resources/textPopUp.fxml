@@ -6,7 +6,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.TextPopUpController">
    <children>
       <Label layoutX="107.0" layoutY="36.0" text="Text">
@@ -15,9 +14,9 @@
          </font>
       </Label>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-      <TextArea layoutX="4.0" layoutY="100.0" prefHeight="296.0" prefWidth="1194.0" wrapText="true">
+      <TextArea fx:id="textArea" layoutX="4.0" layoutY="100.0" prefHeight="296.0" prefWidth="1194.0" wrapText="true">
          <font>
-            <Font size="16.0" />
+            <Font size="25.0" />
          </font>
       </TextArea>
    </children>
