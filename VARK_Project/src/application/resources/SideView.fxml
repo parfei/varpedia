@@ -26,9 +26,10 @@
             <TableColumn prefWidth="35.0" text="!" />
         </columns>
       </TableView>
-      <HBox layoutX="120.0" layoutY="554.0" prefHeight="28.0" prefWidth="104.0">
+      <HBox layoutX="7.0" layoutY="554.0" prefHeight="28.0" prefWidth="217.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#favourite" prefHeight="26.0" prefWidth="34.0" text="★" />
+            <Button mnemonicParsing="false" prefHeight="28.0" prefWidth="115.0" text="Clear data" />
+            <Button fx:id="favBtn" mnemonicParsing="false" onAction="#favourite" prefHeight="37.0" prefWidth="34.0" text="★" />
             <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteVideo" prefHeight="11.0" prefWidth="78.0" text="Delete">
                <font>
                   <Font size="14.0" />
@@ -59,7 +60,6 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <Label fx:id="errorText" layoutX="18.0" layoutY="553.0" prefHeight="28.0" prefWidth="95.0" text="Select item" textFill="RED" />
       <CheckBox fx:id="favOption" layoutX="116.0" layoutY="5.0" mnemonicParsing="false" onAction="#tickFav" text="Favourites" />
       <Label layoutX="865.0" layoutY="538.0" text="Confidence Rating" />
       <Slider fx:id="confidence" blockIncrement="0.0" layoutX="280.0" layoutY="530.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" onMouseReleased="#changeConfidence" prefHeight="26.0" prefWidth="548.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />

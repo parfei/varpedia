@@ -40,13 +40,13 @@ public class ViewController {
 
     @FXML private ListView stuffCreated;
 
-    @FXML private Label errorText;
     @FXML private MediaView view;
     @FXML private ButtonBar playOptions;
     @FXML private Button playButton;
     @FXML private Button muteButton;
     @FXML private CheckBox favOption;
     @FXML private Slider confidence;
+    @FXML private Button favBtn;
 
     /**
      * This method will add the existing creation to the ListView
@@ -61,7 +61,7 @@ public class ViewController {
             }
         });
 
-        errorText.setVisible(false);
+        favBtn.setDisable(true);
         playButton.setDisable(true);
         playOptions.setDisable(true);
     }
@@ -78,6 +78,7 @@ public class ViewController {
             _choice = selectedCreation.get(0).toString();
             if (_choice != null){
                 playButton.setDisable(false);
+                favBtn.setDisable(false);
 
                 File file = new File(ManageFolder.findPath(_choice, true));
                 _player = new MediaPlayer(new Media(file.toURI().toString())); //Set up player to be played.
@@ -130,13 +131,11 @@ public class ViewController {
     @FXML
     public void playVideo(ActionEvent event)throws IOException{
         if (_choice == null){
-            errorText.setVisible(true);
             return;
         }
 
         view.setVisible(true);
         stuffCreated.setDisable(true);
-        errorText.setVisible(false);
         playOptions.setDisable(false); //Show the video manipulation options.
 
         if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
@@ -202,6 +201,9 @@ public class ViewController {
 
                         Platform.runLater(() -> {
                             _choice = null;
+                            playButton.setDisable(true);
+                            favBtn.setDisable(true);
+
                             try {
                                 tickFav(); //get the list of creations for currently ticked option.
                             } catch (Exception e) {
@@ -215,7 +217,6 @@ public class ViewController {
                 return;
             }
         } else {
-            errorText.setVisible(true);
         }
     }
 
@@ -241,7 +242,6 @@ public class ViewController {
     @FXML
     public void favourite(ActionEvent event) throws Exception { //TODO implement remove favourites, button changes when this option is ticked.
         if (_choice != null){
-            errorText.setVisible(false);
 
             String file = "\"" + ManageFolder.findPath(_choice, true) + "\"";
             String file2 = "\"" + PathCD.getPathInstance().getPath() + "/mydir/creations/favourites/" + _choice + ".mp4\"";
@@ -252,7 +252,6 @@ public class ViewController {
             new BashCommand().bash(command);
 
         } else {
-            errorText.setVisible(true);
         }
         tickFav();
     }

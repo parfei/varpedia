@@ -16,7 +16,11 @@ public class Play extends Task<Boolean> {
     protected Boolean call() throws Exception {
         try {
             String current = ManageFolder.readFile(_path + "/plays.txt");
-            ManageFolder.writeToFile(_path + "/plays.txt", Integer.toString(Integer.parseInt(current) + 1));
+            if (current.equals("")){
+                ManageFolder.writeToFile(_path + "/plays.txt", "0");
+            } else {
+                ManageFolder.writeToFile(_path + "/plays.txt", Integer.toString(Integer.parseInt(current) + 1));
+            }
         } catch (FileNotFoundException e){
             ManageFolder.writeToFile(_path + "/plays.txt", "0");
         }
