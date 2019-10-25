@@ -69,7 +69,7 @@ public class MainController {
     @FXML
     public void showInstructions(ActionEvent event) throws IOException {
         starBtn.setDisable(true);
-        Popup instructions = popupHelper();
+        Popup instructions = popupHelper("I show tips from time to time!");
         instructions.show(((Node)event.getTarget()).getScene().getWindow());
         Executors.newSingleThreadExecutor().submit(new Task<Void>() {
             @Override
@@ -100,10 +100,11 @@ public class MainController {
         }
     }
 
-    private Popup popupHelper() throws IOException {
+    public Popup popupHelper(String text) throws IOException {
         Popup popup = new Popup();
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.TIP.toString()));
         popup.getContent().add((Parent)loader.load());
+        ((TipController) loader.getController()).setTipText(text);
         popup.setAnchorX(-100);
         popup.setAnchorY(480);
 
