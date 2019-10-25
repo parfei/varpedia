@@ -256,7 +256,7 @@ public class ViewController {
      * @throws Exception
      */
     @FXML
-    public void tickFav() throws Exception {
+    public void tickFav() throws Exception { //TODO IMPLEMENT UNFAVOURITE
         if (favOption.isSelected()){
             setCreations("favourites");
         } else {
