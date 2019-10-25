@@ -42,5 +42,9 @@ public enum SceneFXML {
     TIP{
         @Override
         public String toString() { return "resources/StarTip.fxml"; }
+    },
+    SHOWTEXT{
+        @Override
+        public String toString() { return "resources/textPopUp.fxml"; }
     };
 }

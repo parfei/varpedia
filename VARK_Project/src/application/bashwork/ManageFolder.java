@@ -26,7 +26,8 @@ public class ManageFolder {
         ArrayList<String> list = output.bash("[ -e \"" + path + "/mydir\" ]");
         if (list.isEmpty()){
         } else if (list.get(0).equals("1")) {
-            output.bash("mkdir -p \"" + path + "/mydir/.extra/\" ; mkdir -p \"" + path + "/mydir/creations/creations\" ; mkdir -p \"" + path + "/mydir/creations/favourites\"");
+            output.bash("mkdir -p \"" + path + "/mydir/.extra/saveTextFolder\" ; mkdir -p \"" + path + "/mydir/creations/creations\" ; mkdir -p \"" + path + "/mydir/creations/favourites\"");
+
         }
     }
 
