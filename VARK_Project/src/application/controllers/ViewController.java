@@ -1,13 +1,18 @@
 package application.controllers;
 import application.Confidence;
+import application.Main;
 import application.PathCD;
 import application.Play;
 import application.bashwork.BashCommand;
 import application.bashwork.ManageFolder;
 import application.listeners.CreationListCell;
+import application.values.PicPath;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -15,6 +20,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -28,6 +35,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javafx.stage.Popup;
 import javafx.util.Callback;
 import javafx.util.Duration;
 
@@ -37,18 +45,27 @@ import javafx.util.Duration;
 public class ViewController {
     private String _choice;
     private MediaPlayer _player;
+    private Boolean _muted = false;
+    private Boolean _paused = false;
     private ExecutorService team = Executors.newSingleThreadExecutor();
+    private static final Image MUTE = new Image(PicPath.VIEW + "/mute.png");
+    private static final Image UNMUTE = new Image(PicPath.VIEW + "/unmute.png");
+    private static final Image PLAY = new Image(PicPath.VIEW + "/play.png");
+    private static final Image PAUSE = new Image(PicPath.VIEW + "/pause.png");
 
     @FXML private ListView stuffCreated;
 
     @FXML private MediaView view;
-    @FXML private ButtonBar playOptions;
+    @FXML private HBox playOptions;
     @FXML private Button playButton;
     @FXML private Button muteButton;
     @FXML private CheckBox favOption;
     @FXML private Slider confidence;
+    @FXML private Slider playTimer;
     @FXML private Button favBtn;
     @FXML private HBox creationOptions;
+    @FXML private ImageView muteImg;
+    @FXML private ImageView playImg;
 
     /**
      * This method will add the existing creation to the ListView
@@ -84,6 +101,7 @@ public class ViewController {
 
                 File file = new File(ManageFolder.findPath(_choice, true));
                 _player = new MediaPlayer(new Media(file.toURI().toString())); //Set up player to be played.
+                sliderSetUp();
 
                 //Get confidence rating from file.
                 int rate = Integer.parseInt(ManageFolder.readFile(ManageFolder.findPath(_choice, false) + "/confidence.txt"));
@@ -98,6 +116,7 @@ public class ViewController {
                     try {
                         team.submit(new Play(_choice));
                         setColourImmediately();
+                        Main.getController().popupHelper("How well do you know the word now? Rate yourself!");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -105,20 +124,27 @@ public class ViewController {
 
                 view.setDisable(false);
                 view.setMediaPlayer(_player);
-
-                /*String cmd = "ffplay -autoexit \"" + path "\"";
-            System.out.println(cmd);
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", cmd);
-            try {
-                Process process = pb.start();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            }else{
-            }*/
             }
         }catch (Exception e){
         }
+    }
+
+    /**
+     * https://stackoverflow.com/questions/37765499/javafx-video-player-timeslider
+     */
+    private void sliderSetUp(){
+        _player.currentTimeProperty().addListener((observableValue, duration, t1) -> {
+            Duration currentTime = _player.getCurrentTime();
+            int value = (int) currentTime.toSeconds();
+            playTimer.setValue(value);
+        });
+    }
+
+    @FXML
+    private void changeVidTime(){
+        Duration time = Duration.seconds(playTimer.getValue());
+        _player.seek(time);
+        playTimer.setValue(time.toSeconds());
     }
 
     /**
@@ -139,10 +165,10 @@ public class ViewController {
         if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
             _player.pause();
             stuffCreated.setDisable(false);
-            playButton.setText("Play");
+            playImg.setImage(PLAY);
         } else {
             _player.play();
-            playButton.setText("Pause");
+            playImg.setImage(PAUSE);
         }
     }
 
@@ -153,23 +179,22 @@ public class ViewController {
      */
     @FXML
     public void videoPlay(ActionEvent event) throws Exception { //TODO if user presses something else
-        String btnText = ((Button)event.getSource()).getText(); //Get button pressed's text
+        //String btnText = ((Button)event.getSource()).getText(); //Get button pressed's text
+        String id = ((Control)event.getSource()).getId();
 
-        if (btnText.equals("<< 10")){ //Regardless if playing status or not...
-            _player.play();
-            _player.seek(new Duration(_player.getCurrentTime().toMillis() - 10000));
-        } else if (btnText.equals("10 >>")){
-            _player.play();
-            _player.seek(new Duration(_player.getCurrentTime().toMillis() + 10000));
-        } else if (btnText.equals("Stop")){
+        if (id.equals("stopButton")){
             _player.stop();
-            resetPlayer();
-        } else if (btnText.equals("Mute")){
-            _player.setMute(true);
-            muteButton.setText("Unmute");
-        } else if (btnText.equals("Unmute")){
-            _player.setMute(false);
-            muteButton.setText("Mute");
+            playOptions.setDisable(true);
+        } else if (id.equals("muteButton")){
+            if (!_muted){
+                _player.setMute(true);
+                muteImg.setImage(UNMUTE);
+                _muted = true;
+            } else {
+                _player.setMute(false);
+                muteImg.setImage(MUTE);
+                _muted = false;
+            }
         }
     }
 
@@ -292,8 +317,8 @@ public class ViewController {
     private void resetPlayer() throws Exception {
         muteButton.setDisable(true);
         playOptions.setDisable(true);
-        muteButton.setText("Mute");
-        playButton.setText("Play");
+        muteImg.setImage(MUTE);
+        playImg.setImage(PLAY);
 
         view.setDisable(true);
         _player.stop();

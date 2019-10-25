@@ -40,7 +40,6 @@ public class MainController {
 
     private static final Image LOADING = new Image(PicPath.MENU + "/download.png");
     private static final Image PLACEHOLDER = new Image(PicPath.MENU + "/placeholder.png");
-    private final Popup helpFromStar = new Popup();
 
     @FXML
     public void initialize() throws IOException {
@@ -56,13 +55,13 @@ public class MainController {
 
     @FXML
     public void create(ActionEvent event) throws IOException {
-        //_changeSceneObject.changeScene(event,"resources/Creation.fxml","Creation");
+        popupHelper("Enter a word to search up!");
         this.setTOPVIEW(SceneFXML.SEARCH.toString());
     }
 
     @FXML
     public void view(ActionEvent event)throws IOException{
-        //_changeSceneObject.changeScene(event,"resources/View.fxml","View Menu");
+        popupHelper("Click on a creation to get started!");
         this.setTOPVIEW(SceneFXML.VIEW.toString());
     }
 
@@ -70,7 +69,6 @@ public class MainController {
     public void showInstructions(ActionEvent event) throws IOException {
         starBtn.setDisable(true);
         Popup instructions = popupHelper("I show tips from time to time!");
-        instructions.show(((Node)event.getTarget()).getScene().getWindow());
         Executors.newSingleThreadExecutor().submit(new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -107,6 +105,8 @@ public class MainController {
         ((TipController) loader.getController()).setTipText(text);
         popup.setAnchorX(creatingImg.getX() - 100);
         popup.setAnchorY(creatingImg.getY() + 450);
+
+        popup.show((Stage)TOPVIEW.getScene().getWindow());
 
         return popup;
     }
