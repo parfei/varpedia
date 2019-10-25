@@ -21,19 +21,23 @@ public class CreationListCell extends ListCell<String> {
 
             String bgStyle = "";
             String textStyle = "";
+            String foreStyle = "";
 
             if (Integer.parseInt(plays) == 0) { //If video has never been played. //TODO after play video once, confidence has to be set
                 bgStyle += "#93D4EE;";
-                textStyle += "white;";
+                textStyle += "black;";
+                foreStyle += "white;";
             } else if (Integer.parseInt(confidence) < 3) { //If confidence is below 3
                 bgStyle += "orange;";
-                textStyle += "white;";
-            } else {
-                bgStyle += "white;";
                 textStyle += "black;";
+                foreStyle += "white;";
+            } else {
+                bgStyle += "#2E69A4;";
+                textStyle += "black;";
+                foreStyle += "#80B8F0;";
             }
 
-            setStyle("-fx-background-color:" + bgStyle + "text-fill:" + textStyle);
+            setStyle("-fx-background-color:" + bgStyle);
 
         } catch (Exception e) {
             e.printStackTrace();

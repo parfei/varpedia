@@ -52,7 +52,7 @@ public class ViewController {
      * It will also set the cell factory for stuffcreated listview.
      */
     public void initialize() throws Exception {//TODO concurrency for this??
-        initializeCellFactory();
+        stuffCreated.setCellFactory((Callback<ListView<String>, ListCell<String>>) param -> new CreationListCell());
 
         team.submit(() -> {
             try {
@@ -67,10 +67,6 @@ public class ViewController {
         playButton.setDisable(true);
         playOptions.setDisable(true);
         muteButton.setDisable(true);
-    }
-
-    private void initializeCellFactory(){
-        stuffCreated.setCellFactory((Callback<ListView<String>, ListCell<String>>) param -> new CreationListCell());
     }
 
     /**
@@ -105,7 +101,7 @@ public class ViewController {
                         int index = stuffCreated.getSelectionModel().getSelectedIndex();
                         Object[]cells = stuffCreated.lookupAll(".cell").toArray();
                         Cell cell = (Cell) cells[index];
-                        checkNeedReview(cell, _choice);
+                        setColourImmediately(cell, _choice);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -238,7 +234,7 @@ public class ViewController {
             Object[]cells = stuffCreated.lookupAll(".cell").toArray();
             Cell cell = (Cell) cells[index];
             try {
-                checkNeedReview(cell, _choice);
+                setColourImmediately(cell, _choice);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -273,19 +269,6 @@ public class ViewController {
         } else {
             setCreations("creations");
         }
-        initializeCellFactory();
-
-//        int index = 0;
-//        for (Object item : stuffCreated.getItems()){
-//            Object[] cells = stuffCreated.lookupAll(".cell").toArray();
-//            Cell cell = (Cell) cells[index];
-//            try {
-//                checkNeedReview(cell, (String) item);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            index++;
-//        }
     }
 
     private void setCreations(String path) throws Exception { //TODO USE THIS!
@@ -317,7 +300,7 @@ public class ViewController {
      * Method called everytime a video changes confidence or view count. Check whether item needs reviewing or not.
      * Code inspired from: https://stackoverflow.com/questions/20936101/get-listcell-via-listview
      */
-    private void checkNeedReview(Cell cell, String creation) throws Exception {
+    private void setColourImmediately(Cell cell, String creation) throws Exception {
         String confidence = ManageFolder.readFile(ManageFolder.findPath(creation, false) + "/confidence.txt");
         String plays = ManageFolder.readFile(ManageFolder.findPath(creation, false) + "/plays.txt");
 
@@ -327,6 +310,8 @@ public class ViewController {
             style += "#93D4EE;";
         } else if (Integer.parseInt(confidence) < 3){ //If confidence is below 3
             style += "orange;";
+        } else {
+            style += "#80B8F0;";
         }
 
         cell.setStyle(style);
