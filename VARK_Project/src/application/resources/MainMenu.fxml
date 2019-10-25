@@ -10,14 +10,14 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="596.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainMenuController">
    <children>
-      <ImageView fitHeight="593.0" fitWidth="988.0" layoutX="3.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="593.0" fitWidth="992.0" layoutX="-2.0" layoutY="2.0" pickOnBounds="true">
          <image>
             <Image url="@images/background.png" />
          </image>
       </ImageView>
-      <Label alignment="CENTER" layoutX="369.0" layoutY="268.0" prefHeight="59.0" prefWidth="327.0" text="VARpedia">
+      <Label fx:id="titleLabel" alignment="CENTER" layoutX="324.0" layoutY="244.0" prefHeight="96.0" prefWidth="523.0" text="VARpedia">
          <font>
-            <Font name="SansSerif Regular" size="49.0" />
+            <Font name="Gargi" size="79.0" />
          </font>
          <textFill>
             <LinearGradient endX="0.009615384615384606" endY="0.966346153846154">
@@ -32,6 +32,5 @@
             </LinearGradient>
          </textFill>
       </Label>
-      <Label layoutX="549.0" layoutY="328.0" text="PROTOTYPE" />
    </children>
 </AnchorPane>

@@ -19,6 +19,11 @@
 
 <AnchorPane minWidth="664.0" prefHeight="596.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ViewController">
    <children>
+      <ImageView fitHeight="593.0" fitWidth="992.0" pickOnBounds="true">
+         <image>
+            <Image url="@images/background.png" />
+         </image>
+      </ImageView>
       <ListView fx:id="stuffCreated" layoutX="4.0" layoutY="27.0" onMouseClicked="#getTheSelection" prefHeight="513.0" prefWidth="231.0" />
       <TableView fx:id="list" layoutY="-2.0" prefHeight="341.0" prefWidth="220.0" visible="false">
         <columns>
@@ -29,19 +34,26 @@
       </TableView>
       <HBox fx:id="creationOptions" layoutX="11.0" layoutY="547.0" prefHeight="28.0" prefWidth="217.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#clearDataForCreation" prefHeight="28.0" prefWidth="115.0" text="Clear data" />
+            <Button mnemonicParsing="false" onAction="#clearDataForCreation" prefHeight="42.0" prefWidth="99.0" text="Clear Data" />
             <Button fx:id="favBtn" mnemonicParsing="false" onAction="#favourite" prefHeight="37.0" prefWidth="34.0" stylesheets="@../css/menu_button.css">
                <graphic>
-                  <ImageView fitHeight="33.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="40.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/view/favourite.png" />
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteVideo" prefHeight="11.0" prefWidth="78.0" text="Delete">
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteVideo" prefHeight="11.0" prefWidth="78.0" stylesheets="@../css/menu_button.css">
                <font>
                   <Font size="14.0" />
                </font>
+               <graphic>
+                  <ImageView fitHeight="39.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/view/trash.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </children>
       </HBox>

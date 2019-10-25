@@ -12,14 +12,19 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="245.0" prefHeight="596.0" prefWidth="1065.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.EditTextController">
+<AnchorPane minHeight="245.0" minWidth="992.0" prefHeight="596.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.EditTextController">
    <children>
+      <ImageView fitHeight="593.0" fitWidth="992.0" pickOnBounds="true">
+         <image>
+            <Image url="@images/background.png" />
+         </image>
+      </ImageView>
       <TextArea fx:id="textArea" layoutX="4.0" layoutY="4.0" onMouseClicked="#checkValidSelection" prefHeight="590.0" prefWidth="546.0" wrapText="true" />
-      <Button layoutX="1020.0" layoutY="6.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="18.0" prefWidth="33.0" text="x" />
-      <Button fx:id="createBtn" disable="true" layoutX="686.0" layoutY="513.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="47.0" prefWidth="95.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Create" textFill="WHITE" />
-      <Label layoutX="898.0" layoutY="12.0" text="Existing Audio" />
-      <ListView fx:id="existingAudioView" layoutX="815.0" layoutY="37.0" onMouseClicked="#getAudioSelection" prefHeight="503.0" prefWidth="248.0" />
-      <VBox layoutX="564.0" layoutY="161.0" prefHeight="231.0" prefWidth="227.0" spacing="20.0">
+      <Button layoutX="944.0" layoutY="6.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="18.0" prefWidth="33.0" text="x" />
+      <Button fx:id="createBtn" disable="true" layoutX="672.0" layoutY="513.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="47.0" prefWidth="95.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Create" textFill="WHITE" />
+      <Label layoutX="787.0" layoutY="12.0" text="Existing Audio" />
+      <ListView fx:id="existingAudioView" layoutX="785.0" layoutY="37.0" onMouseClicked="#getAudioSelection" prefHeight="503.0" prefWidth="192.0" />
+      <VBox layoutX="564.0" layoutY="161.0" prefHeight="231.0" prefWidth="207.0" spacing="20.0">
          <children>
             <Label fx:id="remindLabel" prefHeight="140.0" prefWidth="259.0" text="Switched to default voice due to voice limitations" textFill="RED" wrapText="true" />
             <Label fx:id="askForVoice" prefHeight="17.0" prefWidth="219.0" text="Please select a voice" />
@@ -42,7 +47,7 @@
             </HBox>
          </children>
       </VBox>
-      <HBox layoutX="818.0" layoutY="547.0" prefHeight="35.0" prefWidth="239.0">
+      <HBox layoutX="785.0" layoutY="547.0" prefHeight="35.0" prefWidth="192.0">
          <children>
             <Button fx:id="playButton" disable="true" mnemonicParsing="false" onAction="#playAudio" prefHeight="26.0" prefWidth="121.0" text="play" />
             <Button fx:id="deleteButton" disable="true" mnemonicParsing="false" onAction="#deleteAudio" prefHeight="26.0" prefWidth="130.0" text="delete" />

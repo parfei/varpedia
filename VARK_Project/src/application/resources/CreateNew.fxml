@@ -5,19 +5,26 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="0.0" prefHeight="596.0" prefWidth="1065.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreateNewController">
+<AnchorPane minHeight="0.0" minWidth="992.0" prefHeight="596.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreateNewController">
    <children>
+      <ImageView fitHeight="593.0" fitWidth="992.0" layoutX="1.0" pickOnBounds="true">
+         <image>
+            <Image url="@images/background.png" />
+         </image>
+      </ImageView>
       <Label fx:id="labelMessage" layoutX="793.0" layoutY="4.0" prefHeight="26.0" prefWidth="171.0" text="Existing Creations">
          <font>
             <Font size="16.0" />
          </font></Label>
-      <ListView fx:id="listViewExistCreation" layoutX="788.0" layoutY="29.0" prefHeight="495.0" prefWidth="257.0" />
-      <Button layoutX="889.0" layoutY="545.0" mnemonicParsing="false" onAction="#returnToStart" prefHeight="34.0" prefWidth="149.0" text="Main Menu">
+      <ListView fx:id="listViewExistCreation" layoutX="788.0" layoutY="29.0" prefHeight="495.0" prefWidth="185.0" />
+      <Button layoutX="818.0" layoutY="545.0" mnemonicParsing="false" onAction="#returnToStart" prefHeight="34.0" prefWidth="149.0" text="Main Menu">
          <font>
             <Font size="16.0" />
          </font></Button>

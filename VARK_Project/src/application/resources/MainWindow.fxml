@@ -6,8 +6,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" style="-fx-background-color: #FBF3E1;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainController">
    <children>
+      <ImageView fitHeight="596.0" fitWidth="203.0" layoutY="2.0" pickOnBounds="true">
+         <image>
+            <Image url="@images/background_side.png" />
+         </image>
+      </ImageView>
       <Button fx:id="view" alignment="CENTER" layoutX="5.0" layoutY="35.0" mnemonicParsing="false" onAction="#view" prefHeight="173.0" prefWidth="181.0" style="-fx-border-radius: 5;" stylesheets="@../css/menu_button.css">
          <font>
             <Font size="17.0" />
