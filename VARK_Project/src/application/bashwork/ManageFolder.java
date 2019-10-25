@@ -10,7 +10,12 @@ public class ManageFolder {
 
     public static ArrayList<String> getCreations(String path) throws Exception {
         BashCommand list = new BashCommand();
-        ArrayList<String> creations = list.bash("ls -R"+ " \""+ PathCD.getPathInstance().getPath() + "/mydir/creations/" + path + "/\""+ " | grep .mp4 | cut -f1 -d'.' | sort");
+        ArrayList<String> creations = null;
+        if (path.equals("favourites")){
+            creations = list.bash("ls -R"+ " \""+ PathCD.getPathInstance().getPath() + "/mydir/creations/favourites\""+ " | grep .mp4 | cut -f1 -d'.' | sort");
+        } else if (path.equals("creations")){
+            creations = list.bash("ls -R"+ " \""+ PathCD.getPathInstance().getPath() + "/mydir/creations\""+ " | grep .mp4 | cut -f1 -d'.' | sort");
+        }
         return creations;
     }
 

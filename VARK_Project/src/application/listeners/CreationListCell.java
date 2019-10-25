@@ -10,9 +10,15 @@ public class CreationListCell extends ListCell<String> {
         super.updateItem(item, empty);
 
         if (item == null) {
-            return;
-        }
+            setText("");
+            clearColour();
 
+        } else {
+            colourCell(item);
+        }
+    }
+
+    private void colourCell(String item){
         String confidence = null;
         try {
             setText(item);
@@ -42,5 +48,9 @@ public class CreationListCell extends ListCell<String> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void clearColour(){
+        setStyle("-fx-background-color: transparent");
     }
 }

@@ -55,7 +55,6 @@ public class ViewController {
     public void initialize() throws Exception {//TODO concurrency for this??
         team.submit(() -> {
             try {
-                stuffCreated.setCellFactory((Callback<ListView<String>, ListCell<String>>) param -> new CreationListCell());
                 setCreations("creations");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -65,7 +64,6 @@ public class ViewController {
         errorText.setVisible(false);
         playButton.setDisable(true);
         playOptions.setDisable(true);
-        muteButton.setDisable(true);
     }
 
     /**
@@ -139,7 +137,6 @@ public class ViewController {
         view.setVisible(true);
         stuffCreated.setDisable(true);
         errorText.setVisible(false);
-        muteButton.setDisable(false);
         playOptions.setDisable(false); //Show the video manipulation options.
 
         if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
@@ -278,6 +275,7 @@ public class ViewController {
         }
         stuffCreated.getItems().clear();
         stuffCreated.getItems().setAll(creations);
+        stuffCreated.setCellFactory((Callback<ListView<String>, ListCell<String>>) param -> new CreationListCell());
     }
 
     private void resetPlayer() throws Exception {
