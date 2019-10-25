@@ -297,6 +297,11 @@ public class EditTextController {
                         }
                     } else {
                         //Finally
+                        try {
+                            concatenateTextFile();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         try { updateExistingAudio(); } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -439,6 +444,13 @@ public class EditTextController {
         ArrayList<String> output = new BashCommand().bash("cd \"" + textFolder+"\"; cat *.txt");
         String finalText = output.toString().substring(1);
         finalText = finalText.substring(0,finalText.lastIndexOf("]"));
+        //store the text file some where
+
+        //why this does not work
+        FileWriter writer=new FileWriter(PathIs.EXTRA + "/myFinalText.txt");
+        writer.write(finalText);
+        writer.close();
+
 
 
     }

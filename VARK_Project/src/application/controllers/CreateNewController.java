@@ -223,7 +223,7 @@ public class CreateNewController {
      * Clean up audio files after creation.
      */
     private void cleanUp() throws Exception {
-        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp/audioPiece/* ; cd -";
+        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp/audioPiece/* ; rm -rf .temp/photos/* ; cd -";
         new BashCommand().bash(command);
     }
 

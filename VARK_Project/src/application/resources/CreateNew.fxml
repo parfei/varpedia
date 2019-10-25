@@ -57,7 +57,7 @@
                         </TextField>
                      </children>
                   </VBox>
-                  <Button fx:id="enterCreationButton" mnemonicParsing="false" onAction="#EnterCreation" text="Enter">
+                  <Button fx:id="enterCreationButton" defaultButton="true" mnemonicParsing="false" onAction="#EnterCreation" text="Enter">
                      <font>
                         <Font size="16.0" />
                      </font>
