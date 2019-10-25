@@ -26,9 +26,9 @@
             <TableColumn prefWidth="35.0" text="!" />
         </columns>
       </TableView>
-      <HBox layoutX="7.0" layoutY="554.0" prefHeight="28.0" prefWidth="217.0">
+      <HBox fx:id="creationOptions" layoutX="7.0" layoutY="554.0" prefHeight="28.0" prefWidth="217.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="28.0" prefWidth="115.0" text="Clear data" />
+            <Button mnemonicParsing="false" onAction="#clearDataForCreation" prefHeight="28.0" prefWidth="115.0" text="Clear data" />
             <Button fx:id="favBtn" mnemonicParsing="false" onAction="#favourite" prefHeight="37.0" prefWidth="34.0" text="★" />
             <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteVideo" prefHeight="11.0" prefWidth="78.0" text="Delete">
                <font>

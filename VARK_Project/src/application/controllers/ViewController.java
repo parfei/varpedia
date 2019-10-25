@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -47,6 +48,7 @@ public class ViewController {
     @FXML private CheckBox favOption;
     @FXML private Slider confidence;
     @FXML private Button favBtn;
+    @FXML private HBox creationOptions;
 
     /**
      * This method will add the existing creation to the ListView
@@ -61,7 +63,7 @@ public class ViewController {
             }
         });
 
-        favBtn.setDisable(true);
+        creationOptions.setDisable(true);
         playButton.setDisable(true);
         playOptions.setDisable(true);
     }
@@ -78,7 +80,7 @@ public class ViewController {
             _choice = selectedCreation.get(0).toString();
             if (_choice != null){
                 playButton.setDisable(false);
-                favBtn.setDisable(false);
+                creationOptions.setDisable(false);
 
                 File file = new File(ManageFolder.findPath(_choice, true));
                 _player = new MediaPlayer(new Media(file.toURI().toString())); //Set up player to be played.
@@ -95,11 +97,7 @@ public class ViewController {
                 _player.setOnEndOfMedia(() -> {
                     try {
                         team.submit(new Play(_choice));
-
-                        int index = stuffCreated.getSelectionModel().getSelectedIndex();
-                        Object[]cells = stuffCreated.lookupAll(".cell").toArray();
-                        Cell cell = (Cell) cells[index];
-                        setColourImmediately(cell, _choice);
+                        setColourImmediately();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -202,7 +200,7 @@ public class ViewController {
                         Platform.runLater(() -> {
                             _choice = null;
                             playButton.setDisable(true);
-                            favBtn.setDisable(true);
+                            creationOptions.setDisable(true);
 
                             try {
                                 tickFav(); //get the list of creations for currently ticked option.
@@ -227,11 +225,8 @@ public class ViewController {
         team.submit(change);
 
         change.setOnSucceeded(workerStateEvent -> {
-            int index = stuffCreated.getSelectionModel().getSelectedIndex();
-            Object[]cells = stuffCreated.lookupAll(".cell").toArray();
-            Cell cell = (Cell) cells[index];
             try {
-                setColourImmediately(cell, _choice);
+                setColourImmediately();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -256,12 +251,29 @@ public class ViewController {
         tickFav();
     }
 
+    /**
+     * Load the creations based on the favourites checkbox- if ticked, load in favourites only. If not ticked, load in all creations.
+     * @throws Exception
+     */
     @FXML
     public void tickFav() throws Exception {
         if (favOption.isSelected()){
             setCreations("favourites");
         } else {
             setCreations("creations");
+        }
+    }
+
+    /**
+     * If user wants to clear data for plays and confidence rating, then pressing this button resets data saved in the text files.
+     * @throws Exception
+     */
+    @FXML
+    public void clearDataForCreation() throws Exception {
+        if (_choice != null){
+            ManageFolder.writeToFile(ManageFolder.findPath(_choice, false) + "/plays.txt", "0");
+            ManageFolder.writeToFile(ManageFolder.findPath(_choice, false) + "/confidence.txt", "0");
+            setColourImmediately();
         }
     }
 
@@ -295,9 +307,13 @@ public class ViewController {
      * Method called everytime a video changes confidence or view count. Check whether item needs reviewing or not.
      * Code inspired from: https://stackoverflow.com/questions/20936101/get-listcell-via-listview
      */
-    private void setColourImmediately(Cell cell, String creation) throws Exception {
-        String confidence = ManageFolder.readFile(ManageFolder.findPath(creation, false) + "/confidence.txt");
-        String plays = ManageFolder.readFile(ManageFolder.findPath(creation, false) + "/plays.txt");
+    private void setColourImmediately() throws Exception {
+        int index = stuffCreated.getSelectionModel().getSelectedIndex();
+        Object[]cells = stuffCreated.lookupAll(".cell").toArray();
+        Cell cell = (Cell) cells[index];
+
+        String confidence = ManageFolder.readFile(ManageFolder.findPath(_choice, false) + "/confidence.txt");
+        String plays = ManageFolder.readFile(ManageFolder.findPath(_choice, false) + "/plays.txt");
 
         String style = "-fx-background-color:";
 
