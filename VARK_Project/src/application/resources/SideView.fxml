@@ -16,7 +16,7 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minWidth="664.0" prefHeight="596.0" prefWidth="1065.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ViewController">
+<AnchorPane minWidth="664.0" prefHeight="596.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ViewController">
    <children>
       <ListView fx:id="stuffCreated" layoutX="4.0" layoutY="27.0" onMouseClicked="#getTheSelection" prefHeight="513.0" prefWidth="231.0" />
       <TableView fx:id="list" layoutY="-2.0" prefHeight="341.0" prefWidth="220.0" visible="false">
@@ -36,16 +36,16 @@
             </Button>
          </children>
       </HBox>
-      <Pane fx:id="videoPlayer" layoutX="214.0" layoutY="3.0" prefHeight="474.0" prefWidth="845.0">
+      <Pane fx:id="videoPlayer" layoutX="241.0" layoutY="3.0" prefHeight="463.0" prefWidth="744.0">
          <children>
-            <MediaView fx:id="view" fitHeight="470.0" fitWidth="835.0" layoutX="5.0" layoutY="-2.0" preserveRatio="false">
+            <MediaView fx:id="view" fitHeight="463.0" fitWidth="735.0" layoutX="5.0" layoutY="-2.0" preserveRatio="false">
                <viewport>
                   <Rectangle2D />
                </viewport>
             </MediaView>
          </children>
       </Pane>
-      <ButtonBar fx:id="playOptions" layoutX="226.0" layoutY="465.0" prefHeight="46.0" prefWidth="830.0">
+      <ButtonBar fx:id="playOptions" layoutX="226.0" layoutY="465.0" prefHeight="46.0" prefWidth="762.0">
          <buttons>
             <Button fx:id="timeBack" layoutX="189.0" layoutY="20.0" mnemonicParsing="false" onAction="#videoPlay" prefHeight="34.0" prefWidth="546.0" text="&lt;&lt; 10" />
             <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
@@ -54,7 +54,7 @@
             <Button fx:id="muteButton" mnemonicParsing="false" onAction="#videoPlay" prefHeight="34.0" prefWidth="53.0" text="Mute" />
          </buttons>
       </ButtonBar>
-      <Button fx:id="playButton" layoutX="418.0" layoutY="471.0" mnemonicParsing="false" onAction="#playVideo" prefHeight="34.0" prefWidth="140.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Play" textFill="WHITE">
+      <Button fx:id="playButton" layoutX="396.0" layoutY="471.0" mnemonicParsing="false" onAction="#playVideo" prefHeight="34.0" prefWidth="140.0" style="-fx-background-color: #4A5156; -fx-border-color: #FFFFFF; -fx-background-radius: 8;" text="Play" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>

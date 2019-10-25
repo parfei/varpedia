@@ -39,6 +39,7 @@ public class ViewController {
     private ExecutorService team = Executors.newSingleThreadExecutor();
 
     @FXML private ListView stuffCreated;
+
     @FXML private Label errorText;
     @FXML private MediaView view;
     @FXML private ButtonBar playOptions;
@@ -52,12 +53,10 @@ public class ViewController {
      * It will also set the cell factory for stuffcreated listview.
      */
     public void initialize() throws Exception {//TODO concurrency for this??
-        stuffCreated.setCellFactory((Callback<ListView<String>, ListCell<String>>) param -> new CreationListCell());
-
         team.submit(() -> {
             try {
+                stuffCreated.setCellFactory((Callback<ListView<String>, ListCell<String>>) param -> new CreationListCell());
                 setCreations("creations");
-                tickFav();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -263,7 +262,6 @@ public class ViewController {
 
     @FXML
     public void tickFav() throws Exception {
-        List<String> list = null;
         if (favOption.isSelected()){
             setCreations("favourites");
         } else {
