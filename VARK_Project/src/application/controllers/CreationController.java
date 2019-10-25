@@ -8,6 +8,7 @@ import application.values.SceneFXML;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -17,6 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -32,7 +35,12 @@ public class CreationController {
     @FXML private ProgressBar progress;
     @FXML private Button enterButton;
     @FXML private Button goingBack;
-    private ChangeScene _changeSceneObject=new ChangeScene();
+
+
+
+    public CreationController() throws IOException {
+
+    }
 
     @FXML
     public void initialize() throws Exception {
@@ -43,7 +51,22 @@ public class CreationController {
         enterButton.setDisable(false);
         goingBack.setDisable(false);
         yourKeyWord.setDisable(false);
+        addKeyBoardShortCut();
+
+
+
+        // set enter keyboard shortcuts
+
+
     }
+
+
+
+
+
+
+
+
 
     @FXML
     public void backToMain(ActionEvent event) throws IOException {
@@ -51,32 +74,50 @@ public class CreationController {
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
 
+
     /**
      * This will check if term is searchable
      */
+
+
+
     @FXML
-    public void search(ActionEvent event) throws IOException {
+    public void search() throws IOException {
         _InputFromUser = yourKeyWord.getText();
         if (_InputFromUser.trim().isEmpty() || _InputFromUser == null) {
             whatDoYouWant.setText("Invalid input, please enter again");
             yourKeyWord.clear();
         } else {
-            DoingJob doingJob = new DoingJob(event);
+            DoingJob doingJob = new DoingJob();
             Thread thread = new Thread(doingJob);
             thread.start();
         }
     }
+
+
+    public void addKeyBoardShortCut() {
+        yourKeyWord.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.ENTER) {
+                    try {
+                        search();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+
+
 
     /**
      * create a class doing multithreading
      */
     class DoingJob extends Task<Void> {
         private boolean resultOut;
-        private ActionEvent _event;
-
-        public DoingJob(ActionEvent event) {
-            _event = event;
-        }
 
         @Override
         protected Void call() throws Exception {
