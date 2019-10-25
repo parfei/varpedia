@@ -105,8 +105,8 @@ public class MainController {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.TIP.toString()));
         popup.getContent().add((Parent)loader.load());
         ((TipController) loader.getController()).setTipText(text);
-        popup.setAnchorX(-100);
-        popup.setAnchorY(480);
+        popup.setAnchorX(creatingImg.getX() - 100);
+        popup.setAnchorY(creatingImg.getY() + 450);
 
         return popup;
     }
