@@ -7,24 +7,27 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="245.0" prefHeight="245.0" prefWidth="801.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreationController">
+<AnchorPane minHeight="245.0" prefHeight="600.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreationController">
    <children>
-      <Label fx:id="whatDoYouWant" layoutX="228.0" layoutY="51.0" prefHeight="20.0" prefWidth="296.0" text="Hi, what do you want to learn today?">
+      <Label fx:id="whatDoYouWant" layoutX="228.0" layoutY="51.0" prefHeight="25.0" prefWidth="478.0" text="Hi, what do you want to learn today?">
          <font>
-            <Font size="16.0" />
+            <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="yourKeyWord" layoutX="228.0" layoutY="91.0" prefHeight="26.0" prefWidth="212.0" promptText="Your Keyword">
+      <TextField fx:id="yourKeyWord" layoutX="228.0" layoutY="147.0" prefHeight="26.0" prefWidth="212.0" promptText="Your Keyword">
          <font>
-            <Font size="16.0" />
+            <Font size="19.0" />
          </font>
       </TextField>
-      <Button fx:id="enterButton" layoutX="465.0" layoutY="91.0" mnemonicParsing="false" onAction="#search" text="search">
+      <Button fx:id="enterButton" layoutX="475.0" layoutY="147.0" mnemonicParsing="false" onAction="#search" text="search">
          <font>
-            <Font size="16.0" />
+            <Font size="20.0" />
          </font>
       </Button>
-      <ProgressBar fx:id="progress" layoutX="234.0" layoutY="150.0" prefWidth="200.0" progress="0.0" />
-      <Button fx:id="goingBack" layoutX="651.0" layoutY="194.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="38.0" prefWidth="109.0" text="Back" />
+      <ProgressBar fx:id="progress" layoutX="234.0" layoutY="336.0" prefWidth="200.0" progress="0.0" />
+      <Button fx:id="goingBack" layoutX="825.0" layoutY="508.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="38.0" prefWidth="109.0" text="Back">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
    </children>
 </AnchorPane>

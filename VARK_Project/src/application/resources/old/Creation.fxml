@@ -28,7 +28,7 @@
                   <Font size="16.0" />
                </font>
             </TextField>
-            <Button fx:id="enterButton" mnemonicParsing="false" onAction="#search" text="search">
+            <Button fx:id="enterButton" defaultButton="true" mnemonicParsing="false" onAction="#search" onKeyPressed="#search" text="search">
                <font>
                   <Font size="16.0" />
                </font>
