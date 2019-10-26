@@ -60,7 +60,7 @@ public class MainController {
 
     @FXML
     public void create(ActionEvent event) throws IOException {
-        popupHelper("Enter a word to search up!");
+        popupHelper("Enter a word to search up!", false);
         this.setTOPVIEW(SceneFXML.SEARCH.toString());
     }
 
@@ -72,7 +72,7 @@ public class MainController {
 
     @FXML
     public void view(ActionEvent event)throws IOException{
-        popupHelper("Click on a creation to get started!");
+        popupHelper("Click on a creation to get started!", false);
         this.setTOPVIEW(SceneFXML.VIEW.toString());
     }
 
@@ -84,7 +84,7 @@ public class MainController {
     @FXML
     public void showInstructions(ActionEvent event) throws IOException {
         starBtn.setDisable(true);
-        Popup instructions = popupHelper("I show tips from time to time!");
+        Popup instructions = popupHelper("I show tips from time to time!", true);
         Executors.newSingleThreadExecutor().submit(new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -134,7 +134,7 @@ public class MainController {
      * @throws IOException
      */
 
-    public Popup popupHelper(String text) throws IOException {
+    public Popup popupHelper(String text, Boolean temp) throws IOException {
         Popup popup = new Popup();
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.TIP.toString()));
         popup.getContent().add((Parent)loader.load());
@@ -152,14 +152,17 @@ public class MainController {
         stage.xProperty().addListener((observableValue, number, t1) -> popup.setAnchorX(stage.getX() + starPoint.getX() - 150));
         stage.yProperty().addListener((observableValue, number, t1) -> { popup.setAnchorY(stage.getY() + starPoint.getY()); });
 
-        //When window is unfocused, hide popup. 
-        stage.focusedProperty().addListener((ov, oldValue, newValue) -> {
-            if (!stage.focusedProperty().get()){
-                popup.hide();
-            } else {
-                popup.show(stage);
-            }
-        });
+        //When window is unfocused, hide popup.
+        if (!temp){
+            stage.focusedProperty().addListener((ov, oldValue, newValue) -> {
+                if (!stage.focusedProperty().get()){
+                    popup.hide();
+                } else {
+                    popup.show(stage);
+                }
+            });
+
+        }
 
         return popup;
     }

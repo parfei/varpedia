@@ -125,7 +125,7 @@ public class ViewController {
                     try {
                         team.submit(new Play(_choice));
                         setColourImmediately();
-                        Main.getController().popupHelper("How well do you know the word now? Rate yourself!");
+                        Main.getController().popupHelper("How well do you know the word now? Rate yourself!", false);
                         resetPlayer();
                     } catch (Exception e) {
                         e.printStackTrace();
