@@ -23,7 +23,7 @@
       <TextArea fx:id="textArea" layoutX="4.0" layoutY="63.0" onMouseClicked="#checkValidSelection" prefHeight="531.0" prefWidth="546.0" wrapText="true" />
       <Button layoutX="928.0" layoutY="7.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="40.0" prefWidth="55.0" stylesheets="@../css/menu_button.css">
          <graphic>
-            <ImageView fitHeight="32.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="36.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/home.png" />
                </image>
@@ -37,7 +37,7 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Label layoutX="794.0" layoutY="20.0" prefHeight="16.0" prefWidth="134.0" text="Existing Audio">
+      <Label layoutX="786.0" layoutY="20.0" prefHeight="21.0" prefWidth="142.0" text="Current Audio" textFill="#204ba1">
          <font>
             <Font size="18.0" />
          </font></Label>
@@ -48,19 +48,28 @@
                <font>
                   <Font size="17.0" />
                </font></Label>
-            <Label fx:id="askForVoice" prefHeight="96.0" prefWidth="207.0" text="Voices" wrapText="true">
+            <Label fx:id="askForVoice" prefHeight="96.0" prefWidth="207.0" text="Voices" textFill="#3f74ba" wrapText="true">
                <font>
                   <Font size="20.0" />
                </font></Label>
             <VBox prefHeight="84.0" prefWidth="120.0" spacing="10.0">
                <children>
-                  <RadioButton fx:id="default_voice" mnemonicParsing="false" onAction="#checkValidSelection" text="Normal Voice">
+                  <RadioButton fx:id="default_voice" mnemonicParsing="false" onAction="#checkValidSelection" text="Normal">
                      <toggleGroup>
                         <ToggleGroup fx:id="group" />
                      </toggleGroup>
+                     <font>
+                        <Font size="22.0" />
+                     </font>
                   </RadioButton>
-                  <RadioButton fx:id="male_voice" mnemonicParsing="false" onAction="#checkValidSelection" text="Boy Voice" toggleGroup="$group" />
-                  <RadioButton fx:id="female_voice" mnemonicParsing="false" onAction="#checkValidSelection" text="Girl Voice" toggleGroup="$group" />
+                  <RadioButton fx:id="male_voice" mnemonicParsing="false" onAction="#checkValidSelection" text="Boy" toggleGroup="$group">
+                     <font>
+                        <Font size="22.0" />
+                     </font></RadioButton>
+                  <RadioButton fx:id="female_voice" mnemonicParsing="false" onAction="#checkValidSelection" text="Girl" toggleGroup="$group">
+                     <font>
+                        <Font size="23.0" />
+                     </font></RadioButton>
                </children>
             </VBox>
             <HBox fx:id="audioControlGroup" disable="true" prefHeight="48.0" prefWidth="207.0" spacing="10.0">
@@ -97,7 +106,7 @@
                </graphic></Button>
          </children>
       </VBox>
-      <Label layoutX="47.0" layoutY="25.0" prefHeight="24.0" prefWidth="318.0" text="Add audio to your creation!">
+      <Label layoutX="39.0" layoutY="18.0" prefHeight="24.0" prefWidth="318.0" text="Add audio to your creation!" textFill="#347bb5">
          <font>
             <Font size="19.0" />
          </font>

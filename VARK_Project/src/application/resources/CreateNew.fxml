@@ -19,7 +19,7 @@
             <Image url="@images/background.png" />
          </image>
       </ImageView>
-      <Label fx:id="labelMessage" layoutX="786.0" layoutY="124.0" prefHeight="26.0" prefWidth="179.0" text="Current Creations">
+      <Label fx:id="labelMessage" layoutX="786.0" layoutY="124.0" prefHeight="26.0" prefWidth="179.0" text="Current Creations" textFill="#3b6ed3">
          <font>
             <Font size="20.0" />
          </font></Label>
@@ -69,7 +69,7 @@
                   </Label>
                   <VBox prefHeight="76.0" prefWidth="229.0">
                      <children>
-                        <TextField fx:id="textFieldCreationName" promptText="Name ">
+                        <TextField fx:id="textFieldCreationName" promptText="Name can only have letters. No spaces allowed">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -80,12 +80,12 @@
             </VBox>
          </children>
       </VBox>
-      <Label layoutX="172.0" layoutY="39.0" prefHeight="40.0" prefWidth="467.0" text="Let's add the final touches!">
+      <Label layoutX="172.0" layoutY="39.0" prefHeight="40.0" prefWidth="467.0" text="Let's add the final touches!" textFill="#4b81cd">
          <font>
             <Font size="34.0" />
          </font>
       </Label>
-      <Label layoutX="595.0" layoutY="373.0" stylesheets="@../css/menu_button.css" text="Create!">
+      <Label layoutX="595.0" layoutY="373.0" stylesheets="@../css/menu_button.css" text="Create!" textFill="WHITE">
          <font>
             <Font size="21.0" />
          </font>
