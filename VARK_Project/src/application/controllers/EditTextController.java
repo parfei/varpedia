@@ -40,8 +40,6 @@ public class EditTextController {
     @FXML private ListView existingAudioView;
     @FXML private Button playButton;
     @FXML private Button deleteButton;
-    @FXML private ImageView audioSaveResponse;
-    @FXML private ImageView warnUserImg;
 
     @FXML private Button createBtn;
     @FXML private HBox audioControlGroup;
@@ -88,7 +86,6 @@ public class EditTextController {
         ArrayList<String> items = update.bash(command);
 
         if (!items.isEmpty()){
-            warnUserImg.setVisible(false);
             createBtn.setDisable(false);
         }
 
@@ -215,7 +212,6 @@ public class EditTextController {
      */
     @FXML
     public void save(ActionEvent event) throws Exception {
-        audioSaveResponse.setVisible(true);
         String selectedText = textArea.getSelectedText();
 
 
@@ -223,7 +219,8 @@ public class EditTextController {
             int numberOfAudio= countNumberOfAudioFile();
             String number=Integer.toString(numberOfAudio);
 
-            ManageFolder.writeToFile(PathIs.EXTRA +"/savedText" + countNumberOfAudioFile() + ".txt", saveble);
+            ManageFolder.writeToFile(PathIs.TEMP +"/savedText" + countNumberOfAudioFile() + ".txt", saveble);
+            //  ManageFolder.writeToFile(PathIs.EXTRA +"/savedText" + countNumberOfAudioFile() + ".txt", saveble);
 
             if (default_voice.isSelected()) {
                 SaveHelper sh = new SaveHelper("default_voice", number, _term);
@@ -294,8 +291,6 @@ public class EditTextController {
                     }
                 });
             }
-        //}
-        audioSaveResponse.setVisible(false);
     }
 
     /**

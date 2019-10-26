@@ -19,7 +19,8 @@ public class SaveHelper extends Task<Integer> {
     @Override
     protected Integer call() throws Exception {
         String createAudio = "";
-        String path = "\"" + PathIs.EXTRA +"/savedText" + _number + ".txt\"";
+//        String path = "\"" + PathIs.EXTRA +"/savedText" + _number + ".txt\"";
+        String path = "\"" + PathIs.TEMP +"/savedText" + _number + ".txt\"";
         if (_voice.equals("default_voice")){
             createAudio = "text2wave -o \"" + PathIs.TEMP + "/audioPiece/" + _term + "-"+ _number+ ".wav\" " +
                     path + " -eval \"" + PathIs.TEMP +"/kal.scm\"";
