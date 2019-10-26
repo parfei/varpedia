@@ -185,11 +185,7 @@ public class CreateNewController {
                 }
 
                 _CreationsExisted.clear();
-//                Alert complete1 = new Alert(Alert.AlertType.INFORMATION);
-//                complete1.setHeaderText("Created");
-//                complete1.setContentText(textFieldCreationName.getText() + " has been created. You can now view.");
-//                complete1.show();
-
+                
                 textFieldCreationName.clear();
                 Main.getController().creationInProgress(false); //show user the creation work is done by change the picture
 

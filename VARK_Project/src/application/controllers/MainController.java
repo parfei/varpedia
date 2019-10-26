@@ -40,6 +40,7 @@ public class MainController {
     @FXML private AnchorPane TOPVIEW;
     @FXML private ImageView creatingImg;
     @FXML private Button starBtn;
+    @FXML private Button createBtn;
 
     private static final Image LOADING = new Image(PicPath.MENU + "/loading_star.png");
     private static final Image PLACEHOLDER = new Image(PicPath.MENU + "/placeholder.png");
@@ -114,14 +115,17 @@ public class MainController {
 
 
     /**
-     * show user a downloading image when creation is still being made
+     * Show user a downloading image when creation is still being made,  and disable creation button.
+     * Else enable create button and replace back with the help star image.
      * @param inProgress
      */
     public void creationInProgress(Boolean inProgress){
         if (inProgress){
             creatingImg.setImage(LOADING);
+            createBtn.setDisable(true);
         } else {
             creatingImg.setImage(PLACEHOLDER);
+            createBtn.setDisable(false);
         }
     }
 
