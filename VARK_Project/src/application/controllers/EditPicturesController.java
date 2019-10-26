@@ -32,10 +32,9 @@ public class EditPicturesController {
     @FXML
     private HBox downloading;
     private String _term;
-    private String _name;
-    ExecutorService team = Executors.newSingleThreadExecutor();
 
-    //private ChangeScene changeSceneObject=new ChangeScene();
+
+
     private List<Image> _imageToDeleteList = new ArrayList<Image>();
 
     @FXML ImageView view1;
@@ -88,17 +87,21 @@ public class EditPicturesController {
         int picNum;
 
         Button btn = (Button) event.getSource();
-        if (btn.getText().equals(ButtonLiterals.NO_IMAGES)){
+        String text=btn.getText();
+
+
+        if (text.equals(ButtonLiterals.NO_IMAGES.toString())){
+            System.out.println("confirmm no images");
             picNum = 0;
         } else {
             picNum = 12 - _imageToDeleteList.size();
         }
 
-        if(_imageToDeleteList.size() == 12 || _imageToDeleteList.size() < 2) {
+        if(picNum>10) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Choosing Images");
             alert.setHeaderText("You haven't selected right amount of images!");
-            alert.setContentText("Please select at least one image, but no more than 10.");
+            alert.setContentText("Please select no more than 10 images.");
             alert.showAndWait();
             return;
         }
