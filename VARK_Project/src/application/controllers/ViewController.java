@@ -98,6 +98,7 @@ public class ViewController {
             ObservableList selectedCreation = stuffCreated.getSelectionModel().getSelectedItems();
             _choice = selectedCreation.get(0).toString();
             if (_choice != null){
+                Main.getController().popupHelper("Try playing your creation!", false);
                 playImg.setImage(PLAY);
                 playButton.setDisable(false);
                 creationOptions.setDisable(false);
@@ -140,7 +141,7 @@ public class ViewController {
 
     /**
      * set up a slider for video playing
-     * https://stackoverflow.com/questions/15475457/how-to-use-timeline-when-playing-videos-using-javafx
+     * Inspired by: https://stackoverflow.com/questions/15475457/how-to-use-timeline-when-playing-videos-using-javafx
      */
     private void sliderSetUp(){
         _player.currentTimeProperty().addListener((observableValue, duration, t1) -> {
@@ -160,10 +161,9 @@ public class ViewController {
     /**
      * The playVideo method will play the video when the button "Play" is clicked.
      *
-     * @throws IOException
      */
     @FXML
-    public void playVideo()throws IOException{
+    public void playVideo() {
         if (_choice == null){
             return;
         }
@@ -189,7 +189,6 @@ public class ViewController {
      */
     @FXML
     public void videoPlay(ActionEvent event) throws Exception { //TODO if user presses something else
-        //String btnText = ((Button)event.getSource()).getText(); //Get button pressed's text
         String id = ((Control)event.getSource()).getId();
 
         if (id.equals("stopButton")){

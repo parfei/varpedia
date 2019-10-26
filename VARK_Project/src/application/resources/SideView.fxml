@@ -15,14 +15,14 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minWidth="664.0" prefHeight="596.0" prefWidth="992.0" stylesheets="@../css/view.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ViewController">
+<AnchorPane minWidth="664.0" prefHeight="596.0" prefWidth="992.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ViewController">
    <children>
       <ImageView fitHeight="593.0" fitWidth="992.0" pickOnBounds="true">
          <image>
             <Image url="@images/background.png" />
          </image>
       </ImageView>
-      <ListView fx:id="stuffCreated" layoutX="4.0" layoutY="27.0" onMouseClicked="#getTheSelection" prefHeight="513.0" prefWidth="231.0" />
+      <ListView fx:id="stuffCreated" layoutX="4.0" layoutY="51.0" onMouseClicked="#getTheSelection" prefHeight="489.0" prefWidth="231.0" />
       <TableView fx:id="list" layoutY="-2.0" prefHeight="341.0" prefWidth="220.0" visible="false">
         <columns>
           <TableColumn prefWidth="154.0" text="CREATIONS" />
@@ -32,7 +32,10 @@
       </TableView>
       <HBox fx:id="creationOptions" layoutX="11.0" layoutY="547.0" prefHeight="28.0" prefWidth="217.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#clearDataForCreation" prefHeight="46.0" prefWidth="93.0" text="Restart Learning" wrapText="true" />
+            <Button mnemonicParsing="false" onAction="#clearDataForCreation" prefHeight="46.0" prefWidth="93.0" text="Restart" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
             <Button fx:id="favBtn" mnemonicParsing="false" onAction="#favourite" prefHeight="37.0" prefWidth="34.0" stylesheets="@../css/menu_button.css">
                <graphic>
                   <ImageView fitHeight="40.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
@@ -85,7 +88,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Slider fx:id="playTimer" prefHeight="59.0" prefWidth="576.0" scaleShape="false" />
+                  <Slider fx:id="playTimer" prefHeight="59.0" prefWidth="576.0" scaleShape="false" stylesheets="@../css/slider.css" />
                   <Button fx:id="muteButton" mnemonicParsing="false" onAction="#videoPlay" prefHeight="34.0" prefWidth="53.0" stylesheets="@../css/menu_button.css">
                      <graphic>
                         <ImageView fx:id="muteImg" fitHeight="106.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
@@ -99,8 +102,11 @@
             </HBox>
          </children>
       </Pane>
-      <CheckBox fx:id="favOption" layoutX="116.0" layoutY="5.0" mnemonicParsing="false" onAction="#tickFav" text="Favourites" />
-      <Slider fx:id="confidence" blockIncrement="0.0" layoutX="290.0" layoutY="502.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" onMouseReleased="#changeConfidence" prefHeight="38.0" prefWidth="354.0" showTickMarks="true" snapToTicks="true" style="-fx-background-color: #F5F1CA;" />
+      <CheckBox fx:id="favOption" layoutX="116.0" layoutY="5.0" mnemonicParsing="false" onAction="#tickFav" prefHeight="38.0" prefWidth="118.0" text="Favourites">
+         <font>
+            <Font size="16.0" />
+         </font></CheckBox>
+      <Slider fx:id="confidence" blockIncrement="0.0" layoutX="290.0" layoutY="502.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" onMouseReleased="#changeConfidence" prefHeight="38.0" prefWidth="354.0" showTickMarks="true" snapToTicks="true" style="-fx-background-color: #F5F1CA;" stylesheets="@../css/slider.css" />
       <ImageView fitHeight="56.0" fitWidth="401.0" layoutX="267.0" layoutY="527.0" pickOnBounds="true">
          <image>
             <Image url="@images/view/confidence/c5.png" />

@@ -1,0 +1,8 @@
+.slider .track {
+    -fx-padding: 8;
+}
+
+.slider .thumb {
+    -fx-padding: 12;
+}
+

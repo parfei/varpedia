@@ -102,7 +102,7 @@ public class EditTextController {
      * @return
      */
     @FXML
-    private Boolean checkValidSelection(){
+    private Boolean checkValidSelection() throws IOException {
         audioControlGroup.setDisable(true);
         _selectedText = textArea.getSelectedText();
 
@@ -111,19 +111,17 @@ public class EditTextController {
         String checkString = _selectedText.replaceAll("\\p{P}", "");
 
         if (_selectedText == null || _selectedText.isEmpty() || checkString.isEmpty()) {
-
-            askForVoice.setText("Select a readable chunk of text!");
+            Main.getController().popupHelper("Choose a chunk of text!", false);
             return false;
         } else if (numberOfWords > 25) {
-
-            askForVoice.setText("Select a smaller chunk of text!");
+            Main.getController().popupHelper("Choose a smaller chunk of text!", false);
             return false;
         }else if (selectedRadioButton==null){
-            askForVoice.setText("Select a voice!");
+            Main.getController().popupHelper("Now select a voice!", false);
             return false;
         }
         audioControlGroup.setDisable(false);
-        askForVoice.setText("");
+        Main.getController().popupHelper("Create more audio or go next!", false);
         return true;
     }
 
@@ -220,7 +218,6 @@ public class EditTextController {
             String number=Integer.toString(numberOfAudio);
 
             ManageFolder.writeToFile(PathIs.TEMP +"/savedText" + countNumberOfAudioFile() + ".txt", saveble);
-            //  ManageFolder.writeToFile(PathIs.EXTRA +"/savedText" + countNumberOfAudioFile() + ".txt", saveble);
 
             if (default_voice.isSelected()) {
                 SaveHelper sh = new SaveHelper("default_voice", number, _term);

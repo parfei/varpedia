@@ -152,12 +152,6 @@ public class CreateNewController {
                 return;
             }
 
-            //Notify user of the creation wait.
-//            Alert complete = new Alert(Alert.AlertType.INFORMATION);
-//            complete.setHeaderText("Creating...");
-//            complete.setContentText(textFieldCreationName.getText() + " is being created. Please wait, we will notify you.");
-//            complete.show();
-
             createDirectories(); //Create necessary directories if they have not existed yet.
 
             //Send creation work to background thread to create the final creation...
@@ -185,12 +179,13 @@ public class CreateNewController {
                 }
 
                 _CreationsExisted.clear();
-                
+
                 textFieldCreationName.clear();
                 Main.getController().creationInProgress(false); //show user the creation work is done by change the picture
 
             });
             try {
+                Main.getController().popupHelper("Let's go learn your creation, click play button!", false);
                 Main.getController().setTOPVIEW(SceneFXML.MENU.toString()); // go to the main menu
                 Main.getController().creationInProgress(true); // show the user the creation is still being made
             } catch (IOException e) {
