@@ -53,7 +53,7 @@ public class ViewController {
     private static final Image UNMUTE = new Image(PicPath.VIEW + "/unmute.png");
     private static final Image PLAY = new Image(PicPath.VIEW + "/play.png");
     private static final Image PAUSE = new Image(PicPath.VIEW + "/pause.png");
-    private Duration _currentVidDura;
+    private double _currentVidDura; //seconds
 
     @FXML private ListView stuffCreated;
 
@@ -104,7 +104,10 @@ public class ViewController {
                 File file = new File(ManageFolder.findPath(_choice, true));
                 Media media = new Media(file.toURI().toString());
                 _player = new MediaPlayer(media); //Set up player to be played.
-                _currentVidDura = new Duration(media.getDuration().toSeconds());
+                _player.setOnReady(() -> {
+                    _currentVidDura = _player.getTotalDuration().toSeconds();
+                    playTimer.setMax(_currentVidDura);
+                });
                 sliderSetUp();
 
                 //Get confidence rating from file.
@@ -121,6 +124,7 @@ public class ViewController {
                         team.submit(new Play(_choice));
                         setColourImmediately();
                         Main.getController().popupHelper("How well do you know the word now? Rate yourself!");
+                        resetPlayer();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -139,26 +143,17 @@ public class ViewController {
      */
     private void sliderSetUp(){
         _player.currentTimeProperty().addListener((observableValue, duration, t1) -> {
-            updateValues();
+            Duration currentTime = _player.getCurrentTime();
+            playTimer.setValue(currentTime.toSeconds()/_currentVidDura);
         });
 
         playTimer.valueProperty().addListener(observable -> {
             if (playTimer.isValueChanging()){
-                _player.seek(_currentVidDura.multiply(playTimer.getValue() / 100.0));
+                _player.seek(Duration.seconds(playTimer.getValue()/_currentVidDura));
             }
-            updateValues();
+            Duration currentTime = _player.getCurrentTime();
+            playTimer.setValue(currentTime.toSeconds()/_currentVidDura);
         });
-    }
-
-    private void updateValues(){
-            Platform.runLater(() -> {
-                Duration currentTime = _player.getCurrentTime();
-                //playTime.setText(formatTime(currentTime, duration));
-                playTimer.setDisable(_currentVidDura.isUnknown());
-                if (!playTimer.isDisable() && !playTimer.isValueChanging()){
-                    playTimer.setValue((currentTime.toMillis()/_currentVidDura.toMillis())* 100.0);
-                }
-            });
     }
 
 //    /**
