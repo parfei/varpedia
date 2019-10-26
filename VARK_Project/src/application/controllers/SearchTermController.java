@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -27,7 +28,7 @@ import java.io.InputStreamReader;
  * User search a word in this class, if the searching is successful, user can go to the next step, which is selecting text
  * keyboard short cut for search button is enabled by pressing enter.
  */
-public class CreationController {
+public class SearchTermController {
     public String _InputFromUser;
     private String _line;
 
@@ -35,17 +36,9 @@ public class CreationController {
     @FXML private TextField yourKeyWord;
 
     @FXML private Label whatDoYouWant;
-    @FXML private ProgressBar progress;
+    @FXML private ImageView progress;
     @FXML private Button enterButton;
     @FXML private Button goingBack;
-
-
-
-
-    public CreationController() throws IOException {
-
-    }
-
 
     /**
      * initialize by making the audioPiece and photos folder
@@ -89,6 +82,7 @@ public class CreationController {
             whatDoYouWant.setText("Invalid input, please enter again");
             yourKeyWord.clear();
         } else {
+            progress.setVisible(true);
             DoingJob doingJob = new DoingJob();
             Thread thread = new Thread(doingJob);
             thread.start();
@@ -130,10 +124,6 @@ public class CreationController {
             enterButton.setVisible(true);
             goingBack.setVisible(true);
             yourKeyWord.setVisible(true);
-
-            Platform.runLater(() -> {
-                progress.progressProperty().bind(this.progressProperty());
-            });
 
             String command = "wikit " + _InputFromUser;
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);

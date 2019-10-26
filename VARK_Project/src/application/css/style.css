@@ -1,15 +1,11 @@
-.slider .track {
-    -fx-padding: 8;
-}
-
-.slider .thumb {
-    -fx-padding: 12;
-}
-
 @font-face{
     src: url("fonts/qarmic-sans-abridged");
 }
 
 .label{
+    -fx-font-family: "Qarmic sans";
+}
+
+.button{
     -fx-font-family: "Qarmic sans";
 }

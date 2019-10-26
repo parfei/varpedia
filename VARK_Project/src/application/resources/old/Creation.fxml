@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="596.0" prefWidth="1065.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreationController">
+<AnchorPane prefHeight="596.0" prefWidth="1065.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.SearchTermController">
    <children>
       <Label fx:id="whatDoYouWant" layoutX="371.0" layoutY="192.0" prefHeight="20.0" prefWidth="296.0" text="Hi, what do you want to learn today?">
          <font>
