@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="160.0" style="-fx-background-color: transparent;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.TipController">
    <children>
@@ -13,10 +12,6 @@
             <Image url="@images/tip.png" />
          </image>
       </ImageView>
-      <Pane layoutX="26.0" layoutY="36.0" prefHeight="91.0" prefWidth="108.0">
-         <children>
-            <Text fx:id="helpTxt" layoutX="7.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="94.9736328125" />
-         </children>
-      </Pane>
+      <Label fx:id="helpTxt" layoutX="25.0" layoutY="26.0" prefHeight="92.0" prefWidth="108.0" textAlignment="CENTER" wrapText="true" />
    </children>
 </AnchorPane>
