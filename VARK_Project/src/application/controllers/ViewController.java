@@ -53,6 +53,7 @@ public class ViewController {
     private static final Image UNMUTE = new Image(PicPath.VIEW + "/unmute.png");
     private static final Image PLAY = new Image(PicPath.VIEW + "/play.png");
     private static final Image PAUSE = new Image(PicPath.VIEW + "/pause.png");
+    private static final Image RETRY = new Image(PicPath.VIEW + "/retry.png");
     private double _currentVidDura; //seconds
 
     @FXML private ListView stuffCreated;
@@ -98,6 +99,7 @@ public class ViewController {
             ObservableList selectedCreation = stuffCreated.getSelectionModel().getSelectedItems();
             _choice = selectedCreation.get(0).toString();
             if (_choice != null){
+                playImg.setImage(PLAY);
                 playButton.setDisable(false);
                 creationOptions.setDisable(false);
 
@@ -106,7 +108,7 @@ public class ViewController {
                 _player = new MediaPlayer(media); //Set up player to be played.
                 _player.setOnReady(() -> {
                     _currentVidDura = _player.getTotalDuration().toSeconds();
-                    playTimer.setMax(_currentVidDura);
+                    playTimer.maxProperty().set(_currentVidDura);
                 });
                 sliderSetUp();
 
@@ -144,28 +146,17 @@ public class ViewController {
     private void sliderSetUp(){
         _player.currentTimeProperty().addListener((observableValue, duration, t1) -> {
             Duration currentTime = _player.getCurrentTime();
-            playTimer.setValue(currentTime.toSeconds()/_currentVidDura);
+            playTimer.setValue(currentTime.toSeconds());
         });
 
         playTimer.valueProperty().addListener(observable -> {
             if (playTimer.isValueChanging()){
-                _player.seek(Duration.seconds(playTimer.getValue()/_currentVidDura));
+                _player.seek(Duration.seconds(playTimer.getValue()));
+                Duration currentTime = _player.getCurrentTime();
+                playTimer.setValue(currentTime.toSeconds());
             }
-            Duration currentTime = _player.getCurrentTime();
-            playTimer.setValue(currentTime.toSeconds()/_currentVidDura);
         });
     }
-
-//    /**
-//     * change the time of video to the time user drags to
-//     */
-//    @FXML
-//    private void changeVidTime(){
-//        Duration time = Duration.seconds(playTimer.getValue());
-//        _player.seek(time);
-//        playTimer.setValue(time.toSeconds());
-//
-//    }
 
     /**
      * The playVideo method will play the video when the button "Play" is clicked.
@@ -351,15 +342,16 @@ public class ViewController {
     }
 
 
-
     private void resetPlayer() throws Exception {
+        playTimer.setValue(0);
+        _player.seek(new Duration(0));
+
         playOptions.setDisable(true);
         muteImg.setImage(MUTE);
-        playImg.setImage(PLAY);
+        playImg.setImage(RETRY);
 
         view.setDisable(true);
         _player.stop();
-        _player.dispose();
 
         stuffCreated.setDisable(false);
         tickFav();
@@ -370,6 +362,7 @@ public class ViewController {
      * Code inspired from: https://stackoverflow.com/questions/20936101/get-listcell-via-listview
      */
     private void setColourImmediately() throws Exception {
+        stuffCreated.getSelectionModel().select(_choice);
         int index = stuffCreated.getSelectionModel().getSelectedIndex();
         Object[]cells = stuffCreated.lookupAll(".cell").toArray();
         Cell cell = (Cell) cells[index];
