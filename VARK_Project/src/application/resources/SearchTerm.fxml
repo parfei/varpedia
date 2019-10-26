@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -25,9 +27,16 @@
          </font>
       </Button>
       <ProgressBar fx:id="progress" layoutX="234.0" layoutY="336.0" prefWidth="200.0" progress="0.0" />
-      <Button fx:id="goingBack" layoutX="825.0" layoutY="508.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="38.0" prefWidth="109.0" text="Back">
+      <Button fx:id="goingBack" layoutX="839.0" layoutY="504.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="63.0" prefWidth="106.0" stylesheets="@../css/menu_button.css">
          <font>
             <Font size="20.0" />
-         </font></Button>
+         </font>
+         <graphic>
+            <ImageView fitHeight="46.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/home.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
    </children>
 </AnchorPane>

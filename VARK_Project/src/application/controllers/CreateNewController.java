@@ -42,7 +42,7 @@ public class CreateNewController {
     }
 
     /**
-     * This method will add the existing creation to the ListView
+     * This method will add the existing creation to the ListView and make a choice box for user to choose music
      */
     public void initialize() throws IOException {
         ObservableList list=FXCollections.observableArrayList();
@@ -83,6 +83,10 @@ public class CreateNewController {
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
 
+    /**
+     * the checkEmptyAudio method will check if any audio in the folder is empty
+     * @return
+     */
     private Boolean checkEmptyAudio(){
         File directoryCheck = new File(PathIs.TEMP + "/audioPiece");
         String[] files = directoryCheck.list();
@@ -101,6 +105,8 @@ public class CreateNewController {
      */
     @FXML
     public void EnterCreation(ActionEvent event) throws Exception {
+
+        //doing error handling
         if (checkEmptyAudio()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("No audio to combine");
@@ -163,6 +169,7 @@ public class CreateNewController {
             creationWork.setOnSucceeded(workerStateEvent -> {
                 try {
 
+                    // create a confidence.txt file to record user's confidence and create a plays.text file to record user's times of play
 
                     String p = "\"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "/";
                     new BashCommand().bash("touch " + p + "confidence.txt\" " + p + "plays.txt\"");
@@ -184,12 +191,12 @@ public class CreateNewController {
 //                complete1.show();
 
                 textFieldCreationName.clear();
-                Main.getController().creationInProgress(false);
+                Main.getController().creationInProgress(false); //show user the creation work is done by change the picture
 
             });
             try {
-                Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
-                Main.getController().creationInProgress(true);
+                Main.getController().setTOPVIEW(SceneFXML.MENU.toString()); // go to the main menu
+                Main.getController().creationInProgress(true); // show the user the creation is still being made
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -201,11 +208,11 @@ public class CreateNewController {
      * @throws IOException
      */
     private void createDirectories() throws Exception {
-        new BashCommand().bash("mkdir -p \"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "\""); //create a creations folders. mkdir -p \"" + PathIs.CREATIONS + "/" + _term + "\""
+        new BashCommand().bash("mkdir -p \"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "\""); //create a creations folder.
     }
 
     /**
-     * Clean up audio files after creation.
+     * Clean up audio files and photos after creation.
      */
     private void cleanUp() throws Exception {
         String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp/audioPiece/* ; rm -rf .temp/photos/* ; cd -";

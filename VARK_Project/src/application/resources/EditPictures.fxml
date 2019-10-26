@@ -56,9 +56,21 @@
             <ImageView fx:id="view12" fitHeight="128.0" fitWidth="229.0" onMouseClicked="#chooseImage" opacity="0.4" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <Label layoutX="236.0" layoutY="19.0" text="select image to put in your creation" />
-      <Button layoutX="926.0" layoutY="537.0" mnemonicParsing="false" onAction="#toFinalScene" text="next" />
-      <Button layoutX="836.0" layoutY="537.0" mnemonicParsing="false" onAction="#backToMainMenu" text="back" />
-      <Button layoutX="835.0" layoutY="494.0" mnemonicParsing="false" onAction="#toFinalScene" text="I want no pictures!" />
+      <Label layoutX="353.0" layoutY="17.0" text="select image to put in your creation">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <Button layoutX="912.0" layoutY="550.0" mnemonicParsing="false" onAction="#toFinalScene" text="next">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <Button layoutX="790.0" layoutY="550.0" mnemonicParsing="false" onAction="#backToMainMenu" text="back">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <Button layoutX="797.0" layoutY="515.0" mnemonicParsing="false" onAction="#toFinalScene" text="I want no pictures!">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
    </children>
 </AnchorPane>

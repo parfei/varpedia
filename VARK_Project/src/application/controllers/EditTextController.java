@@ -1,42 +1,26 @@
 package application.controllers;
 
-import application.ChangeScene;
 import application.FlickrWork;
 import application.Main;
-import application.PathCD;
 import application.bashwork.BashCommand;
 import application.bashwork.ManageFolder;
 import application.bashwork.PreviewHelper;
 import application.bashwork.SaveHelper;
-import application.values.FlickrDone;
 import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.io.*;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -93,6 +77,11 @@ public class EditTextController {
         textArea.setText(finalText); //Put all current audio pieces list view.
     }
 
+    /**
+     * update the list view which displays the existing audio file
+     * @throws Exception
+     */
+
     private void updateExistingAudio() throws Exception {
         String command = "ls \"" + PathIs.TEMP + "/audioPiece\"" + " | cut -f1 -d'.'\n";
         BashCommand update = new BashCommand();
@@ -106,11 +95,15 @@ public class EditTextController {
         existingAudioView.getItems().setAll(items);
     }
 
-    public int countNumberOfAudioFileInAudioPiece() {
+    public int countNumberOfAudioFile() {
         String path= PathIs.TEMP + "/audioPiece";
         return new File(path).listFiles().length;
     }
 
+    /**
+     * checkValidSelection method will check if the text user selected is valid and whether user choose a voice
+     * @return
+     */
     @FXML
     private Boolean checkValidSelection(){
         audioControlGroup.setDisable(true);
@@ -121,19 +114,11 @@ public class EditTextController {
         String checkString = _selectedText.replaceAll("\\p{P}", "");
 
         if (_selectedText == null || _selectedText.isEmpty() || checkString.isEmpty()) {
-            /*Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setTitle("No selection");
-            error.setHeaderText("please select a chunk");
-            error.setContentText("please select a part of text ");
-            error.showAndWait();*/
+
             askForVoice.setText("Select a readable chunk of text!");
             return false;
         } else if (numberOfWords > 25) {
-            /*Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("select a smaller chunk");
-            alert.setHeaderText("too much words");
-            alert.setContentText("please select a smaller chunk");
-            alert.showAndWait();*/
+
             askForVoice.setText("Select a smaller chunk of text!");
             return false;
         }else if (selectedRadioButton==null){
@@ -145,6 +130,11 @@ public class EditTextController {
         return true;
     }
 
+
+    /**
+     * play the speech of text when preview button is clicked
+     * @throws IOException
+     */
     @FXML
     public void preview() throws IOException {
         _selectedText = textArea.getSelectedText();
@@ -200,7 +190,7 @@ public class EditTextController {
     }
 
     /**
-     * Check if text is readable.
+     * Check if the audio is saved successfully
      * @param number
      * @return String valid path of audio to be saved.
      */
@@ -219,7 +209,7 @@ public class EditTextController {
     }
 
     /**
-     * This method will check exception and go to saveToAudio interface when a save button is clicked
+     * This method will save the text in an audio file according to the voice that user selected
      * @param event
      * @throws IOException
      */
@@ -229,11 +219,11 @@ public class EditTextController {
         String selectedText = textArea.getSelectedText();
 
 
-            String saveble = selectedText.replaceAll("[\\[\\](){}']", "");
-            int numberOfAudio=countNumberOfAudioFileInAudioPiece();
+            String saveble = selectedText.replaceAll("[\\[\\](){}']", ""); //remove the symbol that is not saveable
+            int numberOfAudio= countNumberOfAudioFile();
             String number=Integer.toString(numberOfAudio);
 
-            ManageFolder.writeToFile(PathIs.EXTRA + "/saveTextFolder/"+"savedText" + countNumberOfAudioFileInAudioPiece() + ".txt", saveble);
+            ManageFolder.writeToFile(PathIs.EXTRA +"/savedText" + countNumberOfAudioFile() + ".txt", saveble);
 
             if (default_voice.isSelected()) {
                 SaveHelper sh = new SaveHelper("default_voice", number, _term);
@@ -296,7 +286,7 @@ public class EditTextController {
                             });
                         }
                     } else {
-                        //Finally
+
 
                         try { updateExistingAudio(); } catch (Exception e) {
                             e.printStackTrace();
@@ -327,7 +317,6 @@ public class EditTextController {
      */
     @FXML
     public void readyToCombine() throws Exception {
-        concatenateTextFile();
       EditPicturesController controller = (EditPicturesController) Main.getController().setTOPVIEW(SceneFXML.IMAGES.toString());
         controller.initData(_term);
 
@@ -378,6 +367,10 @@ public class EditTextController {
         }
     }
 
+    /**
+     * play the audio existed in audio list when user select an audio and click play button
+     * @throws Exception
+     */
     @FXML
     public void playAudio() throws Exception {
         String wavFile = findAudio(_audioChoice);
@@ -387,6 +380,10 @@ public class EditTextController {
         _mediaPlayer.play();
     }
 
+    /**
+     * delete the audio existed in audio list when user select an audio and click delete button
+     * @throws Exception
+     */
     @FXML
     public void deleteAudio() throws Exception {
         if (_mediaPlayer!=null) {
@@ -414,7 +411,7 @@ public class EditTextController {
                             String cmd = "rm -f \"" + path + "\"";
                             new BashCommand().bash(cmd);
                             updateExistingAudio(); //get the list of creations for currently ticked option.
-                            playButton.setDisable(true); //disable buttons again if deleted, prompt user to reselect option.
+                            playButton.setDisable(true); //disable buttons again if audio played or deleted, prompt user to reselect option.
                             deleteButton.setDisable(true);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -435,28 +432,12 @@ public class EditTextController {
 
 
 
-    public void concatenateTextFile() throws Exception {
-        String textFolder = PathIs.EXTRA + "/saveTextFolder";
-
-        ArrayList<String> output = new BashCommand().bash("cd \"" + textFolder+"\"; cat *.txt");
-        String textFinal = output.toString().substring(1);
-        textFinal = textFinal.substring(0,textFinal.lastIndexOf("]"));
-        //store the text file some where
-
-        //why this does not work Todo this does not work
-        FileWriter writer=new FileWriter(PathIs.EXTRA + "/myFinalText.txt");
-        writer.write(textFinal);
-        writer.close();
-
-
-
-        //move this file to creation when a creation is made
-        // what if the user goes back or when the user click button on the tap, then this textFolder and the final text should be delete
 
 
 
 
-    }
+
 }
+
 
 

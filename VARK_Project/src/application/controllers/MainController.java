@@ -33,7 +33,7 @@ import java.util.concurrent.Executors;
 
 public class MainController {
 
-    private ChangeScene _changeSceneObject=new ChangeScene();
+
     @FXML private AnchorPane TOPVIEW;
     @FXML private ImageView creatingImg;
     @FXML private Button starBtn;
@@ -50,7 +50,7 @@ public class MainController {
     }
 
     /**
-     * When this method is called, it will change the Scene to Create view
+     * When this method is called, it will change the Scene to Create view and start create process
      * @param event
      * @throws IOException
      */
@@ -74,7 +74,7 @@ public class MainController {
     }
 
     /**
-     * show instructions when user click star button
+     * show instructions for user when user click star button
      * @param event
      * @throws IOException
      */
@@ -97,11 +97,12 @@ public class MainController {
 
     /**
      *
+     * load the scene
      * @param layout
      * @return
      * @throws IOException
      */
-
+   //TODO add comment
     public Object setTOPVIEW(String layout) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(layout));
         Parent node = loader.load();

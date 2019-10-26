@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
 /**
- * set appearance of main menu
+ * set initial appearance of main menu
  */
 public class MainMenuController {
     @FXML private Label titleLabel;

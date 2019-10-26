@@ -23,6 +23,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 
+/**
+ * User search a word in this class, if the searching is successful, user can go to the next step, which is selecting text
+ * keyboard short cut for search button is enabled by pressing enter.
+ */
 public class CreationController {
     public String _InputFromUser;
     private String _line;
@@ -40,13 +44,17 @@ public class CreationController {
 
     public CreationController() throws IOException {
 
-
-
     }
 
+
+    /**
+     * initialize by making the audioPiece and photos folder
+     * @throws Exception
+     */
     @FXML
+
     public void initialize() throws Exception {
-        String command2 = "mkdir -p \"" + PathIs.TEMP + "/audioPiece\" ; mkdir -p \""+ PathIs.TEMP + "/photos\" ; mkdir -p \""+ PathIs.EXTRA + "/saveTextFolder\" ";
+        String command2 = "mkdir -p \"" + PathIs.TEMP + "/audioPiece\" ; mkdir -p \""+ PathIs.TEMP + "/photos\" ";
         new BashCommand().bash(command2);
 
         progress.setVisible(false);
@@ -55,26 +63,13 @@ public class CreationController {
         yourKeyWord.setDisable(false);
         addKeyBoardShortCut();
 
-
-
-
-
-
-    }
-    public Scene getScene(){
-        System.out.println(enterButton.getScene());
-        return enterButton.getScene();
-
     }
 
 
-
-
-
-
-
-
-
+    /**
+     * user will go to main menu when back button is clicked
+     * @throws IOException
+     */
     @FXML
     public void backToMain() throws IOException {
         //_changeSceneObject.changeScene(event, "resources/menu.fxml", "Main Menu");
@@ -83,14 +78,12 @@ public class CreationController {
 
 
     /**
-     * This will check if term is searchable
+     * The search method will search the key word user entered
      */
-
-
 
     @FXML
     public void search() throws IOException {
-        System.out.println(enterButton.getScene());
+
         _InputFromUser = yourKeyWord.getText();
         if (_InputFromUser.trim().isEmpty() || _InputFromUser == null) {
             whatDoYouWant.setText("Invalid input, please enter again");
@@ -120,16 +113,13 @@ public class CreationController {
                 }
             }
         });
-
-
-
     }
 
 
 
 
     /**
-     * create a class doing multithreading
+     * create a class doing background search work
      */
     class DoingJob extends Task<Void> {
         private boolean resultOut;
@@ -152,7 +142,6 @@ public class CreationController {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 _line = reader.readLine();
 
-
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -166,17 +155,16 @@ public class CreationController {
             goingBack.setDisable(false);
             yourKeyWord.setDisable(false);
 
-
             if (_line.contains(_InputFromUser + " not found :^(")) {
                 Platform.runLater(() -> {
-                        whatDoYouWant.setText("Your input name is invalid, please enter again"); //TODO timeout result
+                        whatDoYouWant.setText("The word is invalid, please enter again"); //TODO timeout result
                         //clear the searched text in the wikipedia
                         yourKeyWord.clear();
                 });
             } else {
 
                 try {
-                    FileWriter tempWriter = new FileWriter(PathIs.EXTRA + "/temp.txt");
+                    FileWriter tempWriter = new FileWriter(PathIs.EXTRA + "/temp.txt"); // record the search result in temp.txt file
                     tempWriter.write(_line);
                     tempWriter.close();
                 } catch (IOException e) {
@@ -195,7 +183,7 @@ public class CreationController {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        EditTextController controller = (EditTextController) Main.getController().setTOPVIEW(SceneFXML.AUDIO.toString());
+                        EditTextController controller = (EditTextController) Main.getController().setTOPVIEW(SceneFXML.AUDIO.toString()); //go to the save audio scene
                         controller.initData(_InputFromUser);
                     } catch (IOException e) {
                         e.printStackTrace();

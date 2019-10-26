@@ -86,7 +86,7 @@ public class ViewController {
     }
 
     /**
-     * Retrieve the user selection of the ListView.
+     * The getTheSelection method will retrieve the user selection of the ListView.
      * @param mouseEvent
      */
     @FXML
@@ -130,7 +130,7 @@ public class ViewController {
     }
 
     /**
-     * set up a slider for video playing
+     * set up a slider for user to drag when playing the video
      * https://stackoverflow.com/questions/37765499/javafx-video-player-timeslider
      */
     private void sliderSetUp(){
@@ -143,6 +143,7 @@ public class ViewController {
 
     /**
      * change the time of video to the time user drags to
+     * TODO check with Jennifer
      */
     @FXML
     private void changeVidTime(){
@@ -270,7 +271,7 @@ public class ViewController {
     }
 
     /**
-     * move the creation to favourite folder when user click star button
+     * move the creation to favourite folder when user click the favourite button
      *
      * @throws Exception
      */
@@ -336,7 +337,10 @@ public class ViewController {
     }
 
 
-
+    /**
+     * The resetPlay() method will reset the player
+     * @throws Exception
+     */
     private void resetPlayer() throws Exception {
         muteButton.setDisable(true);
         playOptions.setDisable(true);

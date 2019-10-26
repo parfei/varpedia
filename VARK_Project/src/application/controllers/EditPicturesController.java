@@ -68,7 +68,7 @@ public class EditPicturesController {
 
 
     /**
-     * take the user back to the main menu when main
+     * take the user back to the main menu when home button is clicked
      */
     @FXML
     public void backToMainMenu() throws Exception {
@@ -79,7 +79,8 @@ public class EditPicturesController {
     }
 
     /**
-     * If user wants no pictures in their video, then signal to produce no images.
+     * User will go to next scene to when click "next" or "I want no pictures" button
+     * If user click "I want no pictures", no picture will be included in the creation
      * @throws IOException
      */
     @FXML
@@ -133,7 +134,7 @@ public class EditPicturesController {
     }
 
     /**
-    add 12 images to image view
+     * addImages method add images to image view
      */
     private void addImages() {
 
@@ -152,7 +153,7 @@ public class EditPicturesController {
     }
 
     /**
-    let user choose images and make the _imageList contain the images that user don't want to include
+     * let user choose images and make the _imageToDeleteList contain the images that user don't want to include
      */
     @FXML
     public void chooseImage(MouseEvent event) {
