@@ -5,12 +5,15 @@ import application.Main;
 import application.values.PicPath;
 import application.values.SceneFXML;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -135,11 +138,28 @@ public class MainController {
         Popup popup = new Popup();
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.TIP.toString()));
         popup.getContent().add((Parent)loader.load());
-        ((TipController) loader.getController()).setTipText(text);
-        popup.setAnchorX(creatingImg.getX() - 100);
-        popup.setAnchorY(creatingImg.getY() + 450);
+        ((TipController) loader.getController()).setTipText(text); //Set text of the star
 
-        popup.show((Stage)TOPVIEW.getScene().getWindow());
+        Stage stage = (Stage) TOPVIEW.getScene().getWindow();
+        popup.show(stage);
+        Point2D starPoint = starBtn.localToScene(0.0,  0.0);
+
+        //Set help star initial coordinates
+        popup.setAnchorX(stage.getX() + starPoint.getX() - 150);
+        popup.setAnchorY(stage.getY() + starPoint.getY());
+
+        //Whenever window changes, star speech bubble follows it.
+        stage.xProperty().addListener((observableValue, number, t1) -> popup.setAnchorX(stage.getX() + starPoint.getX() - 150));
+        stage.yProperty().addListener((observableValue, number, t1) -> { popup.setAnchorY(stage.getY() + starPoint.getY()); });
+
+        //When window is unfocused, hide popup. 
+        stage.focusedProperty().addListener((ov, oldValue, newValue) -> {
+            if (!stage.focusedProperty().get()){
+                popup.hide();
+            } else {
+                popup.show(stage);
+            }
+        });
 
         return popup;
     }
