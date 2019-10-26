@@ -85,7 +85,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Slider fx:id="playTimer" onDragDetected="#changeVidTime" prefHeight="59.0" prefWidth="576.0" scaleShape="false" />
+                  <Slider fx:id="playTimer" prefHeight="59.0" prefWidth="576.0" scaleShape="false" />
                   <Button fx:id="muteButton" mnemonicParsing="false" onAction="#videoPlay" prefHeight="34.0" prefWidth="53.0" stylesheets="@../css/menu_button.css">
                      <graphic>
                         <ImageView fx:id="muteImg" fitHeight="106.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">

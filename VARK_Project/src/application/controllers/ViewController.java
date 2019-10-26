@@ -9,6 +9,7 @@ import application.listeners.CreationListCell;
 import application.values.PicPath;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
@@ -52,6 +53,7 @@ public class ViewController {
     private static final Image UNMUTE = new Image(PicPath.VIEW + "/unmute.png");
     private static final Image PLAY = new Image(PicPath.VIEW + "/play.png");
     private static final Image PAUSE = new Image(PicPath.VIEW + "/pause.png");
+    private Duration _currentVidDura;
 
     @FXML private ListView stuffCreated;
 
@@ -100,7 +102,9 @@ public class ViewController {
                 creationOptions.setDisable(false);
 
                 File file = new File(ManageFolder.findPath(_choice, true));
-                _player = new MediaPlayer(new Media(file.toURI().toString())); //Set up player to be played.
+                Media media = new Media(file.toURI().toString());
+                _player = new MediaPlayer(media); //Set up player to be played.
+                _currentVidDura = new Duration(media.getDuration().toSeconds());
                 sliderSetUp();
 
                 //Get confidence rating from file.
@@ -131,26 +135,42 @@ public class ViewController {
 
     /**
      * set up a slider for video playing
-     * https://stackoverflow.com/questions/37765499/javafx-video-player-timeslider
+     * https://stackoverflow.com/questions/15475457/how-to-use-timeline-when-playing-videos-using-javafx
      */
     private void sliderSetUp(){
         _player.currentTimeProperty().addListener((observableValue, duration, t1) -> {
-            Duration currentTime = _player.getCurrentTime();
-            int value = (int) currentTime.toSeconds();
-            playTimer.setValue(value);
+            updateValues();
+        });
+
+        playTimer.valueProperty().addListener(observable -> {
+            if (playTimer.isValueChanging()){
+                _player.seek(_currentVidDura.multiply(playTimer.getValue() / 100.0));
+            }
+            updateValues();
         });
     }
 
-    /**
-     * change the time of video to the time user drags to
-     */
-    @FXML
-    private void changeVidTime(){
-        Duration time = Duration.seconds(playTimer.getValue());
-        _player.seek(time);
-        playTimer.setValue(time.toSeconds());
-
+    private void updateValues(){
+            Platform.runLater(() -> {
+                Duration currentTime = _player.getCurrentTime();
+                //playTime.setText(formatTime(currentTime, duration));
+                playTimer.setDisable(_currentVidDura.isUnknown());
+                if (!playTimer.isDisable() && !playTimer.isValueChanging()){
+                    playTimer.setValue((currentTime.toMillis()/_currentVidDura.toMillis())* 100.0);
+                }
+            });
     }
+
+//    /**
+//     * change the time of video to the time user drags to
+//     */
+//    @FXML
+//    private void changeVidTime(){
+//        Duration time = Duration.seconds(playTimer.getValue());
+//        _player.seek(time);
+//        playTimer.setValue(time.toSeconds());
+//
+//    }
 
     /**
      * The playVideo method will play the video when the button "Play" is clicked.
@@ -189,7 +209,7 @@ public class ViewController {
 
         if (id.equals("stopButton")){
             _player.stop();
-            playOptions.setDisable(true);
+            resetPlayer();
         } else if (id.equals("muteButton")){
             if (!_muted){
                 _player.setMute(true);
@@ -338,7 +358,6 @@ public class ViewController {
 
 
     private void resetPlayer() throws Exception {
-        muteButton.setDisable(true);
         playOptions.setDisable(true);
         muteImg.setImage(MUTE);
         playImg.setImage(PLAY);
