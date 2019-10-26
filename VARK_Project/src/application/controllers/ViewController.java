@@ -9,6 +9,7 @@ import application.listeners.CreationListCell;
 import application.values.PicPath;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.value.ChangeListener;
@@ -52,6 +53,8 @@ public class ViewController {
     private static final Image UNMUTE = new Image(PicPath.VIEW + "/unmute.png");
     private static final Image PLAY = new Image(PicPath.VIEW + "/play.png");
     private static final Image PAUSE = new Image(PicPath.VIEW + "/pause.png");
+    private static final Image RETRY = new Image(PicPath.VIEW + "/retry.png");
+    private double _currentVidDura; //seconds
 
     @FXML private ListView stuffCreated;
 
@@ -96,11 +99,17 @@ public class ViewController {
             ObservableList selectedCreation = stuffCreated.getSelectionModel().getSelectedItems();
             _choice = selectedCreation.get(0).toString();
             if (_choice != null){
+                playImg.setImage(PLAY);
                 playButton.setDisable(false);
                 creationOptions.setDisable(false);
 
                 File file = new File(ManageFolder.findPath(_choice, true));
-                _player = new MediaPlayer(new Media(file.toURI().toString())); //Set up player to be played.
+                Media media = new Media(file.toURI().toString());
+                _player = new MediaPlayer(media); //Set up player to be played.
+                _player.setOnReady(() -> {
+                    _currentVidDura = _player.getTotalDuration().toSeconds();
+                    playTimer.maxProperty().set(_currentVidDura);
+                });
                 sliderSetUp();
 
                 //Get confidence rating from file.
@@ -117,6 +126,7 @@ public class ViewController {
                         team.submit(new Play(_choice));
                         setColourImmediately();
                         Main.getController().popupHelper("How well do you know the word now? Rate yourself!");
+                        resetPlayer();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -130,27 +140,22 @@ public class ViewController {
     }
 
     /**
-     * set up a slider for user to drag when playing the video
-     * https://stackoverflow.com/questions/37765499/javafx-video-player-timeslider
+     * set up a slider for video playing
+     * https://stackoverflow.com/questions/15475457/how-to-use-timeline-when-playing-videos-using-javafx
      */
     private void sliderSetUp(){
         _player.currentTimeProperty().addListener((observableValue, duration, t1) -> {
             Duration currentTime = _player.getCurrentTime();
-            int value = (int) currentTime.toSeconds();
-            playTimer.setValue(value);
+            playTimer.setValue(currentTime.toSeconds());
         });
-    }
 
-    /**
-     * change the time of video to the time user drags to
-     * TODO check with Jennifer
-     */
-    @FXML
-    private void changeVidTime(){
-        Duration time = Duration.seconds(playTimer.getValue());
-        _player.seek(time);
-        playTimer.setValue(time.toSeconds());
-
+        playTimer.valueProperty().addListener(observable -> {
+            if (playTimer.isValueChanging()){
+                _player.seek(Duration.seconds(playTimer.getValue()));
+                Duration currentTime = _player.getCurrentTime();
+                playTimer.setValue(currentTime.toSeconds());
+            }
+        });
     }
 
     /**
@@ -190,7 +195,7 @@ public class ViewController {
 
         if (id.equals("stopButton")){
             _player.stop();
-            playOptions.setDisable(true);
+            resetPlayer();
         } else if (id.equals("muteButton")){
             if (!_muted){
                 _player.setMute(true);
@@ -342,14 +347,15 @@ public class ViewController {
      * @throws Exception
      */
     private void resetPlayer() throws Exception {
-        muteButton.setDisable(true);
+        playTimer.setValue(0);
+        _player.seek(new Duration(0));
+
         playOptions.setDisable(true);
         muteImg.setImage(MUTE);
-        playImg.setImage(PLAY);
+        playImg.setImage(RETRY);
 
         view.setDisable(true);
         _player.stop();
-        _player.dispose();
 
         stuffCreated.setDisable(false);
         tickFav();
@@ -360,6 +366,7 @@ public class ViewController {
      * Code inspired from: https://stackoverflow.com/questions/20936101/get-listcell-via-listview
      */
     private void setColourImmediately() throws Exception {
+        stuffCreated.getSelectionModel().select(_choice);
         int index = stuffCreated.getSelectionModel().getSelectedIndex();
         Object[]cells = stuffCreated.lookupAll(".cell").toArray();
         Cell cell = (Cell) cells[index];
