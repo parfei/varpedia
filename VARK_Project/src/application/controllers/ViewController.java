@@ -47,7 +47,6 @@ public class ViewController {
     private String _choice;
     private MediaPlayer _player;
     private Boolean _muted = false;
-    //private Boolean _paused = false;
     private ExecutorService team = Executors.newSingleThreadExecutor();
     private static final Image MUTE = new Image(PicPath.VIEW + "/mute.png");
     private static final Image UNMUTE = new Image(PicPath.VIEW + "/unmute.png");
@@ -160,11 +159,11 @@ public class ViewController {
 
     /**
      * The playVideo method will play the video when the button "Play" is clicked.
-     * @param event
+     *
      * @throws IOException
      */
     @FXML
-    public void playVideo(ActionEvent event)throws IOException{
+    public void playVideo()throws IOException{
         if (_choice == null){
             return;
         }
@@ -343,7 +342,7 @@ public class ViewController {
 
 
     /**
-     * The resetPlay() method will reset the player
+     * The resetPlay() method will reset the player to its initial state
      * @throws Exception
      */
     private void resetPlayer() throws Exception {
