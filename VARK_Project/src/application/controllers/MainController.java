@@ -41,10 +41,8 @@ public class MainController {
     @FXML private ImageView creatingImg;
     @FXML private Button starBtn;
 
-    private static final Image LOADING = new Image(PicPath.MENU + "/download.png");
+    private static final Image LOADING = new Image(PicPath.MENU + "/loading_star.png");
     private static final Image PLACEHOLDER = new Image(PicPath.MENU + "/placeholder.png");
-
-
 
     @FXML
     public void initialize() throws IOException {
