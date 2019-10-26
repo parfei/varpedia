@@ -3,8 +3,16 @@ package application.listeners;
 import application.bashwork.ManageFolder;
 import javafx.scene.control.ListCell;
 
+/**
+ * CreationListCell manages the colour the each item in the list
+ */
 public class CreationListCell extends ListCell<String> {
 
+    /**
+     * update the colour of items in the cell
+     * @param item
+     * @param empty
+     */
     @Override
     protected void updateItem(String item, boolean empty) {
         super.updateItem(item, empty);
@@ -18,6 +26,10 @@ public class CreationListCell extends ListCell<String> {
         }
     }
 
+    /**
+     * put different colour in the cell of list view according to user's confidence and number of plays on a creation
+     * @param item
+     */
     private void colourCell(String item){
         String confidence = null;
         try {

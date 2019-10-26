@@ -46,7 +46,7 @@ public class ViewController {
     private String _choice;
     private MediaPlayer _player;
     private Boolean _muted = false;
-    private Boolean _paused = false;
+    //private Boolean _paused = false;
     private ExecutorService team = Executors.newSingleThreadExecutor();
     private static final Image MUTE = new Image(PicPath.VIEW + "/mute.png");
     private static final Image UNMUTE = new Image(PicPath.VIEW + "/unmute.png");
@@ -130,6 +130,7 @@ public class ViewController {
     }
 
     /**
+     * set up a slider for video playing
      * https://stackoverflow.com/questions/37765499/javafx-video-player-timeslider
      */
     private void sliderSetUp(){
@@ -140,15 +141,19 @@ public class ViewController {
         });
     }
 
+    /**
+     * change the time of video to the time user drags to
+     */
     @FXML
     private void changeVidTime(){
         Duration time = Duration.seconds(playTimer.getValue());
         _player.seek(time);
         playTimer.setValue(time.toSeconds());
+
     }
 
     /**
-     * Play the video when the button "Play" is clicked.
+     * The playVideo method will play the video when the button "Play" is clicked.
      * @param event
      * @throws IOException
      */
@@ -173,7 +178,7 @@ public class ViewController {
     }
 
     /**
-     * A method that will execute when one of the embedded video player buttons are pressed. Depending on the type of button pressed,
+     * The videoPlay method will execute when one of the embedded video player buttons are pressed. Depending on the type of button pressed,
      * a different piece of code will execute.
      * @param event
      */
@@ -199,7 +204,7 @@ public class ViewController {
     }
 
     /**
-     * Will execute to delete a video when requested by the user.
+     * The deleteVideo method will execute to delete a video when requested by the user.
      * @param event
      * @throws IOException
      */
@@ -243,6 +248,11 @@ public class ViewController {
         }
     }
 
+    /**
+     * record the changes of confidence given by user
+     * @param mouseEvent
+     * @throws Exception
+     */
     @FXML
     public void changeConfidence(javafx.scene.input.MouseEvent mouseEvent) throws Exception {
         int rating = (int) confidence.getValue();
@@ -259,8 +269,13 @@ public class ViewController {
 
     }
 
+    /**
+     * move the creation to favourite folder when user click star button
+     *
+     * @throws Exception
+     */
     @FXML
-    public void favourite(ActionEvent event) throws Exception { //TODO implement remove favourites, button changes when this option is ticked.
+    public void favourite() throws Exception { //TODO implement remove favourites, button changes when this option is ticked.
         if (_choice != null){
 
             String file = "\"" + ManageFolder.findPath(_choice, true) + "\"";
@@ -302,6 +317,12 @@ public class ViewController {
         }
     }
 
+    /**
+     * The setCreations method add creations in the stuffCreated list view, and set the cell factory for stuffcreated listview
+     * @param path
+     * @throws Exception
+     */
+
     private void setCreations(String path) throws Exception { //TODO USE THIS!
         ArrayList<String> creations = null;
         try {
@@ -313,6 +334,8 @@ public class ViewController {
         stuffCreated.getItems().setAll(creations);
         stuffCreated.setCellFactory((Callback<ListView<String>, ListCell<String>>) param -> new CreationListCell());
     }
+
+
 
     private void resetPlayer() throws Exception {
         muteButton.setDisable(true);

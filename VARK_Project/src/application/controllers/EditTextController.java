@@ -297,11 +297,7 @@ public class EditTextController {
                         }
                     } else {
                         //Finally
-                        try {
-                            concatenateTextFile();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+
                         try { updateExistingAudio(); } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -314,27 +310,28 @@ public class EditTextController {
 
     /**
      * THis method will remove the saved text and audios when the user want to restart a creation process
-     * @param event
+     *
      * @throws IOException
      */
     @FXML
-    public void backToMain(ActionEvent event) throws Exception { //TODO set up back to search term functionality, change backto main to a little x button at the top?
-        String cmd1="rm -rf \""+ PathIs.TEMP + "/audioPiece\" ; rm -f \""+ PathIs.EXTRA + "/temp.txt\"; ";
+    public void backToMain() throws Exception { //TODO set up back to search term functionality, change backto main to a little x button at the top?
+        String cmd1="rm -rf \""+ PathIs.TEMP + "/audioPiece\" ; rm -f \""+ PathIs.EXTRA + "/temp.txt\" ; rm -f \""+ PathIs.EXTRA + "/saveTextFolder\"";
         new BashCommand().bash(cmd1);
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
 
     /**
      * This method will take the user to the creation of video interface when "create' button is clicked
-     * @param event
+     * @param
      * @throws IOException
      */
     @FXML
-    public void readyToCombine(ActionEvent event) throws IOException {
-//        EditPicturesController controller = (EditPicturesController) Main.getController().setTOPVIEW(SceneFXML.IMAGES.toString());
-//        controller.initData(_term);
+    public void readyToCombine() throws Exception {
+        concatenateTextFile();
+      EditPicturesController controller = (EditPicturesController) Main.getController().setTOPVIEW(SceneFXML.IMAGES.toString());
+        controller.initData(_term);
 
-        Main.getController().setTOPVIEW(SceneFXML.SHOWTEXT.toString());
+       // Main.getController().setTOPVIEW(SceneFXML.SHOWTEXT.toString());
     }
 
     /**
@@ -382,7 +379,7 @@ public class EditTextController {
     }
 
     @FXML
-    public void playAudio(ActionEvent event) throws Exception {
+    public void playAudio() throws Exception {
         String wavFile = findAudio(_audioChoice);
 
         Media sound = new Media(new File(wavFile).toURI().toString());
@@ -391,7 +388,7 @@ public class EditTextController {
     }
 
     @FXML
-    public void deleteAudio(ActionEvent event) throws Exception {
+    public void deleteAudio() throws Exception {
         if (_mediaPlayer!=null) {
             _mediaPlayer.stop();
             _mediaPlayer.dispose();
@@ -442,14 +439,20 @@ public class EditTextController {
         String textFolder = PathIs.EXTRA + "/saveTextFolder";
 
         ArrayList<String> output = new BashCommand().bash("cd \"" + textFolder+"\"; cat *.txt");
-        String finalText = output.toString().substring(1);
-        finalText = finalText.substring(0,finalText.lastIndexOf("]"));
+        String textFinal = output.toString().substring(1);
+        textFinal = textFinal.substring(0,textFinal.lastIndexOf("]"));
         //store the text file some where
 
-        //why this does not work
+        //why this does not work Todo this does not work
         FileWriter writer=new FileWriter(PathIs.EXTRA + "/myFinalText.txt");
-        writer.write(finalText);
+        writer.write(textFinal);
         writer.close();
+
+
+
+        //move this file to creation when a creation is made
+        // what if the user goes back or when the user click button on the tap, then this textFolder and the final text should be delete
+
 
 
 

@@ -60,7 +60,9 @@ public class CreationWork extends Task<String> {
         } else {
             generatePicVideo();
         }
-        combineForms(); //combine the video and the sound part.
+        combineForms();//combine the video and the sound part.
+        moveTextFile();
+
 
         System.out.println("creationwork done");
 
@@ -176,22 +178,13 @@ public class CreationWork extends Task<String> {
             System.out.println(photoList.get(i));
         }
 
-        //String command1 = "soxi -D \"" + _path + "combinedSound.wav\"";
-        //duration = Double.parseDouble(new BashCommand().bash(command1).get(0));
-        /*ProcessBuilder pb = new ProcessBuilder("bash", "-c", command1);
-        try {
-            Process process = pb.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            duration = Double.parseDouble(reader.readLine());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+
         double dura = _audioDura / Double.parseDouble(_picNum + ".0"); //Calculate duration of each picture
 
         //Write the list of photos to be included in the slideshow in a text file
         String path = PathIs.TEMP + "/photos/";
         try {
-            //PrintWriter writer = new PrintWriter(path + "imgs.txt", "UTF-8");
+
             PrintWriter writer = new PrintWriter(_path + "imgs.txt", "UTF-8");
             for (int i = 0; i < _picNum; i++) {
                 writer.println("file '" + path + photoList.get(i) + ".jpg'"); //Write file name for each image to be included.
@@ -209,22 +202,10 @@ public class CreationWork extends Task<String> {
     }
 
 
-    public void addBackgroundMusic() throws InterruptedException, IOException {
+    private void addBackgroundMusic() throws InterruptedException, IOException {
         System.out.println("start adding background music");
 
-        //measure the length of audio working
-       // String pathOfSoundWithoutMusic=PathCD.getPathInstance().getPath() + "/mydir/extra/" + _term + "/" + _name;
-        //String command = "soxi -D ./myaudio/sound.wav";
-        /*String command= "soxi -D "+_path+"sound.wav";
-        ProcessBuilder measureLength = new ProcessBuilder("/bin/bash", "-c", command);
-        Process process = measureLength.start();
-        BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        int exitStatus = process.waitFor();
-        int seconds = 0;
-        if (exitStatus == 0) {
-            double duration = Double.parseDouble(stdout.readLine());
-            seconds = (int) Math.ceil(duration);
-        }*/
+
 
         int seconds = (int) Math.ceil(_audioDura); //Get duration in seconds
 
@@ -253,7 +234,7 @@ public class CreationWork extends Task<String> {
                 System.out.println("convert the music to wav file");
             }
 
-            //"sox -m ./myaudio/sound.wav ./myaudio/song.wav ./myaudio/out.wav trim 0 "+seconds;
+
 
             String combineAudioCommand="sox -m " + _path + "sound.wav "+ path+"/song.wav "+ _path + "combinedSound.wav trim 0 "+seconds; //TODO does it work for double? more accurate
             System.out.println(combineAudioCommand);
@@ -280,6 +261,15 @@ public class CreationWork extends Task<String> {
         String command1 = "soxi -D \"" + _path + "sound.wav\"";
         try {
             _audioDura = Double.parseDouble(new BashCommand().bash(command1).get(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void moveTextFile(){
+        String command="mv " + PathIs.EXTRA + "/myFinalText.txt "+ _path;
+        try{
+            new BashCommand().bash(command);
         } catch (Exception e) {
             e.printStackTrace();
         }

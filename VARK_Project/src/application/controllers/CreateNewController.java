@@ -4,36 +4,20 @@ import application.*;
 import application.bashwork.BashCommand;
 import application.values.PathIs;
 import application.values.SceneFXML;
-import com.sun.jdi.connect.Transport;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
 
-import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static com.sun.prism.impl.Disposer.cleanUp;
 
 /**
  * We create a new creation in this class. Name checking is done here. The bulk of the video creation is called from here.
@@ -49,7 +33,6 @@ public class CreateNewController {
     private List<String> _CreationsExisted = new ArrayList<String>();
     private ExecutorService team;
     private String _term;
-    private ChangeScene _changeSceneObject=new ChangeScene();
     private int _picNum;
     @FXML private ChoiceBox<String> choiceBox;
 
@@ -96,7 +79,7 @@ public class CreateNewController {
     @FXML
     public void returnToStart(ActionEvent event) throws IOException {
         _CreationsExisted.clear();
-        //_changeSceneObject.changeScene(event, "resources/menu.fxml","Main Menu");
+
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
 
@@ -179,6 +162,8 @@ public class CreateNewController {
 
             creationWork.setOnSucceeded(workerStateEvent -> {
                 try {
+
+
                     String p = "\"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "/";
                     new BashCommand().bash("touch " + p + "confidence.txt\" " + p + "plays.txt\"");
                     team.submit(new Confidence(textFieldCreationName.getText(), 0));
@@ -227,20 +212,6 @@ public class CreateNewController {
         new BashCommand().bash(command);
     }
 
-    //String createMusicCommand="ffmpeg -i ./src/music/groovy-music.mp3 -acodec pcm_u8 -ar 16000 ./myaudio/song.wav";
-    //String combineBackGroundMusic="sox -m ./myaudio/sound.wav ./myaudio/song.wav ./myaudio/out.wav trim 0 "+seconds
-
-    /*public void moveUp()
-        foreach (ListViewItem lvi in audioList.SelectedItems)
-        {
-            if (lvi.Index > 0)
-            {
-                int index = lvi.Index - 1;
-                sourceListView.Items.RemoveAt(lvi.Index);
-                sourceListView.Items.Insert(index, lvi);
-            }
-        }
-    }*/
 }
 
 

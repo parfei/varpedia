@@ -5,12 +5,17 @@ import javafx.concurrent.Task;
 
 import java.io.FileNotFoundException;
 
+/**
+ * the Play class increase and record the number of plays of a creation
+ */
 public class Play extends Task<Boolean> {
     private String _path;
 
     public Play(String creation) throws Exception {
         _path = ManageFolder.findPath(creation, false);
     }
+
+
 
     @Override
     protected Boolean call() throws Exception {

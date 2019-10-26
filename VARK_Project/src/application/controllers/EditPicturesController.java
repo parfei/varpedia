@@ -24,6 +24,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
+/**
+ * This class helps user to select images they want to include in their final creation
+ */
 public class EditPicturesController {
     @FXML
     private HBox downloading;
@@ -33,8 +37,6 @@ public class EditPicturesController {
 
     //private ChangeScene changeSceneObject=new ChangeScene();
     private List<Image> _imageToDeleteList = new ArrayList<Image>();
-    private List<Image> _allImage=new ArrayList<Image>();
-    private List<Image>  _remainImage=new ArrayList<Image>();
 
     @FXML ImageView view1;
     @FXML ImageView view2;
@@ -65,10 +67,14 @@ public class EditPicturesController {
         downloading.setVisible(false);
     }
 
+
+    /**
+     * take the user back to the main menu when main
+     */
     @FXML
     public void backToMainMenu() throws Exception {
         //String cmd1 = "rm -rf \"" + PathIs.TEMP + "/audioPiece\" ; rm -f \"" + PathIs.EXTRA + "/temp.txt\"; ";
-        String cmd1 = "rm -rf \"" + PathIs.TEMP + "\" ; rm -f \"" + PathIs.EXTRA + "/temp.txt\"; ";
+        String cmd1 = "rm -rf \"" + PathIs.TEMP + "\" ; rm -f \"" + PathIs.EXTRA + "/temp.txt\" ";
         new BashCommand().bash(cmd1);
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
     }
@@ -108,7 +114,7 @@ public class EditPicturesController {
     }
 
     /**
-    load images to image list
+     * loadImages method load images to image list
      */
     private void loadImages(List<Image> list) {
         String photoFolder = PathIs.TEMP + "/photos";
@@ -124,7 +130,7 @@ public class EditPicturesController {
     }
 
     /**
-    add images to image view
+    add 12 images to image view
      */
     private void addImages() {
 
@@ -151,12 +157,12 @@ public class EditPicturesController {
         Image selectedImage = clickedImageView.getImage();
 
         if (_imageToDeleteList.contains(selectedImage)) {
-            // Remove image from _imageList and make it opaque
+            // Remove image from _imageToDeleteList and make it opaque
             _imageToDeleteList.remove(selectedImage);
 
             clickedImageView.setStyle("-fx-opacity: 1.0");
         } else {
-            // Add image to _imageList, and make it transparent
+            // Add image to _imageToDeleteList, and make it transparent
             _imageToDeleteList.add(selectedImage);
             clickedImageView.setStyle("-fx-opacity: 0.4");
         }

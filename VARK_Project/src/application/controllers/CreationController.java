@@ -1,5 +1,5 @@
 package application.controllers;
-import application.ChangeScene;
+
 import application.Main;
 import application.PathCD;
 import application.bashwork.BashCommand;
@@ -7,12 +7,8 @@ import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,15 +16,17 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 
 public class CreationController {
     public String _InputFromUser;
     private String _line;
-    private Scene _scene;
+
 
     @FXML private TextField yourKeyWord;
 
@@ -48,7 +46,7 @@ public class CreationController {
 
     @FXML
     public void initialize() throws Exception {
-        String command2 = "mkdir -p \"" + PathIs.TEMP + "/audioPiece\" ; mkdir -p \""+ PathIs.TEMP + "/photos\" ";
+        String command2 = "mkdir -p \"" + PathIs.TEMP + "/audioPiece\" ; mkdir -p \""+ PathIs.TEMP + "/photos\" ; mkdir -p \""+ PathIs.EXTRA + "/saveTextFolder\" ";
         new BashCommand().bash(command2);
 
         progress.setVisible(false);
@@ -59,7 +57,7 @@ public class CreationController {
 
 
 
-        // set enter keyboard shortcuts
+
 
 
     }
@@ -104,6 +102,9 @@ public class CreationController {
         }
     }
 
+    /**
+     * add enter keyboard short cut for search
+     */
     @FXML
     public void addKeyBoardShortCut() {
         yourKeyWord.setOnKeyReleased(new EventHandler<KeyEvent>() {
@@ -119,20 +120,7 @@ public class CreationController {
                 }
             }
         });
-       /*Scene scene=this.getScene();
-       scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
-            @Override
-            public void handle(KeyEvent keyEvent) {
 
-                if (keyEvent.getCode() == KeyCode.LEFT) {
-                    try {
-                        backToMain();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });*/
 
 
     }
@@ -163,7 +151,7 @@ public class CreationController {
                 Process process = pb.start();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 _line = reader.readLine();
-                //_line = _line.replace(". ", ".\n");
+
 
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -186,9 +174,7 @@ public class CreationController {
                         yourKeyWord.clear();
                 });
             } else {
-                //resultOut = true;
-                // get the format of the searchedText
-                //String command = "echo -e \"" + _line + "\" > " + PathCD.getPathInstance().getPath() + "/mydir/extra/temp.txt";
+
                 try {
                     FileWriter tempWriter = new FileWriter(PathIs.EXTRA + "/temp.txt");
                     tempWriter.write(_line);

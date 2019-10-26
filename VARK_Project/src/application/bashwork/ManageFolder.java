@@ -7,7 +7,12 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class ManageFolder {
-
+    /**
+     * this method return an arraylist containing all creation names
+     * @param path
+     * @return
+     * @throws Exception
+     */
     public static ArrayList<String> getCreations(String path) throws Exception {
         BashCommand list = new BashCommand();
         ArrayList<String> creations = null;
@@ -19,6 +24,10 @@ public class ManageFolder {
         return creations;
     }
 
+    /**
+     * Create folders
+     * @throws Exception
+     */
     public static void initializeFolders() throws Exception {
         String path = PathCD.getPathInstance().getPath();
 
@@ -26,10 +35,18 @@ public class ManageFolder {
         ArrayList<String> list = output.bash("[ -e \"" + path + "/mydir\" ]");
         if (list.isEmpty()){
         } else if (list.get(0).equals("1")) {
-            output.bash("mkdir -p \"" + path + "/mydir/.extra/saveTextFolder\" ; mkdir -p \"" + path + "/mydir/creations/creations\" ; mkdir -p \"" + path + "/mydir/creations/favourites\"");
+            output.bash("mkdir -p \"" + path + "/mydir/.extra\" ; mkdir -p \"" + path + "/mydir/creations/creations\" ; mkdir -p \"" + path + "/mydir/creations/favourites\"");
 
         }
     }
+
+    /**
+     * find the path of folder that contains extra files and created video
+     * @param name
+     * @param isVideo
+     * @return
+     * @throws Exception
+     */
 
     public static String findPath(String name, Boolean isVideo) throws Exception {
         String command;
@@ -42,6 +59,11 @@ public class ManageFolder {
         return cmd.bash(command).get(0);
     }
 
+    /**
+     * write a string to the file
+     * @param path
+     * @param content
+     */
     public static void writeToFile(String path, String content){
         try{
             File file = new File(path);
@@ -54,6 +76,13 @@ public class ManageFolder {
             e.printStackTrace();
         }
     }
+
+    /**
+     * read the content of a file
+     * @param path
+     * @return
+     * @throws FileNotFoundException
+     */
 
     public static String readFile(String path) throws FileNotFoundException {
         String output = "";

@@ -41,6 +41,8 @@ public class MainController {
     private static final Image LOADING = new Image(PicPath.MENU + "/download.png");
     private static final Image PLACEHOLDER = new Image(PicPath.MENU + "/placeholder.png");
 
+
+
     @FXML
     public void initialize() throws IOException {
         this.setTOPVIEW(SceneFXML.MENU.toString());
@@ -48,7 +50,7 @@ public class MainController {
     }
 
     /**
-     * When this method is called, it will change the Scene to CreateView
+     * When this method is called, it will change the Scene to Create view
      * @param event
      * @throws IOException
      */
@@ -59,12 +61,23 @@ public class MainController {
         this.setTOPVIEW(SceneFXML.SEARCH.toString());
     }
 
+    /**
+     * When this method is called, it will change the Scene to View creations
+     * @param event
+     * @throws IOException
+     */
+
     @FXML
     public void view(ActionEvent event)throws IOException{
         popupHelper("Click on a creation to get started!");
         this.setTOPVIEW(SceneFXML.VIEW.toString());
     }
 
+    /**
+     * show instructions when user click star button
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void showInstructions(ActionEvent event) throws IOException {
         starBtn.setDisable(true);
@@ -82,6 +95,13 @@ public class MainController {
         });
     }
 
+    /**
+     *
+     * @param layout
+     * @return
+     * @throws IOException
+     */
+
     public Object setTOPVIEW(String layout) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(layout));
         Parent node = loader.load();
@@ -90,6 +110,11 @@ public class MainController {
         return loader.getController();
     }
 
+
+    /**
+     * show user a downloading image when creation is still being made
+     * @param inProgress
+     */
     public void creationInProgress(Boolean inProgress){
         if (inProgress){
             creatingImg.setImage(LOADING);
@@ -97,6 +122,13 @@ public class MainController {
             creatingImg.setImage(PLACEHOLDER);
         }
     }
+
+    /**
+     * popupHelper helps to create a new pop up
+     * @param text
+     * @return
+     * @throws IOException
+     */
 
     public Popup popupHelper(String text) throws IOException {
         Popup popup = new Popup();

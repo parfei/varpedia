@@ -7,6 +7,10 @@ import javafx.scene.control.TextArea;
 
 import java.util.ArrayList;
 
+
+/**
+ * can be deleted
+ */
 public class TextPopUpController {
 
     @FXML

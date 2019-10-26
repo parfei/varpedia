@@ -5,6 +5,9 @@ import javafx.concurrent.Task;
 
 import java.io.File;
 
+/**
+ * The Confidence class record the confidence of user
+ */
 public class Confidence extends Task<Boolean> {
     private int _rating;
     private String _rateFilePath;
