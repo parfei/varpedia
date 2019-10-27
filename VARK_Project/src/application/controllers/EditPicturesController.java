@@ -54,8 +54,9 @@ public class EditPicturesController {
     }
 
     @FXML
-    public void initialize(){
+    public void initialize() throws IOException {
         Main.getController().currentCreationStep(CreationStep.PICTURE);
+        Main.getController().popupHelper("Choose some pictures to go into your creation!", false);
     }
 
     public void setGrid(){

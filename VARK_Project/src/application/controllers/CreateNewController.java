@@ -43,7 +43,8 @@ public class CreateNewController {
     /**
      * This method will add the existing creation to the ListView and make a choice box for user to choose music
      */
-    public void initialize() {
+    public void initialize() throws IOException {
+        Main.getController().popupHelper("Let's add some final details to your creation!", false);
         Main.getController().currentCreationStep(CreationStep.FINAL);
         choiceBox.getSelectionModel().selectLast();
         createBtn.setDisable(true);
@@ -116,7 +117,7 @@ public class CreateNewController {
 
         //Send creation work to background thread to create the final creation...
         CreationWork creationWork = null;
-        creationWork = new CreationWork(_term, textFieldCreationName.getText(), _picNum, true,choiceBox.getValue()); //TODO complete
+        creationWork = new CreationWork(_term, textFieldCreationName.getText(), _picNum, true,choiceBox.getValue());
 
         team.submit(creationWork);
 

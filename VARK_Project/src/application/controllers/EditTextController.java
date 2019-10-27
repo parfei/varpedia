@@ -66,6 +66,7 @@ public class EditTextController {
      */
     @FXML
     public void initialize() throws Exception {
+        Main.getController().popupHelper("Read what your word means- then let's make audio!", false);
         Main.getController().currentCreationStep(CreationStep.AUDIO);
         remindLabel.setVisible(false);
 
