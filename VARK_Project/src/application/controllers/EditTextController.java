@@ -250,6 +250,13 @@ public class EditTextController {
                         }
                     });
                 }
+                else{
+                    try {
+                        updateExistingAudio();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             });
         }
     }
