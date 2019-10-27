@@ -4,14 +4,18 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="160.0" style="-fx-background-color: transparent;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.TipController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="196.0" prefWidth="205.0" style="-fx-background-color: transparent;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.TipController">
    <children>
-      <ImageView fitHeight="150.0" fitWidth="171.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="185.0" fitWidth="205.0" layoutY="11.0" pickOnBounds="true">
          <image>
             <Image url="@images/tip.png" />
          </image>
       </ImageView>
-      <Label fx:id="helpTxt" layoutX="25.0" layoutY="26.0" prefHeight="92.0" prefWidth="108.0" textAlignment="CENTER" wrapText="true" />
+      <Label fx:id="helpTxt" layoutX="31.0" layoutY="37.0" prefHeight="133.0" prefWidth="155.0" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
    </children>
 </AnchorPane>

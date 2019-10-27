@@ -193,8 +193,8 @@ public class MainController {
         popup.setAnchorY(stage.getY() + starPoint.getY());
 
         //Whenever window changes, star speech bubble follows it.
-        stage.xProperty().addListener((observableValue, number, t1) -> popup.setAnchorX(stage.getX() + starPoint.getX() - 150));
-        stage.yProperty().addListener((observableValue, number, t1) -> { popup.setAnchorY(stage.getY() + starPoint.getY()); });
+        stage.xProperty().addListener((observableValue, number, t1) -> popup.setAnchorX(stage.getX() + starPoint.getX() - 250));
+        stage.yProperty().addListener((observableValue, number, t1) -> { popup.setAnchorY(stage.getY() + starPoint.getY() - 50); });
 
         //When window is unfocused, hide popup.
         if (!temp){
