@@ -1,20 +1,22 @@
 package application.controllers;
 
+import application.CustomAlert;
 import application.FlickrWork;
 import application.Main;
 import application.bashwork.BashCommand;
 import application.bashwork.ManageFolder;
 import application.bashwork.PreviewHelper;
 import application.bashwork.SaveHelper;
+import application.values.CustomAlertType;
 import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -22,7 +24,6 @@ import javafx.scene.media.MediaPlayer;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -30,7 +31,6 @@ import java.util.concurrent.Executors;
 
 public class EditTextController {
     @FXML private TextArea textArea;
-    @FXML private Label askForVoice;
     @FXML private ToggleGroup group;
     @FXML private RadioButton default_voice;
     @FXML private RadioButton male_voice;
@@ -47,17 +47,17 @@ public class EditTextController {
     private String _audioChoice;
     private String _term;
     private String _selectedText;
-    private List<String> _audioExisted= new ArrayList<>();
     static final int OUT = 0;
     static final int IN = 1;
     private ExecutorService team = Executors.newSingleThreadExecutor();
-    private ExecutorService flickrteam = Executors.newSingleThreadExecutor();
+    private ExecutorService flickrTeam = Executors.newSingleThreadExecutor();
+    private ExecutorService alertTeam = Executors.newSingleThreadExecutor();
     private MediaPlayer _mediaPlayer;
 
     public void initData(String term){
         _term = term;
         FlickrWork images = new FlickrWork(_term, "12");
-        flickrteam.submit(images);
+        flickrTeam.submit(images);
     }
 
     /**
@@ -164,7 +164,8 @@ public class EditTextController {
     }
 
     private void clearAudio(String file_path){
-        String deleteCmd = "rm -f " + file_path;
+        String deleteCmd = "rm -f \"" + file_path + "\"";
+        System.out.println(deleteCmd);
         try {
             new BashCommand().bash(deleteCmd);
             updateExistingAudio();
@@ -173,19 +174,42 @@ public class EditTextController {
         }
     }
 
+    private void failedSave(CustomAlert alert, String file_path){
+        Optional<ButtonType> result = alert.showAlert();
+        System.out.println("clearing--------------");
+        clearAudio(file_path);
+
+        if (result.get() == ButtonType.OK) {
+            SaveHelper retry = new SaveHelper("default_voice", Integer.toString(countNumberOfAudioFile()), _term);
+            team.submit(retry);
+            retry.setOnSucceeded(workerStateEvent1 -> {
+                try {
+                    updateExistingAudio();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            try {
+                updateExistingAudio();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     /**
      * This method will save the text in an audio file according to the voice that user selected
-     * @param event
      * @throws IOException
      */
     @FXML
-    public void save(ActionEvent event) throws Exception {
+    public void save() throws Exception {
         String selectedText = textArea.getSelectedText();
         remindLabel.setVisible(false);
 
         String saveble = selectedText.replaceAll("[\\[\\](){}']", ""); //remove the symbol that is not saveable
-        int numberOfAudio= countNumberOfAudioFile();
-        String number=Integer.toString(numberOfAudio);
+        String number=Integer.toString(countNumberOfAudioFile());
 
         ManageFolder.writeToFile(PathIs.TEMP +"/savedText" + countNumberOfAudioFile() + ".txt", saveble);
 
@@ -201,6 +225,8 @@ public class EditTextController {
                 }
             });
         } else {
+            String file_path = PathIs.TEMP + "/audioPiece/" + _term+ "-"+ number + ".wav";
+            File file = new File(file_path);
             SaveHelper sh;
             if (male_voice.isSelected()){
                 sh = new SaveHelper("male_voice", number, _term);
@@ -210,40 +236,20 @@ public class EditTextController {
 
             team.submit(sh);
             sh.setOnSucceeded(workerStateEvent -> {
-                String file_path = PathIs.TEMP + "/audioPiece/" + _term+ "-"+ number + ".wav";
-                File file = new File(file_path);
-
                 /* ask user to save in default voice or give up saving if the male voice option can't save the audio*/
                 if (file.length() == 0) {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Swtich to normal?");
-                    alert.setHeaderText("Boy/girl voice cannot save your text!");
-                    alert.setContentText("Do you want to save with normal voice?");
-                    Optional<ButtonType> result = alert.showAndWait();
-
-                    clearAudio(file_path);
-
-                    if (result.get() == ButtonType.OK) {
-                        SaveHelper retry = new SaveHelper("default_voice", number, _term);
-                        team.submit(retry);
-                        retry.setOnSucceeded(workerStateEvent1 -> {
-                            try {
-                                updateExistingAudio();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
-                    } else {
+                    System.out.println("hi");
+                    CustomAlert alert = new CustomAlert(CustomAlertType.SAVE);
+                    alertTeam.submit(alert);
+                    alert.setOnSucceeded(workerStateEvent1 -> {
                         try {
-                            updateExistingAudio();
-                        } catch (Exception e) {
+                            failedSave(alert.get(), file_path);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
                             e.printStackTrace();
                         }
-                    }
-                } else {
-                    try { updateExistingAudio(); } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    });
                 }
             });
         }
@@ -380,13 +386,6 @@ public class EditTextController {
         String command = "find \"" + PathIs.TEMP + "/audioPiece/" + name + ".wav\"";
         return new BashCommand().bash(command).get(0);
     }
-
-
-
-
-
-
-
 
 }
 
