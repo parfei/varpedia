@@ -58,7 +58,6 @@ public class SearchTermController {
         addKeyBoardShortCut();
     }
 
-
     /**
      * user will go to main menu when back button is clicked
      * @throws IOException
@@ -69,7 +68,6 @@ public class SearchTermController {
         Main.clear();
     }
 
-
     /**
      * The search method will search the key word user entered
      */
@@ -79,7 +77,7 @@ public class SearchTermController {
 
         _InputFromUser = yourKeyWord.getText();
         if (_InputFromUser.trim().isEmpty() || _InputFromUser == null) {
-            whatDoYouWant.setText("Invalid input, please enter again");
+            Main.getController().popupHelper("Enter a word that isn't empty!", false);
             yourKeyWord.clear();
         } else {
             progress.setVisible(true);
@@ -105,9 +103,6 @@ public class SearchTermController {
             }
         });
     }
-
-
-
 
     /**
      * create a class doing background search work
@@ -143,7 +138,7 @@ public class SearchTermController {
 
             if (_line.contains(_InputFromUser + " not found :^(")) {
                 Platform.runLater(() -> {
-                        whatDoYouWant.setText("The word is invalid, please enter again"); //TODO timeout result
+                        whatDoYouWant.setText("Word wasn't found. Enter another one!");
                         //clear the searched text in the wikipedia
                         yourKeyWord.clear();
                 });
