@@ -1,5 +1,5 @@
 package application.values;
 
 public enum CreationStep {
-    SEARCH, AUDIO, PICTURE, FINAL, FINISH, CREATED;
+    SEARCH, AUDIO, PICTURE, FINAL, FINISH;
 }

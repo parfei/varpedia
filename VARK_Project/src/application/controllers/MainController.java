@@ -80,7 +80,6 @@ public class MainController {
 
     @FXML
     public void view(ActionEvent event)throws IOException{
-        currentCreationStep(CreationStep.CREATED);
         popupHelper("Click on a creation to get started!", false);
         this.setTOPVIEW(SceneFXML.VIEW.toString());
     }
@@ -134,7 +133,6 @@ public class MainController {
     @FXML
     public void goHome() throws Exception {
         currentCreationStep(CreationStep.FINISH);
-        currentCreationStep(CreationStep.CREATED);
         String delete ="rm -rf \""+ PathIs.TEMP + "/audioPiece\" ; rm -f \""+ PathIs.EXTRA + "/temp.txt\"";
         new BashCommand().bash(delete);
         Main.clear();
@@ -169,7 +167,6 @@ public class MainController {
             createImg.setImage(FINAL);
         } else if (step == CreationStep.FINISH){
             createImg.setImage(DEFAULT_CREATE);
-        } else if (step == CreationStep.CREATED){
             Main.clear();
             createBtn.setDisable(false);
         }

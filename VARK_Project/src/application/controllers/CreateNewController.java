@@ -160,7 +160,7 @@ public class CreateNewController {
                 e.printStackTrace();
             }
             Main.getController().creationInProgress(false); //show user the creation work is done by change the picture
-            Main.getController().currentCreationStep(CreationStep.CREATED);
+            Main.getController().currentCreationStep(CreationStep.FINISH);
         });
         try {
             Main.getController().popupHelper("Creation is being made!", false);
