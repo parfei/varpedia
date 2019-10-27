@@ -14,8 +14,6 @@ import application.values.SceneFXML;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -380,8 +378,4 @@ public class EditTextController {
         String command = "find \"" + PathIs.TEMP + "/audioPiece/" + name + ".wav\"";
         return new BashCommand().bash(command).get(0);
     }
-
 }
-
-
-

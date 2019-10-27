@@ -1,6 +1,5 @@
 package application.controllers;
 
-import application.ChangeScene;
 import application.Main;
 import application.bashwork.BashCommand;
 import application.values.CreationStep;
@@ -8,38 +7,22 @@ import application.values.PathIs;
 import application.values.PicPath;
 import application.values.SceneFXML;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.util.Collection;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainController {
-
-
     @FXML private AnchorPane TOPVIEW;
     @FXML private ImageView creatingImg;
     @FXML private ImageView createImg;
@@ -55,7 +38,7 @@ public class MainController {
     private static final Image DEFAULT_CREATE = new Image(PicPath.MENU + "/create.png");
 
     @FXML
-    public void initialize() throws IOException {
+    public void initialize() {
         try {
             this.setTOPVIEW(SceneFXML.MENU.toString());
             creationInProgress(false);
@@ -66,12 +49,11 @@ public class MainController {
 
     /**
      * When this method is called, it will change the Scene to Create view and start create process
-     * @param event
      * @throws IOException
      */
 
     @FXML
-    public void create(ActionEvent event) throws IOException {
+    public void create() throws IOException {
         popupHelper("Enter a word to search up!", false);
         this.setTOPVIEW(SceneFXML.SEARCH.toString());
     }
