@@ -56,8 +56,12 @@ public class MainController {
 
     @FXML
     public void initialize() throws IOException {
-        this.setTOPVIEW(SceneFXML.MENU.toString());
-        creationInProgress(false);
+        try {
+            this.setTOPVIEW(SceneFXML.MENU.toString());
+            creationInProgress(false);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**

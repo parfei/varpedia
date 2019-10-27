@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="596.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainMenuController">
@@ -15,7 +18,7 @@
             <Image url="@images/background.png" />
          </image>
       </ImageView>
-      <Label fx:id="titleLabel" alignment="CENTER" layoutX="324.0" layoutY="244.0" prefHeight="96.0" prefWidth="523.0" text="VARpedia">
+      <Label fx:id="titleLabel" alignment="CENTER" layoutX="307.0" layoutY="166.0" prefHeight="96.0" prefWidth="523.0" text="VARpedia">
          <font>
             <Font name="Gargi" size="79.0" />
          </font>
@@ -32,5 +35,35 @@
             </LinearGradient>
          </textFill>
       </Label>
+      <AnchorPane fx:id="review" layoutX="227.0" layoutY="66.0" prefHeight="404.0" prefWidth="277.0">
+         <children>
+            <ImageView fitHeight="542.0" fitWidth="481.0" layoutX="-207.0" layoutY="-44.0" pickOnBounds="true">
+               <image>
+                  <Image url="@images/reminder.png" />
+               </image>
+            </ImageView>
+            <Line endX="236.0" endY="151.3333282470703" startX="-173.3333282470703" startY="151.3333282470703" />
+            <Label layoutX="-85.0" layoutY="41.0" stylesheets="@../css/remainder.css" text="Let's Review!" textFill="#1a1819">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Label>
+            <Label layoutX="-145.0" layoutY="100.0" stylesheets="@../css/remainder.css" text="These creations need to be learnt properly...">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <ListView fx:id="itemsToReview" layoutX="-129.0" layoutY="164.0" prefHeight="262.0" prefWidth="322.0" style="-fx-background-color: transparent;" stylesheets="@../css/remainder.css" />
+         </children>
+      </AnchorPane>
+      <Button mnemonicParsing="false" onAction="#showReview" prefHeight="59.0" prefWidth="90.0" stylesheets="@../css/menu_button.css">
+         <graphic>
+            <ImageView fitHeight="58.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/remainder_tag.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

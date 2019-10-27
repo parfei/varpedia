@@ -1,0 +1,13 @@
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-font-size: 18pt;
+    -fx-alignment: center;
+}
+.list-view {
+    -fx-background-color: transparent;
+    -fx-font-family: "Qarmic sans";
+}
+
+.label{
+    -fx-font-family: "Qarmic sans";
+}

@@ -1,50 +1,46 @@
 package application.values;
 
 public enum SceneFXML {
-    WINDOW{
+    WINDOW {
         @Override
         public String toString() {
             return "resources/MainWindow.fxml";
         }
     },
-    MENU{
+    MENU {
         @Override
         public String toString() {
             return "resources/MainMenu.fxml";
         }
     },
-    VIEW{
+    VIEW {
         @Override
         public String toString() {
             return "resources/SideView.fxml";
         }
     },
-    SEARCH{
+    SEARCH {
         @Override
         public String toString() {
             return "resources/SearchTerm.fxml";
         }
     },
-    AUDIO{
+    AUDIO {
         @Override
         public String toString() {
             return "resources/EditText.fxml";
         }
     },
-    IMAGES{
+    IMAGES {
         @Override
         public String toString() { return "resources/EditPictures.fxml"; }
     },
-    CREATE{
+    CREATE {
         @Override
         public String toString() { return "resources/CreateNew.fxml"; }
     },
-    TIP{
+    TIP {
         @Override
         public String toString() { return "resources/StarTip.fxml"; }
-    },
-    SHOWTEXT{
-        @Override
-        public String toString() { return "resources/textPopUp.fxml"; }
     };
 }
