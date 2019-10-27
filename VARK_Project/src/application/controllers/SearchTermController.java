@@ -8,16 +8,12 @@ import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -81,7 +77,7 @@ public class SearchTermController {
      * add enter keyboard short cut for search
      */
     @FXML
-    public void addKeyBoardShortCut() {
+    private void addKeyBoardShortCut() {
         yourKeyWord.setOnKeyReleased(keyEvent -> {
 
             if (keyEvent.getCode() == KeyCode.ENTER) {
@@ -100,7 +96,7 @@ public class SearchTermController {
     class DoingJob extends Task<Void> {
 
         @Override
-        protected Void call() throws Exception {
+        protected Void call()  {
             progress.setVisible(true);
             enterButton.setVisible(true);
             yourKeyWord.setVisible(true);
@@ -158,6 +154,7 @@ public class SearchTermController {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+
                         EditTextController controller = (EditTextController) Main.getController().setTOPVIEW(SceneFXML.AUDIO.toString()); //go to the save audio scene
                         controller.initData(_InputFromUser);
                     } catch (IOException e) {
