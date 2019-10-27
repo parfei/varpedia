@@ -46,7 +46,7 @@ public class MainController {
     @FXML private Button starBtn;
     @FXML private Button createBtn;
 
-    private static final Image LOADING = new Image(PicPath.MENU + "/loading_star.png");
+    private static final Image LOADING = new Image(PicPath.MENU + "/loading_star.gif");
     private static final Image PLACEHOLDER = new Image(PicPath.MENU + "/placeholder.png");
     private static final Image SEARCH = new Image(PicPath.DEFAULT + "/search_p.png");
     private static final Image AUDIO = new Image(PicPath.DEFAULT + "/audio_p.png");
