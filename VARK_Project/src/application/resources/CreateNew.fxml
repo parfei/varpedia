@@ -47,7 +47,7 @@
                   </Label>
                   <VBox prefHeight="76.0" prefWidth="229.0">
                      <children>
-                        <TextField fx:id="textFieldCreationName" onAction="#enteredText" promptText="Name can only have letters. No spaces allowed">
+                        <TextField fx:id="textFieldCreationName" onKeyTyped="#enteredText" promptText="Name can only have letters. No spaces allowed">
                            <font>
                               <Font size="16.0" />
                            </font>

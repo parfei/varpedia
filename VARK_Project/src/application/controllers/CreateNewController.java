@@ -45,6 +45,7 @@ public class CreateNewController {
      */
     public void initialize() {
         Main.getController().currentCreationStep(CreationStep.FINAL);
+        choiceBox.getSelectionModel().selectLast();
         createBtn.setDisable(true);
 
         ObservableList list=FXCollections.observableArrayList();
@@ -76,6 +77,7 @@ public class CreateNewController {
      */
     @FXML
     public void enteredText(){
+        createBtn.setDisable(true);
         try {
             if (textFieldCreationName.getText().trim().isEmpty()||textFieldCreationName.getText()==null){
                 Main.getController().popupHelper("Enter a name please!", false);
