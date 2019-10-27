@@ -65,6 +65,7 @@ public class EditTextController {
         Main.getController().popupHelper("Read what your word means- then let's make audio!", false);
         Main.getController().currentCreationStep(CreationStep.AUDIO);
         remindLabel.setVisible(false);
+        default_voice.setSelected(true);
 
         BashCommand audio = new BashCommand();
         String cmd = "cat \"" + PathIs.EXTRA + "/temp.txt\"";

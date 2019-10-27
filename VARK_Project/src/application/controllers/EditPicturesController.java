@@ -26,8 +26,8 @@ import java.util.concurrent.Executors;
  * This class helps user to select images they want to include in their final creation
  */
 public class EditPicturesController {
-    @FXML
-    private HBox downloading;
+    @FXML private HBox downloading;
+    @FXML private Button finalBtn;
     private String _term;
     private List<Image> _imageToDeleteList = new ArrayList<Image>();
 
@@ -45,6 +45,7 @@ public class EditPicturesController {
     @FXML ImageView view12;
 
     public void initData(String term) {
+        finalBtn.setDisable(true);
         _term = term;
         if (!FlickrDone.checkDone()){ //Check if downloading of images is done yet.
             FlickrDone.addListener(this); //Listen to the thread until all images have been downloaded.
@@ -78,22 +79,12 @@ public class EditPicturesController {
         Button btn = (Button) event.getSource();
         String text=btn.getText();
 
-
         if (text.equals(ButtonLiterals.NO_IMAGES.toString())){
-            System.out.println("confirmm no images");
             picNum = 0;
         } else {
             picNum = 12 - _imageToDeleteList.size();
         }
 
-        if(picNum>10) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Choosing Images");
-            alert.setHeaderText("You haven't selected right amount of images!");
-            alert.setContentText("Please select no more than 10 images.");
-            alert.showAndWait();
-            return;
-        }
         // Delete remaining images (undesired ones)
         for(Image image : _imageToDeleteList) {
             Path toFile = Paths.get(image.getUrl().substring(5));
@@ -157,6 +148,12 @@ public class EditPicturesController {
             // Add image to _imageToDeleteList, and make it transparent
             _imageToDeleteList.add(selectedImage);
             clickedImageView.setStyle("-fx-opacity: 0.4");
+        }
+
+        if (12 - _imageToDeleteList.size() > 12 || 12 - _imageToDeleteList.size() < 1){
+            finalBtn.setDisable(true);
+        } else {
+            finalBtn.setDisable(false);
         }
     }
 

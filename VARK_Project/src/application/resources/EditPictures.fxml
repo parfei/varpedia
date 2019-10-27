@@ -63,7 +63,7 @@
          <font>
             <Font size="22.0" />
          </font></Label>
-      <Button layoutX="810.0" layoutY="488.0" mnemonicParsing="false" onAction="#toFinalScene" prefHeight="84.0" prefWidth="146.0" stylesheets="@../css/menu_button.css">
+      <Button fx:id="finalBtn" layoutX="810.0" layoutY="488.0" mnemonicParsing="false" onAction="#toFinalScene" prefHeight="84.0" prefWidth="146.0" stylesheets="@../css/menu_button.css">
          <font>
             <Font size="16.0" />
          </font>
