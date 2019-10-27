@@ -65,19 +65,6 @@ public class EditPicturesController {
         downloading.setVisible(false);
     }
 
-
-    /**
-     * take the user back to the main menu when home button is clicked
-     */
-    @FXML
-    public void backToMainMenu() throws Exception {
-        //String cmd1 = "rm -rf \"" + PathIs.TEMP + "/audioPiece\" ; rm -f \"" + PathIs.EXTRA + "/temp.txt\"; ";
-        String cmd1 = "rm -f \"" + PathIs.EXTRA + "/temp.txt\" ";
-        new BashCommand().bash(cmd1);
-        Main.clear();
-        Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
-    }
-
     /**
      * User will go to next scene to when click "next" or "I want no pictures" button
      * If user click "I want no pictures", no picture will be included in the creation

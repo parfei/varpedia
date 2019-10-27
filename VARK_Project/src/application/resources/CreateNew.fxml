@@ -19,22 +19,11 @@
             <Image url="@images/background.png" />
          </image>
       </ImageView>
-      <Label fx:id="labelMessage" layoutX="786.0" layoutY="124.0" prefHeight="26.0" prefWidth="179.0" text="Current Creations" textFill="#3b6ed3">
+      <Label fx:id="labelMessage" layoutX="786.0" layoutY="26.0" prefHeight="26.0" prefWidth="179.0" text="Current Creations" textFill="#3b6ed3">
          <font>
             <Font size="20.0" />
          </font></Label>
-      <ListView fx:id="listViewExistCreation" layoutX="777.0" layoutY="150.0" prefHeight="434.0" prefWidth="196.0" />
-      <Button layoutX="884.0" layoutY="8.0" mnemonicParsing="false" onAction="#returnToStart" prefHeight="63.0" prefWidth="94.0" stylesheets="@../css/menu_button.css">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="60.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/home.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
+      <ListView fx:id="listViewExistCreation" layoutX="777.0" layoutY="60.0" prefHeight="524.0" prefWidth="196.0" />
       <Button fx:id="enterCreationButton" defaultButton="true" layoutX="530.0" layoutY="344.0" mnemonicParsing="false" onAction="#EnterCreation" prefHeight="64.0" prefWidth="153.0" stylesheets="@../css/menu_button.css">
          <font>
             <Font size="16.0" />

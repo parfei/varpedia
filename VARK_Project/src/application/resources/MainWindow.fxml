@@ -4,6 +4,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1200.0" style="-fx-background-color: #FBF3E1;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainController">
@@ -13,7 +14,7 @@
             <Image url="@images/background_side.png" />
          </image>
       </ImageView>
-      <Button fx:id="view" alignment="CENTER" layoutX="5.0" layoutY="35.0" mnemonicParsing="false" onAction="#view" prefHeight="173.0" prefWidth="181.0" style="-fx-border-radius: 5;" stylesheets="@../css/menu_button.css">
+      <Button fx:id="view" alignment="CENTER" layoutX="1.0" layoutY="68.0" mnemonicParsing="false" onAction="#view" prefHeight="173.0" prefWidth="181.0" style="-fx-border-radius: 5;" stylesheets="@../css/menu_button.css">
          <font>
             <Font size="17.0" />
          </font>
@@ -25,7 +26,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="createBtn" alignment="CENTER" layoutX="16.0" layoutY="201.0" mnemonicParsing="false" onAction="#create" prefHeight="204.0" prefWidth="164.0" stylesheets="@../css/menu_button.css">
+      <Button fx:id="createBtn" alignment="CENTER" layoutX="12.0" layoutY="230.0" mnemonicParsing="false" onAction="#create" prefHeight="204.0" prefWidth="164.0" stylesheets="@../css/menu_button.css">
          <font>
             <Font size="17.0" />
          </font>
@@ -37,11 +38,33 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="starBtn" layoutX="27.0" layoutY="407.0" mnemonicParsing="false" onAction="#showInstructions" stylesheets="@../css/star.css">
+      <Button fx:id="starBtn" layoutX="30.0" layoutY="425.0" mnemonicParsing="false" onAction="#showInstructions" prefHeight="146.0" prefWidth="144.0" stylesheets="@../css/star.css">
          <graphic>
-            <ImageView fx:id="creatingImg" fitHeight="153.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="creatingImg" fitHeight="118.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true" />
          </graphic>
       </Button>
       <AnchorPane fx:id="TOPVIEW" layoutX="206.0" layoutY="2.0" prefHeight="596.0" prefWidth="992.0" />
+      <HBox layoutX="10.0" layoutY="9.0" prefHeight="54.0" prefWidth="180.0" spacing="5.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#getInfo" prefHeight="34.0" prefWidth="88.0" stylesheets="@../css/menu_button.css">
+               <graphic>
+                  <ImageView fitHeight="44.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/menu/info.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#goHome" prefHeight="61.0" prefWidth="87.0" stylesheets="@../css/menu_button.css">
+               <graphic>
+                  <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/home.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

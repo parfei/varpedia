@@ -39,7 +39,6 @@ public class SearchTermController {
     @FXML private Label whatDoYouWant;
     @FXML private ImageView progress;
     @FXML private Button enterButton;
-    @FXML private Button goingBack;
 
     /**
      * initialize by making the audioPiece and photos folder
@@ -56,19 +55,8 @@ public class SearchTermController {
 
         progress.setVisible(false);
         enterButton.setDisable(false);
-        goingBack.setDisable(false);
         yourKeyWord.setDisable(false);
         addKeyBoardShortCut();
-    }
-
-    /**
-     * user will go to main menu when back button is clicked
-     * @throws IOException
-     */
-    @FXML
-    public void backToMain() throws IOException {
-        Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
-        Main.clear();
     }
 
     /**
@@ -77,7 +65,6 @@ public class SearchTermController {
 
     @FXML
     public void search() throws IOException {
-
         _InputFromUser = yourKeyWord.getText();
         if (_InputFromUser.trim().isEmpty() || _InputFromUser == null) {
             Main.getController().popupHelper("Enter a word that isn't empty!", false);
@@ -116,7 +103,6 @@ public class SearchTermController {
         protected Void call() throws Exception {
             progress.setVisible(true);
             enterButton.setVisible(true);
-            goingBack.setVisible(true);
             yourKeyWord.setVisible(true);
 
             String command = "wikit " + _InputFromUser;
@@ -136,7 +122,6 @@ public class SearchTermController {
         protected void done() {
             progress.setVisible(false);
             enterButton.setDisable(false);
-            goingBack.setDisable(false);
             yourKeyWord.setDisable(false);
 
             if (_line.contains(_InputFromUser + " not found :^(")) {

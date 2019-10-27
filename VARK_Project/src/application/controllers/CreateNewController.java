@@ -75,17 +75,6 @@ public class CreateNewController {
     }
 
     /**
-     * When the button is pressed, we will return back to the menu.
-     * @param event
-     * @throws IOException
-     */
-    @FXML
-    public void returnToStart(ActionEvent event) throws IOException {
-        Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
-        Main.clear();
-    }
-
-    /**
      * the checkEmptyAudio method will check if any audio in the folder is empty
      * @return
      */

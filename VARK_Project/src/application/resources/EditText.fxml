@@ -21,14 +21,6 @@
          </image>
       </ImageView>
       <TextArea fx:id="textArea" layoutX="4.0" layoutY="63.0" onMouseClicked="#checkValidSelection" prefHeight="531.0" prefWidth="546.0" wrapText="true" />
-      <Button layoutX="928.0" layoutY="7.0" mnemonicParsing="false" onAction="#backToMain" prefHeight="40.0" prefWidth="55.0" stylesheets="@../css/menu_button.css">
-         <graphic>
-            <ImageView fitHeight="36.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/home.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
       <Button fx:id="createBtn" disable="true" layoutX="871.0" layoutY="508.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="47.0" prefWidth="95.0" stylesheets="@../css/menu_button.css" textFill="WHITE">
          <graphic>
             <ImageView fitHeight="54.0" fitWidth="74.0" pickOnBounds="true">
@@ -37,7 +29,7 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Label layoutX="786.0" layoutY="20.0" prefHeight="21.0" prefWidth="142.0" text="Current Audio" textFill="#204ba1">
+      <Label layoutX="800.0" layoutY="20.0" prefHeight="21.0" prefWidth="142.0" text="Current Audio" textFill="#204ba1">
          <font>
             <Font size="18.0" />
          </font></Label>

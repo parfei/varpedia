@@ -74,17 +74,6 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Button layoutX="893.0" layoutY="-2.0" mnemonicParsing="false" onAction="#backToMainMenu" prefHeight="98.0" prefWidth="82.0" stylesheets="@../css/menu_button.css">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="49.0" fitWidth="71.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/home.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
       <Button layoutX="579.0" layoutY="494.0" mnemonicParsing="false" onAction="#toFinalScene" prefHeight="74.0" prefWidth="173.0" style="-fx-background-color: #BADCCC;" text="I want no pictures!" textAlignment="CENTER" wrapText="true">
          <font>
             <Font size="19.0" />

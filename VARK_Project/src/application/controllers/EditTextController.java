@@ -256,19 +256,6 @@ public class EditTextController {
     }
 
     /**
-     * THis method will remove the saved text and audios when the user want to restart a creation process
-     *
-     * @throws IOException
-     */
-    @FXML
-    public void backToMain() throws Exception { //TODO set up back to search term functionality, change backto main to a little x button at the top?
-        String cmd1="rm -rf \""+ PathIs.TEMP + "/audioPiece\" ; rm -f \""+ PathIs.EXTRA + "/temp.txt\" ; rm -f \""+ PathIs.EXTRA + "/saveTextFolder\"";
-        new BashCommand().bash(cmd1);
-        Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
-        Main.clear();
-    }
-
-    /**
      * This method will take the user to the creation of video interface when "create' button is clicked
      * @param
      * @throws IOException

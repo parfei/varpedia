@@ -2,7 +2,9 @@ package application.controllers;
 
 import application.ChangeScene;
 import application.Main;
+import application.bashwork.BashCommand;
 import application.values.CreationStep;
+import application.values.PathIs;
 import application.values.PicPath;
 import application.values.SceneFXML;
 import javafx.application.Platform;
@@ -119,6 +121,23 @@ public class MainController {
         return loader.getController();
     }
 
+    @FXML
+    public void getInfo(){
+
+    }
+
+    /**
+     * When home button clicked, will go back to the home screen and also clear any execess files that may block future creations being made.
+     * @throws Exception
+     */
+    @FXML
+    public void goHome() throws Exception {
+        currentCreationStep(CreationStep.FINISH);
+        String delete ="rm -rf \""+ PathIs.TEMP + "/audioPiece\" ; rm -f \""+ PathIs.EXTRA + "/temp.txt\"";
+        new BashCommand().bash(delete);
+        Main.clear();
+        Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
+    }
 
     /**
      * Show user a downloading image when creation is still being made,  and disable creation button.
@@ -146,6 +165,9 @@ public class MainController {
             createImg.setImage(PICTURE);
         } else if (step == CreationStep.FINAL){
             createImg.setImage(FINAL);
+        } else if (step == CreationStep.FINISH){
+            createImg.setImage(DEFAULT_CREATE);
+            createBtn.setDisable(false);
         }
     }
 
