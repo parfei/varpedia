@@ -13,6 +13,7 @@ public class MainMenuController {
     @FXML
     public void initialize(){
         titleLabel.setFont(SetFont.getQarmic(80));
+
     }
 
 }
