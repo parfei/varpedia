@@ -108,7 +108,7 @@ public class EditTextController {
 
         RadioButton selectedRadioButton = (RadioButton) group .getSelectedToggle();
         int numberOfWords = countWords(_selectedText);
-        String checkString = _selectedText.replaceAll("\\p{P}", "");
+        String checkString = _selectedText.replaceAll("\\p{P}", ""); //Delete all punctuation to check string itself isn't empty itself.
 
         if (_selectedText == null || _selectedText.isEmpty() || checkString.isEmpty()) {
             Main.getController().popupHelper("Choose a chunk of text!", false);
@@ -128,51 +128,40 @@ public class EditTextController {
 
     /**
      * play the speech of text when preview button is clicked
-     * @throws IOException
      */
     @FXML
-    public void preview() throws IOException {
+    public void preview() {
+        remindLabel.setVisible(false);
         _selectedText = textArea.getSelectedText();
 
-        //if (!checkValidSelection(textArea.getSelectedText())) {
-        //    return;
-        //} else {
+        if (default_voice.isSelected()) {
+            team.submit(new PreviewHelper("default_voice", _selectedText));
+        } else {
 
-            if (default_voice.isSelected()) {
-                team.submit(new PreviewHelper("default_voice", _selectedText));
-                System.out.println("default voice");
-            } else {
-
-                PreviewHelper preview = null;
-                if (male_voice.isSelected()) {
-                    preview = new PreviewHelper("male_voice", _selectedText);
-                } else if (female_voice.isSelected()) {
-                    preview = new PreviewHelper("female_voice", _selectedText);
-                }
-
-                team.submit(preview);
-
-                PreviewHelper finalPreview = preview;
-                preview.setOnSucceeded(workerStateEvent -> {
-                    try {
-                        if (finalPreview.get() == 255) {
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("voice changed to default");
-                            alert.setHeaderText("switch voice to the default due to limitation of other voice options");
-                            alert.setContentText("Sorry for the inconvenience");
-                            alert.showAndWait();
-
-                            team.submit(new PreviewHelper("default_voice", _selectedText));
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                });
+            PreviewHelper preview = null;
+            if (male_voice.isSelected()) {
+                preview = new PreviewHelper("male_voice", _selectedText);
+            } else if (female_voice.isSelected()) {
+                preview = new PreviewHelper("female_voice", _selectedText);
             }
+
+            team.submit(preview);
+
+            PreviewHelper finalPreview = preview;
+            preview.setOnSucceeded(workerStateEvent -> {
+                try {
+                    if (finalPreview.get() == 255) {
+                        remindLabel.setVisible(true);
+                        team.submit(new PreviewHelper("default_voice", _selectedText));
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            });
         }
-    //}
+    }
 
     private void clearAudio(String file_path){
         String deleteCmd = "rm -f " + file_path;
@@ -185,25 +174,6 @@ public class EditTextController {
     }
 
     /**
-     * Check if the audio is saved successfully
-     * @param number
-     * @return String valid path of audio to be saved.
-     */
-    private String checkReadableText(String number){
-        String file_path = PathIs.TEMP + "/audioPiece/" + _term + "-"+number+ ".wav";
-        File file = new File(file_path);
-        // handle the case when audio is not saved successfully
-        if (file.length() == 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("audio not save");
-            alert.setHeaderText("part not readable");
-            alert.setContentText("check the part that you select is readable");
-            alert.showAndWait();
-        }
-        return file_path;
-    }
-
-    /**
      * This method will save the text in an audio file according to the voice that user selected
      * @param event
      * @throws IOException
@@ -211,83 +181,72 @@ public class EditTextController {
     @FXML
     public void save(ActionEvent event) throws Exception {
         String selectedText = textArea.getSelectedText();
+        remindLabel.setVisible(false);
 
+        String saveble = selectedText.replaceAll("[\\[\\](){}']", ""); //remove the symbol that is not saveable
+        int numberOfAudio= countNumberOfAudioFile();
+        String number=Integer.toString(numberOfAudio);
 
-            String saveble = selectedText.replaceAll("[\\[\\](){}']", ""); //remove the symbol that is not saveable
-            int numberOfAudio= countNumberOfAudioFile();
-            String number=Integer.toString(numberOfAudio);
+        ManageFolder.writeToFile(PathIs.TEMP +"/savedText" + countNumberOfAudioFile() + ".txt", saveble);
 
-            ManageFolder.writeToFile(PathIs.TEMP +"/savedText" + countNumberOfAudioFile() + ".txt", saveble);
+        if (default_voice.isSelected()) {
+            SaveHelper sh = new SaveHelper("default_voice", number, _term);
+            team.submit(sh);
 
-            if (default_voice.isSelected()) {
-                SaveHelper sh = new SaveHelper("default_voice", number, _term);
-                team.submit(sh);
-
-                sh.setOnSucceeded(workerStateEvent -> {
-                    String file_path = PathIs.TEMP + "/audioPiece/" + _term+ "-"+ number + ".wav";
-                    File file = new File(file_path);
-                    try {
-                        if (file.length() == 0){
-                            clearAudio(checkReadableText(number));
-                        } else {
-                           updateExistingAudio();
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-            } else {
-                SaveHelper sh;
-                if (male_voice.isSelected()){
-                    sh = new SaveHelper("male_voice", number, _term);
-                } else {
-                    sh = new SaveHelper("female_voice", number, _term);
+            sh.setOnSucceeded(workerStateEvent -> {
+                try {
+                    updateExistingAudio();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+            });
+        } else {
+            SaveHelper sh;
+            if (male_voice.isSelected()){
+                sh = new SaveHelper("male_voice", number, _term);
+            } else {
+                sh = new SaveHelper("female_voice", number, _term);
+            }
 
-                team.submit(sh);
-                sh.setOnSucceeded(workerStateEvent -> {
-                    String file_path = PathIs.TEMP + "/audioPiece/" + _term+ "-"+ number + ".wav";
-                    File file = new File(file_path);
+            team.submit(sh);
+            sh.setOnSucceeded(workerStateEvent -> {
+                String file_path = PathIs.TEMP + "/audioPiece/" + _term+ "-"+ number + ".wav";
+                File file = new File(file_path);
 
-                    /* ask user to save in default voice or give up saving if the male voice option can't save the audio*/
-                    if (file.length() == 0) {
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("Give up or save in default voice");
-                        alert.setHeaderText("Can't save the audio in this voice");
-                        alert.setContentText("Do you want to save in default voice?");
-                        Optional<ButtonType> result = alert.showAndWait();
+                /* ask user to save in default voice or give up saving if the male voice option can't save the audio*/
+                if (file.length() == 0) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Swtich to normal?");
+                    alert.setHeaderText("Boy/girl voice cannot save your text!");
+                    alert.setContentText("Do you want to save with normal voice?");
+                    Optional<ButtonType> result = alert.showAndWait();
 
-                        clearAudio(file_path);
+                    clearAudio(file_path);
 
-                        if (result.get() == ButtonType.OK) {
-                            SaveHelper retry = new SaveHelper("default_voice", number, _term);
-                            team.submit(retry);
-                            retry.setOnSucceeded(workerStateEvent1 -> {
-                                try {
-                                    if (file.length() == 0){
-                                        clearAudio(checkReadableText(number));
-                                    } else {
-                                        System.out.println("update");
-                                        updateExistingAudio();
-                                    }
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                        }
+                    if (result.get() == ButtonType.OK) {
+                        SaveHelper retry = new SaveHelper("default_voice", number, _term);
+                        team.submit(retry);
+                        retry.setOnSucceeded(workerStateEvent1 -> {
+                            try {
+                                updateExistingAudio();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
                     } else {
-
-
-                        try { updateExistingAudio(); } catch (Exception e) {
+                        try {
+                            updateExistingAudio();
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-                });
-            }
+                } else {
+                    try { updateExistingAudio(); } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     /**
@@ -309,10 +268,10 @@ public class EditTextController {
      */
     @FXML
     public void readyToCombine() throws Exception {
-      EditPicturesController controller = (EditPicturesController) Main.getController().setTOPVIEW(SceneFXML.IMAGES.toString());
+        EditPicturesController controller = (EditPicturesController) Main.getController().setTOPVIEW(SceneFXML.IMAGES.toString());
         controller.initData(_term);
 
-       // Main.getController().setTOPVIEW(SceneFXML.SHOWTEXT.toString());
+        // Main.getController().setTOPVIEW(SceneFXML.SHOWTEXT.toString());
     }
 
     /**

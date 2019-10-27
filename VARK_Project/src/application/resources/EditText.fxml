@@ -44,7 +44,7 @@
       <ListView fx:id="existingAudioView" layoutX="784.0" layoutY="54.0" onMouseClicked="#getAudioSelection" prefHeight="446.0" prefWidth="192.0" />
       <VBox layoutX="564.0" layoutY="148.0" prefHeight="318.0" prefWidth="207.0" spacing="20.0">
          <children>
-            <Label fx:id="remindLabel" prefHeight="86.0" prefWidth="207.0" text="Switched to normal voice, boy/girl voice not possible yet!" textFill="RED" wrapText="true">
+            <Label fx:id="remindLabel" prefHeight="144.0" prefWidth="207.0" text="Switched to normal voice, boy/girl voice not possible yet!" textFill="RED" wrapText="true">
                <font>
                   <Font size="17.0" />
                </font></Label>

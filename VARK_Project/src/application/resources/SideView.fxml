@@ -32,7 +32,7 @@
       </TableView>
       <HBox fx:id="creationOptions" layoutX="11.0" layoutY="547.0" prefHeight="28.0" prefWidth="217.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#clearDataForCreation" prefHeight="46.0" prefWidth="93.0" text="Restart" textAlignment="CENTER" wrapText="true">
+            <Button mnemonicParsing="false" onAction="#clearDataForCreation" prefHeight="46.0" prefWidth="93.0" style="-fx-background-color: #89C7F5;" text="Restart" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="15.0" />
                </font></Button>
