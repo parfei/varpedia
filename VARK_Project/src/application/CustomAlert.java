@@ -44,7 +44,7 @@ public class CustomAlert extends Task<CustomAlert> {
         } else if (_type == CustomAlertType.OVERWRITE){
             windowTitle += "Duplicated name!";
             title += "There is already an exising name!";
-            context += "You can enter another name or overwrite.";
+            context += "Press OK to overwrite or CANCEL to write another name.";
         }
         _alert.setTitle(windowTitle);
         _alert.setContentText(title);

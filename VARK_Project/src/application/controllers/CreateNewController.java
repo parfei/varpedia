@@ -8,8 +8,6 @@ import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -18,8 +16,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * We create a new creation in this class. Name checking is done here. The bulk of the video creation is called from here.
@@ -105,8 +106,26 @@ public class CreateNewController {
         if (_CreationsExisted.contains(textFieldCreationName.getText())) { /////Check for creation name error input.
             CustomAlert alert = new CustomAlert(CustomAlertType.OVERWRITE);
             team.submit(alert);
+            alert.setOnSucceeded(workerStateEvent1 -> {
+                try {
+                    Optional<ButtonType> result = alert.get().showAlert();
+                    if (result.get() == ButtonType.CANCEL){
+                        return;
+                    }else {
+                        createCreation();
+                    }
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            createCreation();
         }
+    }
 
+    private void createCreation() throws Exception {
         createDirectories(); //Create necessary directories if they have not existed yet.
 
         //Send creation work to background thread to create the final creation...
@@ -133,19 +152,25 @@ public class CreateNewController {
             }
 
             _CreationsExisted.clear();
-
             textFieldCreationName.clear();
+
+            try {
+                Main.getController().popupHelper("Let's go learn your new creation now!", false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             Main.getController().creationInProgress(false); //show user the creation work is done by change the picture
             Main.getController().currentCreationStep(CreationStep.CREATED);
         });
         try {
-            Main.getController().popupHelper("Let's go learn your creation, click play button!", false);
+            Main.getController().popupHelper("Creation is being made!", false);
             Main.getController().setTOPVIEW(SceneFXML.MENU.toString()); // go to the main menu
             Main.getController().creationInProgress(true); // show the user the creation is still being made
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 
     /**

@@ -134,6 +134,7 @@ public class MainController {
     @FXML
     public void goHome() throws Exception {
         currentCreationStep(CreationStep.FINISH);
+        currentCreationStep(CreationStep.CREATED);
         String delete ="rm -rf \""+ PathIs.TEMP + "/audioPiece\" ; rm -f \""+ PathIs.EXTRA + "/temp.txt\"";
         new BashCommand().bash(delete);
         Main.clear();
