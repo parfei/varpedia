@@ -142,7 +142,7 @@ public class CreateNewController {
 
             textFieldCreationName.clear();
             Main.getController().creationInProgress(false); //show user the creation work is done by change the picture
-
+            Main.getController().currentCreationStep(CreationStep.CREATED);
         });
         try {
             Main.getController().popupHelper("Let's go learn your creation, click play button!", false);

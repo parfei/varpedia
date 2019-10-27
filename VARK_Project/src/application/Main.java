@@ -100,7 +100,7 @@ public class Main extends Application {
 
     public static void deleteTemp(){
         try {
-            new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -f .temp ; cd -"); //Clear files in temp folder.);
+            new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp ; cd -"); //Clear files in temp folder.);
         } catch (Exception e) {
             e.printStackTrace();
         }
