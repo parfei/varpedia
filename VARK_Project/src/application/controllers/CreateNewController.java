@@ -3,10 +3,13 @@ package application.controllers;
 import application.*;
 import application.bashwork.BashCommand;
 import application.values.CreationStep;
+import application.values.CustomAlertType;
 import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -34,7 +37,6 @@ public class CreateNewController {
     private String _term;
     private int _picNum;
 
-
     public void initData(String term, int picNum){
         _term = term;
         _picNum = picNum;
@@ -46,12 +48,12 @@ public class CreateNewController {
     public void initialize() throws IOException {
         Main.getController().popupHelper("Let's add some final details to your creation!", false);
         Main.getController().currentCreationStep(CreationStep.FINAL);
-        choiceBox.getSelectionModel().selectLast();
         createBtn.setDisable(true);
 
         ObservableList list=FXCollections.observableArrayList();
         list.addAll("Clouds","Fingers", "Sun", "No music");
         choiceBox.getItems().addAll(list);
+        choiceBox.getSelectionModel().selectLast();
 
         team = Executors.newSingleThreadExecutor();
 
@@ -101,16 +103,8 @@ public class CreateNewController {
     @FXML
     public void enterCreation() throws Exception {
         if (_CreationsExisted.contains(textFieldCreationName.getText())) { /////Check for creation name error input.
-            Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
-            overwrite.setTitle("Duplicated Name");
-            overwrite.setHeaderText("Would you like to overwrite " + textFieldCreationName.getText() + "?");
-            overwrite.setContentText("OK: overwrite. Cancel: retry your name, or you can choose to go back to the menu.");
-
-            overwrite.showAndWait();
-            if (overwrite.getResult() == ButtonType.OK) {
-            } else {
-                return;
-            }
+            CustomAlert alert = new CustomAlert(CustomAlertType.OVERWRITE);
+            team.submit(alert);
         }
 
         createDirectories(); //Create necessary directories if they have not existed yet.
@@ -123,7 +117,6 @@ public class CreateNewController {
 
         creationWork.setOnSucceeded(workerStateEvent -> {
             try {
-
                 // create a confidence.txt file to record user's confidence and create a plays.text file to record user's times of play
                 String p = "\"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "/";
                 new BashCommand().bash("touch " + p + "confidence.txt\" " + p + "plays.txt\"");

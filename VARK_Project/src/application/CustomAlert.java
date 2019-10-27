@@ -42,9 +42,9 @@ public class CustomAlert extends Task<CustomAlert> {
             title += "Boy/girl voice cannot save your text!";
             context += "Do you want to save your text in normal voice?";
         } else if (_type == CustomAlertType.OVERWRITE){
-//            windowTitle += "Switch to normal voice?";
-//            title += "Boy/girl voice cannot save your text!";
-//            context += "Do you want to save your text in normal voice?";
+            windowTitle += "Duplicated name!";
+            title += "There is already an exising name!";
+            context += "You can enter another name or overwrite.";
         }
         _alert.setTitle(windowTitle);
         _alert.setContentText(title);

@@ -50,15 +50,13 @@ public class EditTextController {
     private String _selectedText;
     static final int OUT = 0;
     static final int IN = 1;
-    private ExecutorService team = Executors.newSingleThreadExecutor();
-    private ExecutorService flickrTeam = Executors.newSingleThreadExecutor();
-    private ExecutorService alertTeam = Executors.newSingleThreadExecutor();
+    private ExecutorService team = Executors.newFixedThreadPool(2);
     private MediaPlayer _mediaPlayer;
 
     public void initData(String term){
         _term = term;
         FlickrWork images = new FlickrWork(_term, "12");
-        flickrTeam.submit(images);
+        team.submit(images);
     }
 
     /**
@@ -241,7 +239,7 @@ public class EditTextController {
                 /* ask user to save in default voice or give up saving if the male voice option can't save the audio*/
                 if (file.length() == 0) {
                     CustomAlert alert = new CustomAlert(CustomAlertType.SAVE);
-                    alertTeam.submit(alert);
+                    team.submit(alert);
                     alert.setOnSucceeded(workerStateEvent1 -> {
                         try {
                             failedSave(alert.get(), file_path);
