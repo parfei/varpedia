@@ -374,12 +374,12 @@ public class ViewController {
 
         String style = "-fx-background-color:";
 
-        if (Integer.parseInt(plays) == 0){ //If video has never been played.
-            style += "#93D4EE;";
-        } else if (Integer.parseInt(confidence) < 3){ //If confidence is below 3
-            style += "orange;";
+        if (Integer.parseInt(plays) == 0) { //If video has never been played.
+            cell.setStyle("-fx-background-color: #93D4EE;");
+        } else if (Integer.parseInt(confidence) < 3) { //If confidence is below 3
+            cell.setStyle("-fx-background-color: orange;");
         } else {
-            style += "#80B8F0;";
+            setStyle("-fx-highlight-fill: derive(-fx-control-inner-background,-20%); -fx-highlight-text-fill: -fx-text-inner-color;");
         }
 
         cell.setStyle(style);
