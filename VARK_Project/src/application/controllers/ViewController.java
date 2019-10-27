@@ -379,7 +379,7 @@ public class ViewController {
         } else if (Integer.parseInt(confidence) < 3) { //If confidence is below 3
             cell.setStyle("-fx-background-color: orange;");
         } else {
-            setStyle("-fx-highlight-fill: derive(-fx-control-inner-background,-20%); -fx-highlight-text-fill: -fx-text-inner-color;");
+            cell.setStyle("-fx-highlight-fill: derive(-fx-control-inner-background,-20%); -fx-highlight-text-fill: -fx-text-inner-color;");
         }
 
         cell.setStyle(style);
