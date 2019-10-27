@@ -99,12 +99,11 @@ public class MainController {
 
     /**
      *
-     * load the scene
+     * Load the scene into the topview of the main window.
      * @param layout
      * @return
      * @throws IOException
      */
-   //TODO add comment
     public Object setTOPVIEW(String layout) throws IOException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(layout));
         Parent node = loader.load();

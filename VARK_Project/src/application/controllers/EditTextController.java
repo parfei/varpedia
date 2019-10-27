@@ -176,7 +176,6 @@ public class EditTextController {
 
     private void failedSave(CustomAlert alert, String file_path){
         Optional<ButtonType> result = alert.showAlert();
-        System.out.println("clearing--------------");
         clearAudio(file_path);
 
         if (result.get() == ButtonType.OK) {
@@ -238,7 +237,6 @@ public class EditTextController {
             sh.setOnSucceeded(workerStateEvent -> {
                 /* ask user to save in default voice or give up saving if the male voice option can't save the audio*/
                 if (file.length() == 0) {
-                    System.out.println("hi");
                     CustomAlert alert = new CustomAlert(CustomAlertType.SAVE);
                     alertTeam.submit(alert);
                     alert.setOnSucceeded(workerStateEvent1 -> {
@@ -265,6 +263,7 @@ public class EditTextController {
         String cmd1="rm -rf \""+ PathIs.TEMP + "/audioPiece\" ; rm -f \""+ PathIs.EXTRA + "/temp.txt\" ; rm -f \""+ PathIs.EXTRA + "/saveTextFolder\"";
         new BashCommand().bash(cmd1);
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
+        Main.clear();
     }
 
     /**

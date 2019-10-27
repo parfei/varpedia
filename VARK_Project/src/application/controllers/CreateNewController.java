@@ -78,9 +78,9 @@ public class CreateNewController {
      */
     @FXML
     public void returnToStart(ActionEvent event) throws IOException {
-        _CreationsExisted.clear();
-
+//        _CreationsExisted.clear();
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
+        Main.clear();
     }
 
     /**
@@ -164,16 +164,16 @@ public class CreateNewController {
                 try {
 
                     // create a confidence.txt file to record user's confidence and create a plays.text file to record user's times of play
-
                     String p = "\"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "/";
                     new BashCommand().bash("touch " + p + "confidence.txt\" " + p + "plays.txt\"");
+
                     team.submit(new Confidence(textFieldCreationName.getText(), 0));
                     team.submit(new Play(textFieldCreationName.getText()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 try {
-                    cleanUp(); //Clean up audio files after the Creation has been made.
+                    Main.clear(); //Clean up audio files after the Creation has been made.
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -201,15 +201,6 @@ public class CreateNewController {
     private void createDirectories() throws Exception {
         new BashCommand().bash("mkdir -p \"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "\""); //create a creations folder.
     }
-
-    /**
-     * Clean up audio files and photos after creation.
-     */
-    private void cleanUp() throws Exception {
-        String command = "cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp/audioPiece/* ; rm -rf .temp/photos/* ; cd -";
-        new BashCommand().bash(command);
-    }
-
 }
 
 

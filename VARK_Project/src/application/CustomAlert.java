@@ -34,7 +34,6 @@ public class CustomAlert extends Task<CustomAlert> {
 
     @Override
     protected CustomAlert call() throws Exception {
-        System.out.println("new");
         String windowTitle = "";
         String title = "";
         String context = "";
@@ -51,7 +50,6 @@ public class CustomAlert extends Task<CustomAlert> {
         _alert.setContentText(title);
         _alert.setContentText(context);
         setUpCSS();
-        System.out.println("set up css");
 
         return this;
     }

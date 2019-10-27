@@ -47,6 +47,7 @@ public class SearchTermController {
     @FXML
 
     public void initialize() throws Exception {
+        //Create the necessary folders and files
         String command2 = "mkdir -p \"" + PathIs.TEMP + "/audioPiece\" ; mkdir -p \""+ PathIs.TEMP + "/photos\" ";
         new BashCommand().bash(command2);
 
@@ -55,7 +56,6 @@ public class SearchTermController {
         goingBack.setDisable(false);
         yourKeyWord.setDisable(false);
         addKeyBoardShortCut();
-
     }
 
 
@@ -65,8 +65,8 @@ public class SearchTermController {
      */
     @FXML
     public void backToMain() throws IOException {
-        //_changeSceneObject.changeScene(event, "resources/menu.fxml", "Main Menu");
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
+        Main.clear();
     }
 
 
@@ -94,16 +94,13 @@ public class SearchTermController {
      */
     @FXML
     public void addKeyBoardShortCut() {
-        yourKeyWord.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
+        yourKeyWord.setOnKeyReleased(keyEvent -> {
 
-                if (keyEvent.getCode() == KeyCode.ENTER) {
-                    try {
-                        search();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                try {
+                    search();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -116,7 +113,6 @@ public class SearchTermController {
      * create a class doing background search work
      */
     class DoingJob extends Task<Void> {
-        private boolean resultOut;
 
         @Override
         protected Void call() throws Exception {

@@ -29,7 +29,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         ManageFolder.initializeFolders(); //Create necessary folders.
-        new BashCommand().bash("mkdir -p \"" + PathCD.getPathInstance().getPath() + "/mydir/.temp/\"");
+        new BashCommand().bash("mkdir -p \"" + PathCD.getPathInstance().getPath() + "/mydir\"");
         this.writeScheme();
 
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.WINDOW.toString()));
@@ -44,6 +44,8 @@ public class Main extends Application {
 
         primaryStage.setOnCloseRequest(event -> {
             clear();
+            Platform.exit();
+            System.exit(0);
         });
     }
 
@@ -78,20 +80,19 @@ public class Main extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-        clear();
+        Platform.exit();
+        System.exit(0);
     }
 
     /**
      * Helper function to clear .temp folder and stop all threads cleanly.
      */
-    private void clear(){
+    public static void clear(){
         try {
             new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp ; rm -rf .extra/saveTextFolder ; cd -"); //Clear files in temp folder.);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Platform.exit();
-        System.exit(0);
     }
 
     public static void main(String[] args) {
