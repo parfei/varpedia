@@ -124,11 +124,17 @@ public class SearchTermController {
             enterButton.setDisable(false);
             yourKeyWord.setDisable(false);
 
-            if (_line.contains(_InputFromUser + " not found :^(")) {
+            if (_line == null) {
                 Platform.runLater(() -> {
-                        whatDoYouWant.setText("Word wasn't found. Enter another one!");
+                        whatDoYouWant.setText("Cannot search that word. Enter another one!");
                         //clear the searched text in the wikipedia
                         yourKeyWord.clear();
+                });
+            } else if (_line.contains(_InputFromUser + " not found :^(")){
+                Platform.runLater(() -> {
+                    whatDoYouWant.setText("Word wasn't found. Enter another one!");
+                    //clear the searched text in the wikipedia
+                    yourKeyWord.clear();
                 });
             } else {
 

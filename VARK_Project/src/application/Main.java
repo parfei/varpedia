@@ -29,7 +29,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         ManageFolder.initializeFolders(); //Create necessary folders.
-        new BashCommand().bash("mkdir -p \"" + PathCD.getPathInstance().getPath() + "/mydir\"");
+        new BashCommand().bash("mkdir -p \"" + PathCD.getPathInstance().getPath() + "/mydir/.temp\"");
         this.writeScheme();
 
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(SceneFXML.WINDOW.toString()));
@@ -43,7 +43,7 @@ public class Main extends Application {
 
 
         primaryStage.setOnCloseRequest(event -> {
-            clear();
+            deleteTemp();
             Platform.exit();
             System.exit(0);
         });
@@ -54,7 +54,7 @@ public class Main extends Application {
      * @throws IOException
      */
 
-    public void writeScheme() throws IOException{ //TODO reorganise files
+    public static void writeScheme() throws IOException{ //TODO reorganise files
         FileWriter writer1=new FileWriter(PathIs.TEMP + "/kal.scm");
         writer1.write("(voice_kal_diphone)");
         writer1.close();
@@ -80,6 +80,7 @@ public class Main extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
+        deleteTemp();
         Platform.exit();
         System.exit(0);
     }
@@ -89,7 +90,17 @@ public class Main extends Application {
      */
     public static void clear(){
         try {
-            new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -rf .temp ; rm -rf .extra/saveTextFolder ; cd -"); //Clear files in temp folder.);
+            deleteTemp();
+            new BashCommand().bash("mkdir -p \"" + PathCD.getPathInstance().getPath() + "/mydir/.temp\"");
+            writeScheme();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteTemp(){
+        try {
+            new BashCommand().bash("cd \"" + PathCD.getPathInstance().getPath() + "/mydir\" ; rm -f .temp ; cd -"); //Clear files in temp folder.);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -80,6 +80,7 @@ public class MainController {
 
     @FXML
     public void view(ActionEvent event)throws IOException{
+        currentCreationStep(CreationStep.FINISH);
         popupHelper("Click on a creation to get started!", false);
         this.setTOPVIEW(SceneFXML.VIEW.toString());
     }
