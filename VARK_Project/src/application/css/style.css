@@ -1,6 +1,6 @@
-@font-face{
+/**@font-face{
     src: url("fonts/qarmic-sans-abridged");
-}
+}*/
 
 .label{
     -fx-font-family: "Qarmic sans";
