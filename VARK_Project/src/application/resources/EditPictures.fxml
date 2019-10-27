@@ -59,7 +59,7 @@
             <ImageView fx:id="view12" fitHeight="128.0" fitWidth="229.0" onMouseClicked="#chooseImage" opacity="0.4" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <Label layoutX="454.0" layoutY="41.0" text="Choose images for your creation!" textFill="#3574cd">
+      <Label layoutX="70.0" layoutY="530.0" text="Choose images for your creation!" textFill="#3574cd">
          <font>
             <Font size="22.0" />
          </font></Label>
