@@ -7,12 +7,10 @@ import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -27,15 +25,15 @@ import java.util.concurrent.Executors;
 public class CreateNewController {
 
     @FXML private TextField textFieldCreationName;
-    @FXML private Label errorName;
-
+    @FXML private ChoiceBox<String> choiceBox;
     @FXML private ListView listViewExistCreation;
+    @FXML private Button createBtn;
 
     private List<String> _CreationsExisted = new ArrayList<String>();
     private ExecutorService team;
     private String _term;
     private int _picNum;
-    @FXML private ChoiceBox<String> choiceBox;
+
 
     public void initData(String term, int picNum){
         _term = term;
@@ -47,11 +45,11 @@ public class CreateNewController {
      */
     public void initialize() {
         Main.getController().currentCreationStep(CreationStep.FINAL);
+        createBtn.setDisable(true);
 
         ObservableList list=FXCollections.observableArrayList();
         list.addAll("Clouds","Fingers", "Sun", "No music");
         choiceBox.getItems().addAll(list);
-        errorName.setVisible(false);
 
         team = Executors.newSingleThreadExecutor();
 
@@ -62,7 +60,6 @@ public class CreateNewController {
             String line;
             Process process = builder1.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
 
             while ((line = reader.readLine()) != null) {
                 _CreationsExisted.add(line);
@@ -75,115 +72,85 @@ public class CreateNewController {
     }
 
     /**
-     * the checkEmptyAudio method will check if any audio in the folder is empty
-     * @return
+     * Method checks for validity of text entered, will enable create button if can create.
      */
-    private Boolean checkEmptyAudio(){
-        File directoryCheck = new File(PathIs.TEMP + "/audioPiece");
-        String[] files = directoryCheck.list();
-        if (files.length > 0){
-            return false;
-        } else {
-            return true;
+    @FXML
+    public void enteredText(){
+        try {
+            if (textFieldCreationName.getText().trim().isEmpty()||textFieldCreationName.getText()==null){
+                Main.getController().popupHelper("Enter a name please!", false);
+            } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
+                Main.getController().popupHelper("Enter a-z name only!", false);
+            } else {
+                createBtn.setDisable(false);
+            }
+        } catch (Exception e) {
+            textFieldCreationName.clear();
         }
+
     }
 
     /***
      * When the user hits the create button, the user will be taken back to the menu whilst the work is done in
      * background threads. The method also checks for the validity of the name.
-     * @param event
      * @throws IOException
      */
     @FXML
-    public void EnterCreation(ActionEvent event) throws Exception {
+    public void enterCreation() throws Exception {
+        if (_CreationsExisted.contains(textFieldCreationName.getText())) { /////Check for creation name error input.
+            Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
+            overwrite.setTitle("Duplicated Name");
+            overwrite.setHeaderText("Would you like to overwrite " + textFieldCreationName.getText() + "?");
+            overwrite.setContentText("OK: overwrite. Cancel: retry your name, or you can choose to go back to the menu.");
 
-        //doing error handling
-        if (checkEmptyAudio()){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("No audio to combine");
-            alert.setHeaderText("Go back and make audios ");
-            alert.setContentText("Make audio first");
-            alert.showAndWait();
-
-            EditTextController controller = (EditTextController) Main.getController().setTOPVIEW(SceneFXML.AUDIO.toString());
-            controller.initData(_term);
-
-        } else {
-            errorName.setVisible(false);
-
-            Boolean error = false;
-            try {
-                if (_CreationsExisted.contains(textFieldCreationName.getText())) { /////Check for creation name error input.
-                    errorName.setText("Duplicated name.");
-                    Alert overwrite = new Alert(Alert.AlertType.CONFIRMATION);
-                    overwrite.setTitle("Duplicated Name");
-                    overwrite.setHeaderText("Would you like to overwrite " + textFieldCreationName.getText() + "?");
-                    overwrite.setContentText("OK: overwrite. Cancel: retry your name, or you can choose to go back to the menu.");
-
-                    overwrite.showAndWait();
-                    if (overwrite.getResult() == ButtonType.OK) {
-                    } else {
-                        return;
-                    }
-
-                } else if (textFieldCreationName.getText().trim().isEmpty()||textFieldCreationName.getText()==null){
-                    errorName.setText("please enter a name");
-                } else if (!textFieldCreationName.getText().matches("[a-zA-Z0-9_-]*")) {
-                    errorName.setVisible(true);
-                    errorName.setText("Enter a-z chara name only");
-                    textFieldCreationName.clear();
-                    error = true;
-                }
-            } catch (Exception e) {
-                textFieldCreationName.clear();
-                error = true;
-            }
-
-            if (error) { //Return if there is an error; guide user to reenter the fields.
+            overwrite.showAndWait();
+            if (overwrite.getResult() == ButtonType.OK) {
+            } else {
                 return;
             }
+        }
 
-            createDirectories(); //Create necessary directories if they have not existed yet.
+        createDirectories(); //Create necessary directories if they have not existed yet.
 
-            //Send creation work to background thread to create the final creation...
-            CreationWork creationWork = null;
-            creationWork = new CreationWork(_term, textFieldCreationName.getText(), _picNum, true,choiceBox.getValue()); //TODO complete
+        //Send creation work to background thread to create the final creation...
+        CreationWork creationWork = null;
+        creationWork = new CreationWork(_term, textFieldCreationName.getText(), _picNum, true,choiceBox.getValue()); //TODO complete
 
-            team.submit(creationWork);
+        team.submit(creationWork);
 
-            creationWork.setOnSucceeded(workerStateEvent -> {
-                try {
-
-                    // create a confidence.txt file to record user's confidence and create a plays.text file to record user's times of play
-                    String p = "\"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "/";
-                    new BashCommand().bash("touch " + p + "confidence.txt\" " + p + "plays.txt\"");
-
-                    team.submit(new Confidence(textFieldCreationName.getText(), 0));
-                    team.submit(new Play(textFieldCreationName.getText()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                try {
-                    Main.clear(); //Clean up audio files after the Creation has been made.
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                _CreationsExisted.clear();
-
-                textFieldCreationName.clear();
-                Main.getController().creationInProgress(false); //show user the creation work is done by change the picture
-
-            });
+        creationWork.setOnSucceeded(workerStateEvent -> {
             try {
-                Main.getController().popupHelper("Let's go learn your creation, click play button!", false);
-                Main.getController().setTOPVIEW(SceneFXML.MENU.toString()); // go to the main menu
-                Main.getController().creationInProgress(true); // show the user the creation is still being made
-            } catch (IOException e) {
+
+                // create a confidence.txt file to record user's confidence and create a plays.text file to record user's times of play
+                String p = "\"" + PathIs.EXTRA + "/" + _term + "/" + textFieldCreationName.getText() + "/";
+                new BashCommand().bash("touch " + p + "confidence.txt\" " + p + "plays.txt\"");
+
+                team.submit(new Confidence(textFieldCreationName.getText(), 0));
+                team.submit(new Play(textFieldCreationName.getText()));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+            try {
+                Main.clear(); //Clean up audio files after the Creation has been made.
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            _CreationsExisted.clear();
+
+            textFieldCreationName.clear();
+            Main.getController().creationInProgress(false); //show user the creation work is done by change the picture
+
+        });
+        try {
+            Main.getController().popupHelper("Let's go learn your creation, click play button!", false);
+            Main.getController().setTOPVIEW(SceneFXML.MENU.toString()); // go to the main menu
+            Main.getController().creationInProgress(true); // show the user the creation is still being made
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
 
     /**
      * Create required folders to store the audio, video and pictures for creating the final Creation.
