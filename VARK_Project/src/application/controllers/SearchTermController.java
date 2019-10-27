@@ -3,6 +3,7 @@ package application.controllers;
 import application.Main;
 import application.PathCD;
 import application.bashwork.BashCommand;
+import application.values.CreationStep;
 import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.application.Platform;
@@ -47,6 +48,8 @@ public class SearchTermController {
     @FXML
 
     public void initialize() throws Exception {
+        Main.getController().currentCreationStep(CreationStep.SEARCH);
+
         //Create the necessary folders and files
         String command2 = "mkdir -p \"" + PathIs.TEMP + "/audioPiece\" ; mkdir -p \""+ PathIs.TEMP + "/photos\" ";
         new BashCommand().bash(command2);

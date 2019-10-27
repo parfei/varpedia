@@ -2,6 +2,7 @@ package application.controllers;
 
 import application.ChangeScene;
 import application.Main;
+import application.values.CreationStep;
 import application.values.PicPath;
 import application.values.SceneFXML;
 import javafx.application.Platform;
@@ -39,11 +40,17 @@ public class MainController {
 
     @FXML private AnchorPane TOPVIEW;
     @FXML private ImageView creatingImg;
+    @FXML private ImageView createImg;
     @FXML private Button starBtn;
     @FXML private Button createBtn;
 
     private static final Image LOADING = new Image(PicPath.MENU + "/loading_star.png");
     private static final Image PLACEHOLDER = new Image(PicPath.MENU + "/placeholder.png");
+    private static final Image SEARCH = new Image(PicPath.DEFAULT + "/search_p.png");
+    private static final Image AUDIO = new Image(PicPath.DEFAULT + "/audio_p.png");
+    private static final Image PICTURE = new Image(PicPath.DEFAULT + "/pic_p.png");
+    private static final Image FINAL = new Image(PicPath.DEFAULT + "/final_p.png");
+    private static final Image DEFAULT_CREATE = new Image(PicPath.MENU + "/create.png");
 
     @FXML
     public void initialize() throws IOException {
@@ -121,10 +128,24 @@ public class MainController {
     public void creationInProgress(Boolean inProgress){
         if (inProgress){
             creatingImg.setImage(LOADING);
-            createBtn.setDisable(true);
+            createImg.setImage(DEFAULT_CREATE);
         } else {
             creatingImg.setImage(PLACEHOLDER);
             createBtn.setDisable(false);
+        }
+    }
+
+    public void currentCreationStep(CreationStep step){
+        createBtn.setDisable(true);
+
+        if (step == CreationStep.SEARCH){
+            createImg.setImage(SEARCH);
+        } else if (step == CreationStep.AUDIO){
+            createImg.setImage(AUDIO);
+        } else if (step == CreationStep.PICTURE){
+            createImg.setImage(PICTURE);
+        } else if (step == CreationStep.FINAL){
+            createImg.setImage(FINAL);
         }
     }
 

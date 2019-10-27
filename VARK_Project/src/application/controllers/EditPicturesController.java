@@ -2,10 +2,7 @@ package application.controllers;
 
 import application.Main;
 import application.bashwork.BashCommand;
-import application.values.ButtonLiterals;
-import application.values.FlickrDone;
-import application.values.PathIs;
-import application.values.SceneFXML;
+import application.values.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -32,9 +29,6 @@ public class EditPicturesController {
     @FXML
     private HBox downloading;
     private String _term;
-
-
-
     private List<Image> _imageToDeleteList = new ArrayList<Image>();
 
     @FXML ImageView view1;
@@ -57,6 +51,11 @@ public class EditPicturesController {
         } else {
             setGrid(); //When done, set the grid of images.
         }
+    }
+
+    @FXML
+    public void initialize(){
+        Main.getController().currentCreationStep(CreationStep.PICTURE);
     }
 
     public void setGrid(){

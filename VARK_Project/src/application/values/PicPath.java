@@ -3,6 +3,10 @@ package application.values;
 import application.Main;
 
 public enum PicPath {
+    DEFAULT{
+        @Override
+        public String toString() { return String.valueOf(Main.class.getResource("resources/images")); }
+    },
     MENU{
         @Override
         public String toString() { return String.valueOf(Main.class.getResource("resources/images/menu")); }

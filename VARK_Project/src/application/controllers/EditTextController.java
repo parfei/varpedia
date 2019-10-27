@@ -7,6 +7,7 @@ import application.bashwork.BashCommand;
 import application.bashwork.ManageFolder;
 import application.bashwork.PreviewHelper;
 import application.bashwork.SaveHelper;
+import application.values.CreationStep;
 import application.values.CustomAlertType;
 import application.values.PathIs;
 import application.values.SceneFXML;
@@ -65,6 +66,7 @@ public class EditTextController {
      */
     @FXML
     public void initialize() throws Exception {
+        Main.getController().currentCreationStep(CreationStep.AUDIO);
         remindLabel.setVisible(false);
 
         BashCommand audio = new BashCommand();

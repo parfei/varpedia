@@ -2,6 +2,7 @@ package application.controllers;
 
 import application.*;
 import application.bashwork.BashCommand;
+import application.values.CreationStep;
 import application.values.PathIs;
 import application.values.SceneFXML;
 import javafx.collections.FXCollections;
@@ -44,7 +45,9 @@ public class CreateNewController {
     /**
      * This method will add the existing creation to the ListView and make a choice box for user to choose music
      */
-    public void initialize() throws IOException {
+    public void initialize() {
+        Main.getController().currentCreationStep(CreationStep.FINAL);
+
         ObservableList list=FXCollections.observableArrayList();
         list.addAll("Clouds","Fingers", "Sun", "No music");
         choiceBox.getItems().addAll(list);
@@ -78,7 +81,6 @@ public class CreateNewController {
      */
     @FXML
     public void returnToStart(ActionEvent event) throws IOException {
-//        _CreationsExisted.clear();
         Main.getController().setTOPVIEW(SceneFXML.MENU.toString());
         Main.clear();
     }
