@@ -21,9 +21,9 @@
          </image>
       </ImageView>
       <TextArea fx:id="textArea" layoutX="4.0" layoutY="63.0" onMouseClicked="#checkValidSelection" prefHeight="531.0" prefWidth="546.0" wrapText="true" />
-      <Button fx:id="createBtn" disable="true" layoutX="871.0" layoutY="508.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="47.0" prefWidth="95.0" stylesheets="@../css/menu_button.css" textFill="WHITE">
+      <Button fx:id="createBtn" disable="true" layoutX="824.0" layoutY="473.0" mnemonicParsing="false" onAction="#readyToCombine" prefHeight="99.0" prefWidth="142.0" stylesheets="@../css/menu_button.css" textFill="WHITE">
          <graphic>
-            <ImageView fitHeight="54.0" fitWidth="74.0" pickOnBounds="true">
+            <ImageView fitHeight="82.0" fitWidth="119.0" pickOnBounds="true">
                <image>
                   <Image url="@images/right_arrow.png" />
                </image>
@@ -33,7 +33,7 @@
          <font>
             <Font size="18.0" />
          </font></Label>
-      <ListView fx:id="existingAudioView" layoutX="784.0" layoutY="54.0" onMouseClicked="#getAudioSelection" prefHeight="446.0" prefWidth="192.0" />
+      <ListView fx:id="existingAudioView" layoutX="784.0" layoutY="54.0" onMouseClicked="#getAudioSelection" prefHeight="381.0" prefWidth="192.0" />
       <VBox layoutX="564.0" layoutY="148.0" prefHeight="397.0" prefWidth="207.0" spacing="20.0">
          <children>
             <Label fx:id="remindLabel" prefHeight="144.0" prefWidth="207.0" text="Switched to normal voice, boy/girl voice not possible yet!" textFill="RED" wrapText="true">

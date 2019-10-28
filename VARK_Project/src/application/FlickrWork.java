@@ -104,7 +104,8 @@ public class FlickrWork extends Task<String> {
     }
 
     /**
-     * Retrieve and downloaded the photos from Flickr, through the Flickr API
+     * Retrieve and downloaded the photos from Flickr, through the Flickr API. Used code from Dr. Nasser Giacaman's ACP project
+     * that demonstrates Flickr API.
      */
     private void getPhotos(){
         try {

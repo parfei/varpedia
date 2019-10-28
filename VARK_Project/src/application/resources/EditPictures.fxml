@@ -63,12 +63,12 @@
          <font>
             <Font size="22.0" />
          </font></Label>
-      <Button fx:id="finalBtn" layoutX="810.0" layoutY="488.0" mnemonicParsing="false" onAction="#toFinalScene" prefHeight="84.0" prefWidth="146.0" stylesheets="@../css/menu_button.css">
+      <Button fx:id="finalBtn" layoutX="789.0" layoutY="466.0" mnemonicParsing="false" onAction="#toFinalScene" prefHeight="106.0" prefWidth="167.0" stylesheets="@../css/menu_button.css">
          <font>
             <Font size="16.0" />
          </font>
          <graphic>
-            <ImageView fitHeight="72.0" fitWidth="137.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="84.0" fitWidth="135.0" pickOnBounds="true">
                <image>
                   <Image url="@images/right_arrow.png" />
                </image>
