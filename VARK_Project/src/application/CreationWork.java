@@ -63,9 +63,6 @@ public class CreationWork extends Task<String> {
         combineForms();//combine the video and the sound part.
         moveTextFile();
 
-
-        System.out.println("creationwork done");
-
         return null;
     }
 
@@ -75,7 +72,7 @@ public class CreationWork extends Task<String> {
     private void generateCombinedAudio() {
         String combine = "cd \"" + PathIs.TEMP + "/audioPiece\" ; sox $(ls -tcr | grep wav) \"" +
                 PathIs.EXTRA + "/" + _term + "/" + _name + "/sound.wav\"";
-        System.out.println(combine);
+
         ProcessBuilder pb = new ProcessBuilder("bash", "-c", combine);
         try {
             Process process = pb.start(); //combine audio
@@ -91,7 +88,7 @@ public class CreationWork extends Task<String> {
      */
     private void generateAudio() {
         String soundCommand = "cat \"" + PathIs.EXTRA + "/lines.txt\" | text2wave -o \"" + _path + "sound.wav\"";
-        System.out.println(soundCommand);
+
         ProcessBuilder sound = new ProcessBuilder("bash", "-c", soundCommand);
         try {
             Process sod = sound.start();
@@ -132,7 +129,6 @@ public class CreationWork extends Task<String> {
             //Create the text layering on top.
             String command3 = "ffmpeg -y -i \"" + _path + "slideshow.mp4\" -vf \"drawtext=fontfile=:fontsize=30:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='" + _term + "'\" \"" + _path + "video.mp4\"";
             String videoCommand = command2 + " ; " + command3;
-            System.out.println(videoCommand);
 
             ProcessBuilder video = new ProcessBuilder("bash", "-c", videoCommand);
             Process vid = null;
@@ -153,7 +149,6 @@ public class CreationWork extends Task<String> {
 
         String combineCommand = "ffmpeg -y -i \"" + _path + "combinedSound.wav\" -i \"" + _path + "video.mp4\" -c:v copy -c:a aac -strict experimental \"" +
                 PathCD.getPathInstance().getPath() + "/mydir/creations/creations/" + _name + ".mp4\" 2>/dev/null"; //"/mydir/creations/creations/" + _term + "/" + _name + ".mp4\"
-        System.out.println(combineCommand);
         ProcessBuilder getTogether = new ProcessBuilder("bash", "-c", combineCommand);
 
         try {
@@ -174,10 +169,6 @@ public class CreationWork extends Task<String> {
         String command = "ls \"" + PathIs.TEMP + "/photos\"" + " | cut -f1 -d'.'\n";
         BashCommand update = new BashCommand();
         ArrayList<String> photoList = update.bash(command);
-        for (int i=0;i<photoList.size();i++){
-            System.out.println(photoList.get(i));
-        }
-
 
         double dura = _audioDura / Double.parseDouble(_picNum + ".0"); //Calculate duration of each picture
 
@@ -203,10 +194,6 @@ public class CreationWork extends Task<String> {
 
 
     private void addBackgroundMusic() throws InterruptedException, IOException {
-        System.out.println("start adding background music");
-
-
-
         int seconds = (int) Math.ceil(_audioDura); //Get duration in seconds
 
         //change mp3 file to wav file
@@ -214,46 +201,33 @@ public class CreationWork extends Task<String> {
         String path = PathIs.TEMP + "/audioPiece";
 
         if (_musicChoice==null||_musicChoice.equals("No music")){
-            createMusicFile = ""; //Will not convert to anything if no music selected/specified no music //TODO make it default for music selection to be none?
+            createMusicFile = ""; //Will not convert to anything if no music selected/specified no music
         }
         else if (_musicChoice.equals("Clouds")) {
-            createMusicFile = "ffmpeg -i ./songs/clouds.mp3 -acodec pcm_u8 -ar 16000 "+ path+"/song.wav";
+            createMusicFile = "ffmpeg -i ./songs/clouds.mp3 -acodec pcm_u8 -ar 16000 \""+ path+"/song.wav\"";
         } else if (_musicChoice.equals("Fingers")) {
-            createMusicFile = "ffmpeg -i ./songs/fingers.mp3 -acodec pcm_u8 -ar 16000 " + path + "/song.wav";
+            createMusicFile = "ffmpeg -i ./songs/fingers.mp3 -acodec pcm_u8 -ar 16000 \"" + path + "/song.wav\"";
         } else if (_musicChoice.equals("Sun")) {
-            createMusicFile = "ffmpeg -i ./songs/sun.mp3 -acodec pcm_u8 -ar 16000 " + path + "/song.wav";
+            createMusicFile = "ffmpeg -i ./songs/sun.mp3 -acodec pcm_u8 -ar 16000 \"" + path + "/song.wav\"";
         }
         else {
-            System.out.println("Bug");
         }
         if (createMusicFile != "") {
             ProcessBuilder builder = new ProcessBuilder("bash", "-c", createMusicFile);
             Process createMusic = builder.start();
             int exit = createMusic.waitFor();
-            if (exit == 0) {
-                System.out.println("convert the music to wav file");
-            }
 
-
-
-            String combineAudioCommand="sox -m " + _path + "sound.wav "+ path+"/song.wav "+ _path + "combinedSound.wav trim 0 "+seconds; //TODO does it work for double? more accurate
-            System.out.println(combineAudioCommand);
+            String combineAudioCommand="sox -m \"" + _path + "sound.wav\" \""+ path+"/song.wav\" \""+ _path + "combinedSound.wav\" trim 0 "+seconds;
 
             ProcessBuilder builder1 = new ProcessBuilder("bash", "-c", combineAudioCommand);
             Process combineMusic = builder1.start();
             int exit1=combineMusic.waitFor();
-            if (exit1==0){
-                System.out.println("combine music completed");
-            }
         }
         else {
-            String renameCommand="mv "+_path+"sound.wav "+_path+"combinedSound.wav";
+            String renameCommand="mv \""+_path+"sound.wav\" \""+_path+"combinedSound.wav\"";
             ProcessBuilder builder = new ProcessBuilder("bash", "-c", renameCommand);
             Process rename = builder.start();
             int exit2=rename.waitFor();
-            if (exit2==0){
-                System.out.println("rename completed");
-            }
         }
     }
 
@@ -267,7 +241,7 @@ public class CreationWork extends Task<String> {
     }
 
     private void moveTextFile(){
-        String command="mv " + PathIs.EXTRA + "/myFinalText.txt "+ _path;
+        String command="mv \"" + PathIs.EXTRA + "/myFinalText.txt\" \""+ _path + "\"";
         try{
             new BashCommand().bash(command);
         } catch (Exception e) {
