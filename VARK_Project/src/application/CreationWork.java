@@ -54,7 +54,7 @@ public class CreationWork extends Task<String> {
         } else {
             generateAudio();
         }
-        //setAudioDuration();
+
         if (_picNum == 0) { //If failed to get Flickr images or there are no Flickr images available then generate blue video.
             generateBlueVideo();
         } else {
@@ -94,7 +94,6 @@ public class CreationWork extends Task<String> {
             Process sod = sound.start();
             sod.waitFor();
         } catch (IOException | InterruptedException e) {
-            // e.printStackTrace();
         }
     }
 
@@ -122,7 +121,6 @@ public class CreationWork extends Task<String> {
         try {
             generateFilesTxt();
             String path = PathIs.TEMP + "/photos/";
-            //String command2 = "ffmpeg -framerate " + _picNum + "/\"$duration\" -f image2 -s 800x600 -i \"" + _path + "img%01d.jpg\" -vcodec libx264 -crf 25 -pix_fmt yuv420p -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -r 25 \"" + _path + "slideshow.mp4\"";
 
             //Create the slideshow.
             String command2 = "ffmpeg -y -f concat -safe 0 -i \"" + _path + "imgs.txt\" -pix_fmt yuv420p -r 25 -vf 'scale=trunc(iw/2)*2:trunc(ih/2)*2' \"" + _path + "slideshow.mp4\"";
@@ -248,6 +246,5 @@ public class CreationWork extends Task<String> {
             e.printStackTrace();
         }
     }
-
 
 }

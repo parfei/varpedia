@@ -43,7 +43,7 @@
                </image>
             </ImageView>
             <Line endX="236.0" endY="151.3333282470703" startX="-173.3333282470703" startY="151.3333282470703" />
-            <Label layoutX="-85.0" layoutY="41.0" stylesheets="@../css/remainder.css" text="Let's Review!" textFill="#1a1819">
+            <Label layoutX="-135.0" layoutY="40.0" stylesheets="@../css/remainder.css" text="Let's Review!" textFill="#1a1819">
                <font>
                   <Font size="35.0" />
                </font>
@@ -60,7 +60,7 @@
          <graphic>
             <ImageView fitHeight="58.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/remainder_tag.png" />
+                  <Image url="@images/remainder_tag.gif" />
                </image>
             </ImageView>
          </graphic>

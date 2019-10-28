@@ -26,8 +26,10 @@ public class MainController {
     @FXML private AnchorPane TOPVIEW;
     @FXML private ImageView creatingImg;
     @FXML private ImageView createImg;
+    @FXML private ImageView helpImg;
     @FXML private Button starBtn;
     @FXML private Button createBtn;
+    private Boolean helpShowing = false;
 
     private static final Image LOADING = new Image(PicPath.MENU + "/loading_star.gif");
     private static final Image PLACEHOLDER = new Image(PicPath.MENU + "/placeholder.png");
@@ -110,7 +112,13 @@ public class MainController {
 
     @FXML
     public void getInfo(){
-        //TODO credits
+        if (!helpShowing){
+            helpImg.setVisible(true);
+            helpShowing = true;
+        } else {
+            helpImg.setVisible(false);
+            helpShowing = false;
+        }
     }
 
     /**
