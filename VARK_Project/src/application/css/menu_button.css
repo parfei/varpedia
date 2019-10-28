@@ -14,3 +14,13 @@
     -fx-scale-y: 0.85;
     -fx-scale-x: 0.85;
 }
+
+.choice-box:hover{
+    -fx-scale-y: 1.15;
+    -fx-scale-x: 1.15;
+}
+
+.choice-box:pressed{
+    -fx-scale-y: 0.85;
+    -fx-scale-x: 0.85;
+}

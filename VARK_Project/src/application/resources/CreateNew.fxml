@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -34,7 +35,10 @@
                         <Font size="23.0" />
                      </font>
                   </Label>
-                  <ChoiceBox fx:id="choiceBox" prefHeight="26.0" prefWidth="196.0" />
+                  <ChoiceBox fx:id="choiceBox" prefHeight="33.0" prefWidth="196.0" style="-fx-background-color: #A4CEEE; -fx-border-color: #56595B;" stylesheets="@../css/menu_button.css">
+                     <effect>
+                        <InnerShadow blurType="GAUSSIAN" choke="0.08" color="#f7fafc" height="19.61" radius="4.4025" width="0.0" />
+                     </effect></ChoiceBox>
                </children>
             </HBox>
             <VBox prefHeight="373.0" prefWidth="424.0" spacing="20.0">
