@@ -24,7 +24,7 @@ public class PreviewHelper extends Task<Integer> {
                 writer=new FileWriter(PathIs.TEMP + "/" + _voice);
                 writer.write("(voice_kal_diphone)"+"\n"+"(SayText" + " "+"\""+_text +"\"" + ")");
                 cmd = "festival -b \"" + PathIs.TEMP + "/default_voice\"";
-                System.out.println(cmd);
+
             } else if (_voice.equals("male_voice")){
                 writer=new FileWriter(PathIs.TEMP + "/" + _voice);
                 writer.write("(voice_akl_nz_jdt_diphone)"+"\n"+"(SayText" + " "+"\""+_text+"\"" + ")");

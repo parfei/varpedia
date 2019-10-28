@@ -15,9 +15,7 @@ public class Confidence extends Task<Boolean> {
     public Confidence(String creation, int rating) throws Exception {
         _rating = rating;
         _rateFilePath = ManageFolder.findPath(creation, false);
-        /*File file = new File(ManageFolder.findPath(creation, false));
-        _rateFilePath = file.getAbsoluteFile().getParent();
-        _rateFilePath = _rateFilePath.substring(_rateFilePath.lastIndexOf("/"));*/ //TODO finding term code.
+
     }
 
     @Override

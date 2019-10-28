@@ -2,17 +2,13 @@ package application;
 
 import application.bashwork.BashCommand;
 import application.values.PathIs;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.*;
-import java.nio.file.Path;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class is called with its instance to be worked in the background, due to its intensive computational complexity.
@@ -192,7 +188,11 @@ public class CreationWork extends Task<String> {
         }
     }
 
-
+    /**
+     * This method add the background music to the final creation
+     * @throws InterruptedException
+     * @throws IOException
+     */
     private void addBackgroundMusic() throws InterruptedException, IOException {
         int seconds = (int) Math.ceil(_audioDura); //Get duration in seconds
 
@@ -230,6 +230,10 @@ public class CreationWork extends Task<String> {
             int exit2=rename.waitFor();
         }
     }
+
+    /**
+     * get the duration of an audio
+     */
 
     private void setAudioDuration(){
         String command1 = "soxi -D \"" + _path + "sound.wav\"";

@@ -10,6 +10,9 @@ import javafx.scene.control.ButtonType;
 
 import java.util.Optional;
 
+/**
+ * This class is used to generate alert box
+ */
 public class CustomAlert extends Task<CustomAlert> {
     private CustomAlertType _type;
     private Alert _alert = new Alert(Alert.AlertType.CONFIRMATION);

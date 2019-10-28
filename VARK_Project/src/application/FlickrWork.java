@@ -12,12 +12,7 @@ import javafx.concurrent.Task;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -26,12 +21,11 @@ import java.util.ArrayList;
  */
 public class FlickrWork extends Task<String> {
     private String _term;
-    //private String _name;
     private int _num;
     private ArrayList<String> _html = new ArrayList<String>();
 
     public FlickrWork(String term, String num){
-        //_name = name;
+
         _term = term;
         _num = Integer.parseInt(num);
     }
@@ -43,7 +37,6 @@ public class FlickrWork extends Task<String> {
      */
     @Override
     protected String call() throws Exception {
-        // https://www.flickr.com/search/?text=_term;
 
         try {
             if (_num == 0){
@@ -53,7 +46,7 @@ public class FlickrWork extends Task<String> {
         } catch (RuntimeException e){
             return "0";
         }
-        System.out.println("flickr done");
+
         return Integer.toString(_num);
     }
 
@@ -73,10 +66,7 @@ public class FlickrWork extends Task<String> {
         direct = direct.substring(0,direct.lastIndexOf("/"));
         String config = direct + "/flickr-api-key.txt";
 
-        //String config = PathCD.getPathInstance().getPath().substring(0, PathCD.getPathInstance().getPath().indexOf("/out"))
-        //        + "/src/application/config/flickr-api-key.txt";
 
-        //System.out.println(config);
 
         File file = new File(config);
 
@@ -92,7 +82,7 @@ public class FlickrWork extends Task<String> {
                 }
             }
             br.close();
-            //throw new RuntimeException("Couldn't find " + key +" in config file "+file.getName());
+
         } catch (FileNotFoundException e) { //DEFAULT KEYS IF FILE NOT FOUND
             if (key.equals("apikey")){
                 return "717f64bdd9d9d00bfcdb7a8871bd79b4";
@@ -113,7 +103,7 @@ public class FlickrWork extends Task<String> {
             String sharedSecret = getAPIKey("secret");
 
             Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
-            System.out.println(_term);
+
             String query = _term;
             int resultsPerPage = _num;
             int page = 0;
@@ -125,7 +115,7 @@ public class FlickrWork extends Task<String> {
             params.setText(query);
 
             PhotoList<Photo> results = photos.search(params, resultsPerPage, page); //Look for photos
-            System.out.println("Retrieving " + results.size()+ " results");
+
 
             int count = 0;
             for (Photo photo: results) {
@@ -139,8 +129,7 @@ public class FlickrWork extends Task<String> {
                     File outputfile = new File(photoFolder,filename);
                     ImageIO.write(image, "jpg", outputfile); //Download the image
 
-                    //how to put the photo into a folder
-                    System.out.println(filename);
+
 
                     count++;
                 } catch (FlickrException fe) {
@@ -152,7 +141,7 @@ public class FlickrWork extends Task<String> {
             throw new RuntimeException("No Flickr results for " + _term + ". Creating a blue video instead...");
         }
 
-        System.out.println("\nDone");
+
         Platform.runLater(() -> FlickrDone.isDone(true));
     }
 
