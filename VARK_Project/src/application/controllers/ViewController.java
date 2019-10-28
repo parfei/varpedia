@@ -223,6 +223,7 @@ public class ViewController {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
                 resetPlayer();
+                _player.dispose();
 
                 team.submit(new Task<Void>() {
                     @Override

@@ -69,7 +69,7 @@ public class MainMenuController {
                 }
 
                 if (toReview.isEmpty()){ //If there are no creations
-                    toReview.add("Nothing to review. Well done!");
+                    toReview.add("Nothing to review!");
                 }
 
                 ArrayList<String> finalToReview = toReview;

@@ -356,7 +356,9 @@ public class EditTextController {
 
                     Platform.runLater(() -> {
                         _audioChoice = null;
-                        _mediaPlayer.dispose();
+                        if (_mediaPlayer != null){
+                            _mediaPlayer.dispose();
+                        }
                         try {
                             String cmd = "rm -f \"" + path + "\"";
                             new BashCommand().bash(cmd);

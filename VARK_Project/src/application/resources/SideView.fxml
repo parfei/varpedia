@@ -111,5 +111,10 @@
          <image>
             <Image url="@images/view/confidence/c5.png" />
          </image></ImageView>
+      <ImageView fitHeight="93.0" fitWidth="257.0" layoutX="676.0" layoutY="492.0" pickOnBounds="true">
+         <image>
+            <Image url="@images/view/instructions.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
