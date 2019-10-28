@@ -165,7 +165,7 @@ public class EditTextController {
 
     private void clearAudio(String file_path){
         String deleteCmd = "rm -f \"" + file_path + "\"";
-        System.out.println(deleteCmd);
+
         try {
             new BashCommand().bash(deleteCmd);
             updateExistingAudio();

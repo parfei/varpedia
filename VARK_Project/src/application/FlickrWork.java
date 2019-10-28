@@ -12,12 +12,7 @@ import javafx.concurrent.Task;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -29,6 +24,7 @@ public class FlickrWork extends Task<String> {
     private int _num;
 
     public FlickrWork(String term, String num){
+
         _term = term;
         _num = Integer.parseInt(num);
     }
@@ -40,6 +36,7 @@ public class FlickrWork extends Task<String> {
      */
     @Override
     protected String call() throws Exception {
+
         try {
             if (_num == 0){
                 return "0";
@@ -48,6 +45,7 @@ public class FlickrWork extends Task<String> {
         } catch (RuntimeException e){
             return "0";
         }
+
         return Integer.toString(_num);
     }
 
@@ -66,6 +64,8 @@ public class FlickrWork extends Task<String> {
         }
         direct = direct.substring(0,direct.lastIndexOf("/"));
         String config = direct + "/flickr-api-key.txt";
+
+
 
         File file = new File(config);
 
@@ -126,6 +126,8 @@ public class FlickrWork extends Task<String> {
                     File outputfile = new File(photoFolder,filename);
                     ImageIO.write(image, "jpg", outputfile); //Download the image
 
+
+
                     count++;
                 } catch (FlickrException fe) {
                     throw new RuntimeException();
@@ -135,6 +137,7 @@ public class FlickrWork extends Task<String> {
             e.printStackTrace(); //throw exception if no images were found for such term.
             throw new RuntimeException("No Flickr results for " + _term + ". Creating a blue video instead...");
         }
+
 
         Platform.runLater(() -> FlickrDone.isDone(true));
     }
